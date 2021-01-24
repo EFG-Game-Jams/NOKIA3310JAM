@@ -1,5 +1,11 @@
 # NOKIA3310JAM
 
+## Project
+
+This repository uses LFS, so make sure that's up and running on your end (if you're using SourceTree it will offer automatic LFS setup).
+
+Unity version: 2019.4.18f1
+
 ## Space Ship
 
 ### States
