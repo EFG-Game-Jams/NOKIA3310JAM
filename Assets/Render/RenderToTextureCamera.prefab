@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 806693796730603724}
   - component: {fileID: 4614010239570836784}
+  - component: {fileID: 3567047361189859784}
   m_Layer: 0
   m_Name: RenderToTextureCamera
   m_TagString: Untagged
@@ -62,7 +63,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 23
+    m_Bits: 1
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 997702cfcab59e147a661a8688345273, type: 2}
   m_TargetDisplay: 0
@@ -74,3 +75,16 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &3567047361189859784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7177017989915967813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5152cecd5b5dc9e44942b642862692c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camera: {fileID: 4614010239570836784}
