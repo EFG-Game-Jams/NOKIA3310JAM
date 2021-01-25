@@ -16,10 +16,10 @@ public class PixelPerfectSprite : MonoBehaviour
 	public Vector2 SnapPosition()
 	{
 		Vector3 halfSize = spriteRenderer.bounds.size * .5f;
-		Vector3 origin = transform.position - halfSize;
+		Vector3 origin = transform.localPosition - halfSize;
 		origin.x = Mathf.Round(origin.x);
 		origin.y = Mathf.Round(origin.y);
-		transform.position = origin + halfSize;
+		transform.localPosition = origin + halfSize;
 		return origin;
 	}
 
