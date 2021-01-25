@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class NokiaTextRenderer : MonoBehaviour
 {
     [SerializeField] private string initialText = "";
@@ -10,6 +11,9 @@ public class NokiaTextRenderer : MonoBehaviour
 
     public enum Align { Left, Center, Right };
     public Align align;
+
+    [Tooltip("When enabled, clicking on a glyph will redirect selection to this object")]
+    public bool interceptGlyphSelection = true;
 
     private string text;
     public string Text
@@ -20,15 +24,10 @@ public class NokiaTextRenderer : MonoBehaviour
 
     private List<SpriteRenderer> glyphs = new List<SpriteRenderer>();
 
-    void Start()
-    {
-        SetText(initialText);
-    }
-
     private void RefreshGlyphs()
     {
-        foreach (var glyph in glyphs)
-            Destroy(glyph.gameObject);
+        while (transform.childCount > 0)
+            DestroyImmediate(transform.GetChild(transform.childCount - 1).gameObject);
         glyphs.Clear();
 
         for (int i = 0; i < text.Length; ++i)
@@ -93,5 +92,38 @@ public class NokiaTextRenderer : MonoBehaviour
         this.text = text;
         RefreshGlyphs();
         UpdateGlyphPositions();
+    }
+    
+    private void Update()
+    {
+#if UNITY_EDITOR
+        if (UnityEditor.Experimental.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage() != null)
+        {
+            // we're in prefab mode, clear glyphs and stop
+            transform.localPosition = Vector3.zero;
+            SetText("");
+            return;
+        }
+        
+        if (interceptGlyphSelection)
+        {
+            Transform selected = UnityEditor.Selection.activeTransform;
+            if (selected != null && selected.parent == transform)
+            {
+                // naughty stuff to collapse this object in the hierarchy window
+                UnityEditor.EditorApplication.ExecuteMenuItem("Window/General/Hierarchy");
+                var hierarchyWindow = UnityEditor.EditorWindow.focusedWindow;
+                var expandMethodInfo = hierarchyWindow.GetType().GetMethod("SetExpandedRecursive");
+                expandMethodInfo.Invoke(hierarchyWindow, new object[] { gameObject.GetInstanceID(), false });
+
+                // redirect selection
+                UnityEditor.Selection.activeTransform = transform;                
+            }
+        }   
+#endif
+
+        SnapPosition();
+        SetText("");
+        SetText(initialText);
     }
 }
