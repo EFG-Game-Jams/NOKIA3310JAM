@@ -114,10 +114,10 @@ public class NokiaTextRenderer : MonoBehaviour
         RefreshGlyphs();
         UpdateGlyphPositions();
     }
-    
+
+#if UNITY_EDITOR
     private void Update()
     {
-#if UNITY_EDITOR
         if (UnityEditor.Experimental.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage() != null)
         {
             // we're in prefab mode, clear glyphs and stop
@@ -140,11 +140,14 @@ public class NokiaTextRenderer : MonoBehaviour
                 // redirect selection
                 UnityEditor.Selection.activeTransform = transform;                
             }
-        }   
-#endif
-
-        SnapPosition();
-        SetText("");
-        SetText(initialText);
+        }
+        
+        if (UnityEditor.EditorUtility.IsDirty(GetInstanceID()))
+        {
+            SnapPosition();
+            SetText("");
+            SetText(initialText);
+        }
     }
+#endif
 }
