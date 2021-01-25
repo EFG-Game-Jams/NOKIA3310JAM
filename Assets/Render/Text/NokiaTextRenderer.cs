@@ -64,10 +64,10 @@ public class NokiaTextRenderer : MonoBehaviour
     private void SnapPosition()
     {
         // snap position
-        Vector3 pos = transform.position;
+        Vector3 pos = transform.localPosition;
         pos.x = Mathf.Round(pos.x);
         pos.y = Mathf.Round(pos.y);
-        transform.position = pos;
+        transform.localPosition = pos;
     }
     private void UpdateGlyphPositions()
     {
