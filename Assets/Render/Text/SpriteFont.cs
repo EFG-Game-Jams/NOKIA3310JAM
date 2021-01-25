@@ -16,26 +16,42 @@ public class SpriteFont : ScriptableObject
 	public Translation[] translations;
 
 	private Dictionary<char, Sprite> characterToGlyph;
+	private int maxWidth;
 
 	private void OnValidate()
 	{
 		characterToGlyph = null;
 	}
 	
-	public Sprite GetGlyph(char character)
+	private void Build()
 	{
-		if (characterToGlyph == null)
+		if (characterToGlyph != null)
+			return;
+
+		characterToGlyph = new Dictionary<char, Sprite>();
+		maxWidth = 0;
+
+		foreach (var glyph in glyphs)
 		{
-			characterToGlyph = new Dictionary<char, Sprite>();
+			int width = Mathf.RoundToInt(glyph.rect.width);
+			maxWidth = Mathf.Max(maxWidth, width);
 
-			foreach (var glyph in glyphs)
-				if (glyph.name.Length == 1)
-					characterToGlyph.Add(glyph.name[0], glyph);
-
-			foreach (var translation in translations)
-				characterToGlyph.Add(translation.character, translation.glyph);
+			if (glyph.name.Length == 1)
+				characterToGlyph.Add(glyph.name[0], glyph);
 		}
 
+		foreach (var translation in translations)
+			characterToGlyph.Add(translation.character, translation.glyph);
+	}
+
+	public Sprite GetGlyph(char character)
+	{
+		Build();
 		return characterToGlyph[character];
+	}
+	public int GetMaxWidth()
+	{
+		Build();
+		return maxWidth;
 	}
 }

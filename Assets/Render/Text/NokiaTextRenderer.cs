@@ -8,6 +8,7 @@ public class NokiaTextRenderer : MonoBehaviour
     [SerializeField] private string initialText = "";
     public SpriteFont spriteFont;
     public int spacing = 1;
+    public bool monospace = false;
 
     public enum Align { Left, Center, Right };
     public Align align;
@@ -47,8 +48,15 @@ public class NokiaTextRenderer : MonoBehaviour
             return 0;
 
         int totalWidth = 0;
-        foreach (var glyph in glyphs)
-            totalWidth += Mathf.RoundToInt(glyph.bounds.size.x);
+        if (monospace)
+        {
+            totalWidth = glyphs.Count * spriteFont.GetMaxWidth();
+        }
+        else
+        {
+            foreach (var glyph in glyphs)
+                totalWidth += Mathf.RoundToInt(glyph.bounds.size.x);
+        }
 
         int totalSpacing = spacing * (glyphs.Count - 1);
         return totalWidth + totalSpacing;
@@ -75,12 +83,25 @@ public class NokiaTextRenderer : MonoBehaviour
                 offset = -GetWidth() / 2;
                 break;
         }
-                
-        foreach (var glyph in glyphs)
+
+        if (monospace)
         {
-            glyph.transform.localPosition = new Vector3(offset, 0, 0);
-            offset += Mathf.RoundToInt(glyph.bounds.size.x);
-            offset += spacing;
+            int monoWidth = spriteFont.GetMaxWidth();
+            int monoOffset = monoWidth / 2;
+            foreach (var glyph in glyphs)
+            {
+                int width = Mathf.RoundToInt(glyph.bounds.size.x);
+                glyph.transform.localPosition = new Vector3(offset + monoOffset - (width / 2), 0, 0);
+                offset += monoWidth + spacing;
+            }
+        }
+        else
+        {
+            foreach (var glyph in glyphs)
+            {
+                glyph.transform.localPosition = new Vector3(offset, 0, 0);
+                offset += Mathf.RoundToInt(glyph.bounds.size.x) + spacing;
+            }
         }
     }
 
