@@ -22,7 +22,7 @@ public class NavigatableItem : MonoBehaviour
 			if (nav.trigger == action)
 			{
 				nav.navAction?.Invoke();
-				return nav.navTarget;
+				return (nav.navTarget != null ? nav.navTarget : this);
 			}
 		}
 		return this;
