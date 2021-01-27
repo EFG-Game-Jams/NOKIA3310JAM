@@ -5,7 +5,7 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class NokiaTextRenderer : MonoBehaviour
 {
-    [SerializeField] private string initialText = "";
+    public string initialText = "";
     public SpriteFont spriteFont;
     public int spacing = 1;
     public bool monospace = false;
@@ -113,6 +113,35 @@ public class NokiaTextRenderer : MonoBehaviour
         this.text = text;
         RefreshGlyphs();
         UpdateGlyphPositions();
+    }
+
+    private IEnumerator Animate(float interval)
+    {
+        float time = 0;
+        for (int i = 0; i < glyphs.Count; ++i)
+        {
+            glyphs[i].enabled = true;
+            while (time < (i + 1) * interval)
+            {
+                yield return null;
+                time += Time.deltaTime;
+            }
+        }
+    }
+    public IEnumerator AnimateInterval(string text, float interval)
+    {
+        text = text ?? initialText;
+
+        SetText(text);
+        foreach (var glyph in glyphs)
+            glyph.enabled = false;
+
+        return Animate(interval);
+    }
+    public IEnumerator AnimateDuration(string text, float duration)
+    {
+        text = text ?? initialText;
+        return AnimateInterval(text, duration / text.Length);
     }
 
 #if UNITY_EDITOR

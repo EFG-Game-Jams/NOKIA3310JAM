@@ -22,10 +22,8 @@ public class VesselStats : MonoBehaviour
 		statValues = new int[4];
 
 		statRolls = new StatRoll[4];
-		statRolls[0] = null;
-		statRolls[1] = Resources.Load<StatRoll>("StatRollAttack");
-		statRolls[2] = Resources.Load<StatRoll>("StatRollDefense");
-		statRolls[3] = Resources.Load<StatRoll>("StatRollLuck");
+		// fetch rolls from game balance
+		throw new System.NotImplementedException();
 	}
 
 	public int GetRaw(Type type)
