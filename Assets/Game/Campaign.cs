@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class Campaign : MonoBehaviour
 {
-	public GameBalance gameBalance;
+	public int nextEncounter = 0;
 
-	public void SetBalance(string name)
+	[System.NonSerialized] public GameBalance gameBalance;
+
+	public void Begin(string balanceName)
 	{
 		gameBalance = Resources.Load<GameBalance>(name);
 		Debug.Assert(gameBalance != null);

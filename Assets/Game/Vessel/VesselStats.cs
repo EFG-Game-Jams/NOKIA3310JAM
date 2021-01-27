@@ -17,13 +17,18 @@ public class VesselStats : MonoBehaviour
 	[SerializeField] private int[] statValues;
 	private StatRoll[] statRolls;
 
-	private void Awake()
+	private void Start()
 	{
-		statValues = new int[4];
+		// create new stats if needed
+		statValues = statValues ?? new int[4];
 
-		statRolls = new StatRoll[4];
 		// fetch rolls from game balance
-		throw new System.NotImplementedException();
+		GameBalance balance = Game.Instance.campaign.gameBalance;
+		statRolls = new StatRoll[4];
+		statRolls[0] = null;
+		statRolls[1] = balance.statRollAttack;
+		statRolls[1] = balance.statRollDefense;
+		statRolls[1] = balance.statRollLuck;
 	}
 
 	public int GetRaw(Type type)
