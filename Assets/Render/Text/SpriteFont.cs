@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewSpriteFont", menuName = "Game/SpriteFont", order = 1)]
+[CreateAssetMenu(fileName = "NewSpriteFont", menuName = "Game/SpriteFont")]
 public class SpriteFont : ScriptableObject
 {
 	public Sprite[] glyphs;
