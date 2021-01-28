@@ -16,6 +16,26 @@ public class PageInitialStats : PageAutoNavigation
 		UpdateDisplay();
 	}
 
+	public override void OnInput(GameInput.Action action)
+	{
+		base.OnInput(action);
+
+		if (action == GameInput.Action.Confirm)
+		{
+			if (GetRemaining() > 0)
+			{
+				Debug.LogWarning("todo: failure sound");
+				return;
+			}
+			else
+			{
+				Debug.LogWarning("todo: success sound");
+				Game.Instance.campaign.OnInitialStatsComplete();
+				return;
+			}
+		}
+	}
+
 	private int GetRemaining()
 	{
 		Campaign campaign = Game.Instance.campaign;

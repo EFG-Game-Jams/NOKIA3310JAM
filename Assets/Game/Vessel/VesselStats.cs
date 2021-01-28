@@ -39,6 +39,17 @@ public class VesselStats : MonoBehaviour
 		return total;
 	}
 
+	public void SetStats(int[] stats)
+	{
+		if (stats.Length != 4)
+			throw new System.Exception("Malformed stats array");
+
+		for (int i = 0; i < stats.Length; ++i)
+			stats[i] = Mathf.Clamp(stats[i], 0, MaxStatValue);
+
+		statValues = stats;
+	}
+
 	public int GetRaw(Type type)
 	{
 		return statValues[(int)type];

@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 3308769164077628987, guid: 908571e57b198584da5b03f5ebc768e2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.5
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 3308769164077628987, guid: 908571e57b198584da5b03f5ebc768e2,
         type: 3}
@@ -75,7 +75,7 @@ PrefabInstance:
     - target: {fileID: 5355217091163380351, guid: 908571e57b198584da5b03f5ebc768e2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 14.5
+      value: 13.5
       objectReference: {fileID: 0}
     - target: {fileID: 5355217091163380351, guid: 908571e57b198584da5b03f5ebc768e2,
         type: 3}
@@ -122,7 +122,7 @@ PrefabInstance:
     - target: {fileID: 8287289269227053040, guid: 908571e57b198584da5b03f5ebc768e2,
         type: 3}
       propertyPath: m_Name
-      value: EnemyShip0
+      value: EnemyShip0 Variant
       objectReference: {fileID: 0}
     - target: {fileID: 8649989453554723122, guid: 908571e57b198584da5b03f5ebc768e2,
         type: 3}
@@ -148,6 +148,11 @@ PrefabInstance:
     - target: {fileID: 8649989453554723122, guid: 908571e57b198584da5b03f5ebc768e2,
         type: 3}
       propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9058170335051273705, guid: 908571e57b198584da5b03f5ebc768e2,
+        type: 3}
+      propertyPath: m_LocalPosition.x
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9058170335051273705, guid: 908571e57b198584da5b03f5ebc768e2,

@@ -180,9 +180,9 @@ public class NokiaTextRenderer : MonoBehaviour
         if (Application.isPlaying)
             return; // don't execute in play mode
 
+        SnapPosition();
         if (mesh == null || UnityEditor.EditorUtility.IsDirty(GetInstanceID()))
         {
-            SnapPosition();
             SetText("");
             SetText(initialText);
         }

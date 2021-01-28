@@ -8,13 +8,13 @@ public class PageAutoNavigation : Page
 
     private NavigatableItem currentNavItem;
 
-    public override void OnActivate()
+    public override void OnPush()
     {
         SetNavItem(defaultNavItem);
     }
 
     public override void OnInput(GameInput.Action action)
-    {
+    {        
         if (currentNavItem != null)
             SetNavItem(currentNavItem.OnAction(action));
     }

@@ -16,12 +16,22 @@ public class PageManager : MonoBehaviour
 	#region Page management
 
 	// get a page by name
-	public Page GetPageByName(string name)
+	public Page GetPage(string name)
 	{
 		foreach (var page in pages)
 			if (page.gameObject.name == name)
 				return page;
 		throw new System.Exception("Page '" + name + "' not found");
+	}
+
+	// get the first page of a given type, or null
+	public T GetPage<T>()
+		where T : Page
+	{
+		foreach (var page in pages)
+			if (page is T typedPage)
+				return typedPage;
+		return null;
 	}
 
 	// get the currently active page, or null
@@ -36,29 +46,35 @@ public class PageManager : MonoBehaviour
 	public void PushPage(Page page)
 	{
 		pageStack.Add(page);
+		page.OnPush();
 		ActivateTop();
 	}
 	public void PushPage(string name)
 	{
-		PushPage(GetPageByName(name));
+		PushPage(GetPage(name));
 	}
 
 	// pop a page from the stack
-	public void PopPage()
+	public void PopPage(bool noTopActivation = false)
 	{
-		pageStack.RemoveAt(pageStack.Count - 1);
-		ActivateTop();
+		int index = pageStack.Count - 1;
+		pageStack[index].OnPop();
+		pageStack.RemoveAt(index);
+
+		if (!noTopActivation)
+			ActivateTop();
 	}
 
 	// clear the stack and push a page
 	public void SetPage(Page page)
 	{
-		pageStack.Clear();
+		while (pageStack.Count > 0)
+			PopPage(true);
 		PushPage(page);
 	}
 	public void SetPage(string name)
 	{
-		SetPage(GetPageByName(name));
+		SetPage(GetPage(name));
 	}
 
 	#endregion

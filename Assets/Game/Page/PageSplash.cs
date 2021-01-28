@@ -32,7 +32,7 @@ public class PageSplash : PageAutoNavigation
 
 	public void Skip()
 	{
-		Debug.Log("Skip");
+		//Debug.Log("Skip");
 		StopAllCoroutines();
 		pageManager.SetPage("MainMenu");
 	}
