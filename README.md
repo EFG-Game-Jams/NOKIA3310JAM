@@ -69,6 +69,13 @@ Navigation choice -> encounter -> post encounter -> navigation
 - Special ammo
 - Fuel
 
+### Player stats
+
+- Durability (health)
+- Attack
+- Defense
+- Luck
+
 ### Extensions
 
 - Inventory
