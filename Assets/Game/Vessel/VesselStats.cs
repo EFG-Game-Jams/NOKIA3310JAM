@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class VesselStats : MonoBehaviour
 {
-	const int MaxStatValue = 10;
+	public const int MaxStatValue = 10;
 
 	public enum Type
 	{
@@ -29,6 +29,14 @@ public class VesselStats : MonoBehaviour
 		statRolls[1] = balance.statRollAttack;
 		statRolls[1] = balance.statRollDefense;
 		statRolls[1] = balance.statRollLuck;
+	}
+
+	public int GetRawTotal()
+	{
+		int total = 0;
+		foreach (var stat in statValues)
+			total += stat;
+		return total;
 	}
 
 	public int GetRaw(Type type)

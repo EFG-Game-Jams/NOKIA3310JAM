@@ -278,7 +278,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 992219b8b496f344784a3ae96af5aa1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pageManager: {fileID: 0}
+  pageManager: {fileID: 1466054314}
   campaign: {fileID: 0}
 --- !u!4 &1981032175
 Transform:

@@ -6,7 +6,7 @@ public class PageMainMenu : PageAutoNavigation
 {
 	public void OnNewGame()
 	{
-		Debug.Log("New Game");
+		Game.Instance.StartCampaign();
 	}
 	public void OnCredits()
 	{

@@ -7,6 +7,7 @@ public class GameBalance : ScriptableObject
 {
 	[Header("Campaign")]
 	public int encounterCount = 20;
+	public int initialStatPoints = 5;
 
 	[Header("Stat rolls")]
 	public StatRoll statRollAttack;

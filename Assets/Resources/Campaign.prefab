@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dcb0464684d2a54f8ed8e63a4443b53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameBalance: {fileID: 0}
+  playerStats: {fileID: 2718820499554660271}
 --- !u!114 &2718820499554660271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e51bf6f2e11cc06468b8e390e2d7c937, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statValues: 
+  statValues: 00000000000000000000000000000000
 --- !u!114 &1469683681300063448
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b9cf443bbedf5840953f7ab684e68f6, type: 3}
   m_Name: BalanceDefault
   m_EditorClassIdentifier: 
+  encounterCount: 20
+  initialStatPoints: 6
   statRollAttack: {fileID: 11400000, guid: a7bc7611d565ad14d84446fa6ea3e258, type: 2}
   statRollDefense: {fileID: 11400000, guid: f629c97a895e93a459e2fc8b825bec26, type: 2}
   statRollLuck: {fileID: 11400000, guid: 09d968316b4d3174d9502eff144c683f, type: 2}

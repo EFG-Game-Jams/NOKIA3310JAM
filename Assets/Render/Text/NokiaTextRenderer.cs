@@ -168,7 +168,7 @@ public class NokiaTextRenderer : MonoBehaviour
         return AnimateInterval(text, duration / text.Length);
     }
 
-    private void Start()
+    private void Awake()
     {
         GetComponent<MeshRenderer>().sharedMaterial = spriteFont.material;
         SetText(initialText);

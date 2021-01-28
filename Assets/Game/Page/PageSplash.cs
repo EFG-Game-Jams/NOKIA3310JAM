@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PageSplash : Page
+public class PageSplash : PageAutoNavigation
 {
 	public NokiaTextRenderer line1;
 	public NokiaTextRenderer line2;
 		
 	public override void OnActivate()
 	{
+		base.OnActivate();
+
 		line1.gameObject.SetActive(false);
 		line2.gameObject.SetActive(false);
 		StartCoroutine(Run());
@@ -25,6 +27,13 @@ public class PageSplash : Page
 		yield return line2.AnimateInterval(null, .1f);
 
 		yield return new WaitForSeconds(1f);
+		Skip();
+	}
+
+	public void Skip()
+	{
+		Debug.Log("Skip");
+		StopAllCoroutines();
 		pageManager.SetPage("MainMenu");
 	}
 }

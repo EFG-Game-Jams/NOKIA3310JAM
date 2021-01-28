@@ -26,5 +26,7 @@ public class Game : MonoBehaviour
 		Campaign campaignPrefab = Resources.Load<Campaign>("Campaign");
 		campaign = Instantiate(campaignPrefab);
 		campaign.Begin("BalanceDefault");
+
+		pageManager.SetPage("InitialStats");
 	}
 }
