@@ -5,8 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewSpriteFont", menuName = "Game/SpriteFont")]
 public class SpriteFont : ScriptableObject
 {
+	public Material material;
 	public Sprite[] glyphs;
-	
+
 	[System.Serializable]
 	public struct Translation
 	{

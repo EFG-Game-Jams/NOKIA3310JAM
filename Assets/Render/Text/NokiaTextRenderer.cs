@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
+[RequireComponent(typeof(MeshFilter))]
 public class NokiaTextRenderer : MonoBehaviour
 {
     public string initialText = "";
@@ -13,9 +14,6 @@ public class NokiaTextRenderer : MonoBehaviour
     public enum Align { Left, Center, Right };
     public Align align;
 
-    [Tooltip("When enabled, clicking on a glyph will redirect selection to this object")]
-    public bool interceptGlyphSelection = true;
-
     private string text;
     public string Text
     {
@@ -23,43 +21,102 @@ public class NokiaTextRenderer : MonoBehaviour
         set => SetText(value);
     }
 
-    private List<SpriteRenderer> glyphs = new List<SpriteRenderer>();
+    private struct Glyph
+    {
+        public Sprite sprite;
+        public int spriteWidth;
+        public int spriteOffset;
+        public int glyphWidth;
+        public int glyphOffset;
+    }
+    private List<Glyph> glyphs = new List<Glyph>();
 
     private void RefreshGlyphs()
     {
-        while (transform.childCount > 0)
-            DestroyImmediate(transform.GetChild(transform.childCount - 1).gameObject);
-        glyphs.Clear();
+        // fetch glyphs
+        int monoWidth = spriteFont.GetMaxWidth();
+        int monoOffset = monoWidth / 2;
+        int offset = 0;
 
+        glyphs.Clear();
         for (int i = 0; i < text.Length; ++i)
         {
-            GameObject glyphObject = new GameObject("Glyph");
-            glyphObject.transform.parent = transform;
-
-            SpriteRenderer glyph = glyphObject.AddComponent<SpriteRenderer>();
+            Glyph glyph = new Glyph();
             glyph.sprite = spriteFont.GetGlyph(text[i]);
-
+            glyph.spriteWidth = Mathf.RoundToInt(glyph.sprite.rect.width);
+            glyph.spriteOffset = (monospace ? monoOffset - glyph.spriteWidth / 2 : 0);
+            glyph.glyphWidth = (monospace ? monoWidth : glyph.spriteWidth);
+            glyph.glyphOffset = offset;
             glyphs.Add(glyph);
+
+            offset += glyph.glyphWidth + spacing;
+        }
+
+        // apply alignment offset
+        int totalWidth = offset - spacing;
+        int alignOffset = 0;
+        switch (align)
+        {
+            case Align.Right:
+                alignOffset = -totalWidth;
+                break;
+            case Align.Center:
+                alignOffset = -totalWidth / 2;
+                break;
+        }
+        for (int i = 0; i < glyphs.Count; ++i)
+        {
+            Glyph glyph = glyphs[i];
+            glyph.glyphOffset += alignOffset;
+            glyphs[i] = glyph;
         }
     }
-    public int GetWidth()
+    private void RebuildMesh(int maxGlyphs = int.MaxValue)
     {
-        if (glyphs.Count == 0)
-            return 0;
+        maxGlyphs = Mathf.Min(maxGlyphs, glyphs.Count);
 
-        int totalWidth = 0;
-        if (monospace)
+        Mesh mesh = new Mesh();
+        List<Vector3> vertices = new List<Vector3>();
+        List<int> indices = new List<int>();
+        List<Vector2> uvs = new List<Vector2>();
+
+        int startIndex = 0;
+        for (int i = 0; i < maxGlyphs; ++i)
         {
-            totalWidth = glyphs.Count * spriteFont.GetMaxWidth();
-        }
-        else
-        {
-            foreach (var glyph in glyphs)
-                totalWidth += Mathf.RoundToInt(glyph.bounds.size.x);
+            Glyph glyph = glyphs[i];
+
+            Vector3 offset = Vector2.right * glyph.spriteOffset - glyph.sprite.pivot;
+            Vector3 origin = Vector3.right * glyph.glyphOffset + offset;
+            Vector3 right = Vector3.right * glyph.spriteWidth;
+            Vector3 up = Vector3.up * glyph.sprite.rect.height;
+
+            vertices.Add(origin);
+            vertices.Add(origin + up);
+            vertices.Add(origin + right + up);
+            vertices.Add(origin + right);
+
+            Rect uvRect = glyph.sprite.rect;
+            Vector2 scale = new Vector2(1f / glyph.sprite.texture.width, 1f / glyph.sprite.texture.height);
+            uvs.Add(new Vector2(uvRect.xMin, uvRect.yMin) * scale);
+            uvs.Add(new Vector2(uvRect.xMin, uvRect.yMax) * scale);
+            uvs.Add(new Vector2(uvRect.xMax, uvRect.yMax) * scale);
+            uvs.Add(new Vector2(uvRect.xMax, uvRect.yMin) * scale);
+
+            indices.Add(startIndex);
+            indices.Add(startIndex + 1);
+            indices.Add(startIndex + 2);
+            indices.Add(startIndex);
+            indices.Add(startIndex + 2);
+            indices.Add(startIndex + 3);
+            startIndex += 4;
         }
 
-        int totalSpacing = spacing * (glyphs.Count - 1);
-        return totalWidth + totalSpacing;
+        mesh.SetVertices(vertices);
+        mesh.SetUVs(0, uvs);
+        mesh.SetIndices(indices, MeshTopology.Triangles, 0);
+
+        GetComponent<MeshFilter>().sharedMesh = mesh;
+        GetComponent<MeshRenderer>().sharedMaterial = spriteFont.material;
     }
     private void SnapPosition()
     {
@@ -69,41 +126,6 @@ public class NokiaTextRenderer : MonoBehaviour
         pos.y = Mathf.Round(pos.y);
         transform.localPosition = pos;
     }
-    private void UpdateGlyphPositions()
-    {
-        SnapPosition();
-
-        int offset = 0;
-        switch (align)
-        {
-            case Align.Right:
-                offset = -GetWidth();
-                break;
-            case Align.Center:
-                offset = -GetWidth() / 2;
-                break;
-        }
-
-        if (monospace)
-        {
-            int monoWidth = spriteFont.GetMaxWidth();
-            int monoOffset = monoWidth / 2;
-            foreach (var glyph in glyphs)
-            {
-                int width = Mathf.RoundToInt(glyph.bounds.size.x);
-                glyph.transform.localPosition = new Vector3(offset + monoOffset - (width / 2), 0, 0);
-                offset += monoWidth + spacing;
-            }
-        }
-        else
-        {
-            foreach (var glyph in glyphs)
-            {
-                glyph.transform.localPosition = new Vector3(offset, 0, 0);
-                offset += Mathf.RoundToInt(glyph.bounds.size.x) + spacing;
-            }
-        }
-    }
 
     public void SetText(string text)
     {
@@ -112,7 +134,7 @@ public class NokiaTextRenderer : MonoBehaviour
 
         this.text = text;
         RefreshGlyphs();
-        UpdateGlyphPositions();
+        RebuildMesh();
     }
 
     private IEnumerator Animate(float interval)
@@ -120,7 +142,7 @@ public class NokiaTextRenderer : MonoBehaviour
         float time = 0;
         for (int i = 0; i < glyphs.Count; ++i)
         {
-            glyphs[i].enabled = true;
+            RebuildMesh(i + 1);
             while (time < (i + 1) * interval)
             {
                 yield return null;
@@ -133,9 +155,6 @@ public class NokiaTextRenderer : MonoBehaviour
         text = text ?? initialText;
 
         SetText(text);
-        foreach (var glyph in glyphs)
-            glyph.enabled = false;
-
         return Animate(interval);
     }
     public IEnumerator AnimateDuration(string text, float duration)
@@ -147,30 +166,6 @@ public class NokiaTextRenderer : MonoBehaviour
 #if UNITY_EDITOR
     private void Update()
     {
-        if (UnityEditor.Experimental.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage() != null)
-        {
-            // we're in prefab mode, clear glyphs and stop
-            transform.localPosition = Vector3.zero;
-            SetText("");
-            return;
-        }
-        
-        if (interceptGlyphSelection)
-        {
-            Transform selected = UnityEditor.Selection.activeTransform;
-            if (selected != null && selected.parent == transform)
-            {
-                // naughty stuff to collapse this object in the hierarchy window
-                UnityEditor.EditorApplication.ExecuteMenuItem("Window/General/Hierarchy");
-                var hierarchyWindow = UnityEditor.EditorWindow.focusedWindow;
-                var expandMethodInfo = hierarchyWindow.GetType().GetMethod("SetExpandedRecursive");
-                expandMethodInfo.Invoke(hierarchyWindow, new object[] { gameObject.GetInstanceID(), false });
-
-                // redirect selection
-                UnityEditor.Selection.activeTransform = transform;                
-            }
-        }
-        
         if (UnityEditor.EditorUtility.IsDirty(GetInstanceID()))
         {
             SnapPosition();

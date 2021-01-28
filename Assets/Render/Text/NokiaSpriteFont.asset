@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24b751fad52e6c34aa13feb34aa0816c, type: 3}
   m_Name: NokiaSpriteFont
   m_EditorClassIdentifier: 
+  material: {fileID: 2100000, guid: 5e45872d5565c9e4aa608f7c2d918f3b, type: 2}
   glyphs:
   - {fileID: -8566530338036097431, guid: 63d55fd0ac7783646a23eb94186a4093, type: 3}
   - {fileID: -7762945154804749542, guid: 63d55fd0ac7783646a23eb94186a4093, type: 3}
