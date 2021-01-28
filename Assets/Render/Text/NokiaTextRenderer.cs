@@ -2,24 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
+[ExecuteAlways]
 [RequireComponent(typeof(MeshFilter))]
 public class NokiaTextRenderer : MonoBehaviour
 {
+    public enum Align { Left, Center, Right };
+
     public string initialText = "";
     public SpriteFont spriteFont;
     public int spacing = 1;
     public bool monospace = false;
-
-    public enum Align { Left, Center, Right };
     public Align align;
-
-    private string text;
-    public string Text
-    {
-        get => text;
-        set => SetText(value);
-    }
 
     private struct Glyph
     {
@@ -29,7 +22,16 @@ public class NokiaTextRenderer : MonoBehaviour
         public int glyphWidth;
         public int glyphOffset;
     }
+
+    private string text;
     private List<Glyph> glyphs = new List<Glyph>();
+    private Mesh mesh;
+
+    public string Text
+    {
+        get => text;
+        set => SetText(value);
+    }
 
     private void RefreshGlyphs()
     {
@@ -75,7 +77,6 @@ public class NokiaTextRenderer : MonoBehaviour
     {
         maxGlyphs = Mathf.Min(maxGlyphs, glyphs.Count);
 
-        Mesh mesh = new Mesh();
         List<Vector3> vertices = new List<Vector3>();
         List<int> indices = new List<int>();
         List<Vector2> uvs = new List<Vector2>();
@@ -111,12 +112,16 @@ public class NokiaTextRenderer : MonoBehaviour
             startIndex += 4;
         }
 
+        if (mesh == null)
+        {
+            mesh = new Mesh();
+            GetComponent<MeshFilter>().sharedMesh = mesh;
+        }
+
+        mesh.Clear();
         mesh.SetVertices(vertices);
         mesh.SetUVs(0, uvs);
         mesh.SetIndices(indices, MeshTopology.Triangles, 0);
-
-        GetComponent<MeshFilter>().sharedMesh = mesh;
-        GetComponent<MeshRenderer>().sharedMaterial = spriteFont.material;
     }
     private void SnapPosition()
     {
@@ -163,10 +168,19 @@ public class NokiaTextRenderer : MonoBehaviour
         return AnimateInterval(text, duration / text.Length);
     }
 
+    private void Start()
+    {
+        GetComponent<MeshRenderer>().sharedMaterial = spriteFont.material;
+        SetText(initialText);
+    }
+
 #if UNITY_EDITOR
     private void Update()
     {
-        if (UnityEditor.EditorUtility.IsDirty(GetInstanceID()))
+        if (Application.isPlaying)
+            return; // don't execute in play mode
+
+        if (mesh == null || UnityEditor.EditorUtility.IsDirty(GetInstanceID()))
         {
             SnapPosition();
             SetText("");

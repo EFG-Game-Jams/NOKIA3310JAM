@@ -25,6 +25,6 @@ public class PageSplash : Page
 		yield return line2.AnimateInterval(null, .1f);
 
 		yield return new WaitForSeconds(1f);
-		pageManager.SetPage("main_menu");
+		pageManager.SetPage("MainMenu");
 	}
 }

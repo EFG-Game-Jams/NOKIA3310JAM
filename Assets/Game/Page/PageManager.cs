@@ -7,9 +7,9 @@ public class PageManager : MonoBehaviour
 	#region Data
 
 	public string defaultPage;
-	public Page[] pages;
 
 	private List<Page> pageStack = new List<Page>();
+	private Page[] pages;
 
 	#endregion
 
@@ -19,7 +19,7 @@ public class PageManager : MonoBehaviour
 	public Page GetPageByName(string name)
 	{
 		foreach (var page in pages)
-			if (page.pageName == name)
+			if (page.gameObject.name == name)
 				return page;
 		throw new System.Exception("Page '" + name + "' not found");
 	}
@@ -92,10 +92,22 @@ public class PageManager : MonoBehaviour
 
 	#region Unity callbacks
 
+	private void Awake()
+	{
+		// load and instantiate all pages
+		var pagePrefabs = Resources.LoadAll<Page>("Pages");
+		pages = new Page[pagePrefabs.Length];
+		for (int i = 0; i < pages.Length; ++i)
+		{
+			pages[i] = Instantiate(pagePrefabs[i], transform);
+			pages[i].pageManager = this;
+			pages[i].gameObject.name = pagePrefabs[i].gameObject.name;
+		}
+	}
+
 	private void Start()
 	{
-		foreach (var page in pages)
-			page.pageManager = this;
+		// set default page
 		SetPage(defaultPage);
 	}
 
