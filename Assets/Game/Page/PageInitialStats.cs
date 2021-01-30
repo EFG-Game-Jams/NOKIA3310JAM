@@ -55,7 +55,7 @@ public class PageInitialStats : PageAutoNavigation
 		textLuck.Text = stats.GetRaw(VesselStats.Type.Luck).ToString();
 	}
 
-	private void TryInc(VesselStats.Type stat)
+	public void TryInc(VesselStats.Type stat)
 	{
 		Campaign campaign = Game.Instance.campaign;
 		VesselStats stats = campaign.playerStats;
@@ -70,7 +70,7 @@ public class PageInitialStats : PageAutoNavigation
 		UpdateDisplay();
 		Debug.LogWarning("todo: success sound");
 	}
-	private void TryDec(VesselStats.Type stat)
+	public void TryDec(VesselStats.Type stat)
 	{
 		Campaign campaign = Game.Instance.campaign;
 		VesselStats stats = campaign.playerStats;

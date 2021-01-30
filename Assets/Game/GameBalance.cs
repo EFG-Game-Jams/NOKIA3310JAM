@@ -9,9 +9,11 @@ public class GameBalance : ScriptableObject
 	public int encounterCount = 20;
 	public int initialStatPoints = 5;
 
-	[Header("Progression")]
+	[Header("Systems")]
 	public int healthMin = 100;
 	public int healthMax = 400;
+	public int laserDamageMin = 5;
+	public int laserDamageMax = 50;
 
 	[Header("Stat rolls")]
 	public StatRoll statRollAttack;

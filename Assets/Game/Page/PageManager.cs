@@ -43,15 +43,16 @@ public class PageManager : MonoBehaviour
 	}
 
 	// push a page to the stack
-	public void PushPage(Page page)
+	public Page PushPage(Page page)
 	{
 		pageStack.Add(page);
 		page.OnPush();
 		ActivateTop();
+		return page;
 	}
-	public void PushPage(string name)
+	public Page PushPage(string name)
 	{
-		PushPage(GetPage(name));
+		return PushPage(GetPage(name));
 	}
 
 	// pop a page from the stack

@@ -43,6 +43,15 @@ public class Campaign : MonoBehaviour
 
 		//*
 		state = State.InitialStats;
+		int remainingPoints = gameBalance.initialStatPoints;
+		while (remainingPoints > 0)
+		{
+			for (int i = 0; remainingPoints > 0 && i < 4; ++i)
+			{
+				playerStats.SetRaw((VesselStats.Type)i, playerStats.GetRaw((VesselStats.Type)i) + 1);
+				--remainingPoints;
+			}
+		}
 		Game.Instance.pageManager.SetPage("InitialStats");
 		/*/
 		MakeTestEncounter();

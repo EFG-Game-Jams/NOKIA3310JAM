@@ -181,7 +181,7 @@ public class NokiaTextRenderer : MonoBehaviour
             return; // don't execute in play mode
 
         SnapPosition();
-        if (mesh == null || UnityEditor.EditorUtility.IsDirty(GetInstanceID()))
+        if (mesh == null || UnityEditor.EditorUtility.IsDirty(this))
         {
             SetText("");
             SetText(initialText);

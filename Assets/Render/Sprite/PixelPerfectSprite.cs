@@ -23,9 +23,21 @@ public class PixelPerfectSprite : MonoBehaviour
 		return origin;
 	}
 
+	public void SnapSize()
+	{
+		if (spriteRenderer.drawMode == SpriteDrawMode.Sliced)
+		{
+			Vector2 size = spriteRenderer.size;
+			size.x = Mathf.Round(size.x);
+			size.y = Mathf.Round(size.y);
+			spriteRenderer.size = size;
+		}
+	}
+
 	// who needs performance anyway?
 	private void LateUpdate()
 	{
+		SnapSize();
 		SnapPosition();
 	}
 }

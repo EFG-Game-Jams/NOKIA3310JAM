@@ -6,7 +6,7 @@ public class PageAutoNavigation : Page
 {
     public NavigatableItem defaultNavItem;
 
-    private NavigatableItem currentNavItem;
+    protected NavigatableItem currentNavItem;
 
     public override void OnPush()
     {
@@ -19,7 +19,7 @@ public class PageAutoNavigation : Page
             SetNavItem(currentNavItem.OnAction(action));
     }
 
-    private void SetNavItem(NavigatableItem item)
+    protected void SetNavItem(NavigatableItem item)
     {
         if (currentNavItem == item)
             return;

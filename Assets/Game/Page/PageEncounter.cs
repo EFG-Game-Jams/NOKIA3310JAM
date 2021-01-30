@@ -9,8 +9,29 @@ public class PageEncounter : PageAutoNavigation
 	public VesselVisuals playerVisuals;
 	public Transform opponentVisualsRoot;
 
-	private VesselVisuals opponentVisuals;
+	[System.NonSerialized] public VesselVisuals opponentVisuals;
 	private Encounter encounter;
+
+	private NavigatableItem disabledNavItem;
+	public bool IsInputEnabled
+	{
+		get => (disabledNavItem == null);
+		set
+		{
+			if (value == IsInputEnabled)
+				return;
+			if (value)
+			{
+				SetNavItem(disabledNavItem);
+				disabledNavItem = null;
+			}
+			else
+			{
+				disabledNavItem = currentNavItem;
+				SetNavItem(null);
+			}
+		}
+	}
 
 	public override void OnPush()
 	{
@@ -23,4 +44,8 @@ public class PageEncounter : PageAutoNavigation
 		base.OnPop();
 		Destroy(opponentVisuals.gameObject);
 	}
+
+	public void PushPageAttack() => Game.Instance.pageManager.PushPage("AbilitiesAttack");
+	public void PushPageDefend() => Game.Instance.pageManager.PushPage("AbilitiesDefend");
+	public void PushPageUtility() => Game.Instance.pageManager.PushPage("AbilitiesUtility");
 }

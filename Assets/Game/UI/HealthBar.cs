@@ -24,6 +24,23 @@ public class HealthBar : MonoBehaviour
 		bar.transform.localPosition = pos;
 	}
 
+	public IEnumerator AnimateFill(float fill, float duration)
+	{
+		if (fill == this.fill)
+			yield break;
+
+		float initial = this.fill;
+		float target = fill;
+
+		float time = 0;
+		while (time < duration)
+		{
+			yield return null;
+			time += Time.deltaTime;
+			SetFill(Mathf.Lerp(initial, target, time / duration));
+		}
+	}
+
 	private void Update()
 	{
 		SetFill(fill); // update in editor

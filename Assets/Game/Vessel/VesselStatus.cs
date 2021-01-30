@@ -19,9 +19,18 @@ public class VesselStatus : MonoBehaviour
 		this.balance = balance;
 		this.stats = stats;
 
-		health = Mathf.RoundToInt(Mathf.Lerp(balance.healthMin, balance.healthMax, stats.GetDurability()));
+		health = GetMaxHealth();
 		engines = MaxSystemStatus;
 		weapons = MaxSystemStatus;
 		shields = MaxSystemStatus;
+	}
+
+	public float GetHealthPercentage()
+	{
+		return health / (float)GetMaxHealth();
+	}
+	public int GetMaxHealth()
+	{
+		return Mathf.RoundToInt(Mathf.Lerp(balance.healthMin, balance.healthMax, stats.GetDurability()));
 	}
 }
