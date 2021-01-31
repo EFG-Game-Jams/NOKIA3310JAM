@@ -179,10 +179,12 @@ public class VesselEncounter
         {
             yield return new WaitForSeconds(interval);
             vessel.visuals.ShieldVisible = state;
+            Game.Instance.audioManager.Play("shield");
             yield return new WaitForSeconds(.05f);
             vessel.visuals.ShieldVisible = !state;
             interval *= .5f;
         }
+        Game.Instance.audioManager.Play("shield");
         vessel.visuals.ShieldVisible = state;
     }
 
