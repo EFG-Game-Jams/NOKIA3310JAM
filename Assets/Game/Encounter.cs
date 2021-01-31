@@ -54,8 +54,8 @@ public class Encounter : MonoBehaviour
         pageEncounter.healthBarOpponent.SetFill(opponentStatus.GetHealthPercentage());
 
         // setup vessel encounters
-        playerEncounter = new VesselEncounter("player", this, owner.gameBalance, pageEncounter.playerVisuals, owner.playerStats, owner.playerStatus);
-        opponentEncounter = new VesselEncounter("opponent", this, owner.gameBalance, pageEncounter.opponentVisuals, opponentStats, opponentStatus);
+        playerEncounter = new VesselEncounter("player", this, owner.gameBalance, pageEncounter.playerVisuals, owner.playerStats, owner.playerStatus, descriptor.playerModifiers);
+        opponentEncounter = new VesselEncounter("opponent", this, owner.gameBalance, pageEncounter.opponentVisuals, opponentStats, opponentStatus, descriptor.enemyModifiers);
         VesselEncounter.SetOpponents(playerEncounter, opponentEncounter);
 
         // start

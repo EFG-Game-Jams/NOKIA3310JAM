@@ -9,6 +9,7 @@ public class VesselEncounter
 	private string name = "vessel";
 	private Encounter owner;
 	private GameBalance balance;
+	private VesselModifiers modifiers;
 	private VesselVisuals visuals;
 	private VesselEncounter opponent;
 	private bool abilityUsedThisTurn;
@@ -38,11 +39,19 @@ public class VesselEncounter
 	public VesselStatus OpponentStatus => (AbilityScan.IsActive ? opponent.Status : null);
 
 	// construct and configure
-	public VesselEncounter(string name, Encounter owner, GameBalance balance, VesselVisuals visuals, VesselStats stats, VesselStatus status)
+	public VesselEncounter(
+		string name,
+		Encounter owner,
+		GameBalance balance,
+		VesselVisuals visuals,
+		VesselStats stats,
+		VesselStatus status,
+		VesselModifiers modifiers)
 	{
 		this.name = name;
 		this.owner = owner;
 		this.balance = balance;
+		this.modifiers = modifiers;
 		this.visuals = visuals;
 
 		Stats = stats;
@@ -73,14 +82,14 @@ public class VesselEncounter
 			pair.Value.Tick();
 		abilityUsedThisTurn = false;
 	}
-	
+
 	// ability setup
 	private void InitialiseAbilities()
 	{
 		// attack
 		AbilityLaser = new VesselAbilityDelegated(
 			0, 0,
-			() => (Status.weapons > 0),
+			() => (Status.weapons > 0 && modifiers.HasLasers),
 			OnActivateLaser,
 			null,
 			null
@@ -90,7 +99,7 @@ public class VesselEncounter
 		// defense
 		AbilityShields = new VesselAbilityDelegated(
 			2, 1,
-			() => (Status.shields > 0),
+			() => (Status.shields > 0 && modifiers.HasShields),
 			OnActivateShields,
 			() => owner.EnqueueAnimation(AnimateShield(this, false)),
 			null

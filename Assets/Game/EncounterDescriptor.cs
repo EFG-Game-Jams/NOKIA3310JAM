@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewEncounterDescriptor", menuName = "Game/Encounter")]
 public class EncounterDescriptor : ScriptableObject
@@ -23,4 +21,7 @@ public class EncounterDescriptor : ScriptableObject
 
     [Tooltip("Total scaling stat points = statsScaling * totalPlayerStatPoints")]
     public float statsScaling = 1f;
+
+	public VesselModifiers playerModifiers;
+	public VesselModifiers enemyModifiers;
 }
