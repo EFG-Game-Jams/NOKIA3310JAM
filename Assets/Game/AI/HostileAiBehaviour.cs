@@ -38,7 +38,7 @@ public class HostileAiBehaviour : AiBehaviour
         {
             list = list.OrderBy(e => e.score).ToList();
 
-            var index = Mathf.FloorToInt((1f - (Mathf.Sqrt(Random.value))) * list.Count);
+            var index = Mathf.FloorToInt((Mathf.Sqrt(1f - Random.value)) * list.Count);
             if (index > list.Count)
             {
                 index = list.Count - 1;
