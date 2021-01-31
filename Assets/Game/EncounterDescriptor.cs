@@ -24,4 +24,6 @@ public class EncounterDescriptor : ScriptableObject
 
 	public VesselModifiers playerModifiers;
 	public VesselModifiers enemyModifiers;
+
+	public AiBehaviour enemyAiBehaviour;
 }

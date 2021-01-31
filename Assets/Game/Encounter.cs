@@ -23,6 +23,7 @@ public class Encounter : MonoBehaviour
 
     private VesselStats opponentStats;
     private VesselStatus opponentStatus;
+    private AiBehaviour opponentAiBehaviour;
 
     [NonSerialized] public VesselEncounter playerEncounter; // public for UI
     private VesselEncounter opponentEncounter;
@@ -57,6 +58,8 @@ public class Encounter : MonoBehaviour
         playerEncounter = new VesselEncounter("player", this, owner.gameBalance, pageEncounter.playerVisuals, owner.playerStats, owner.playerStatus, descriptor.playerModifiers);
         opponentEncounter = new VesselEncounter("opponent", this, owner.gameBalance, pageEncounter.opponentVisuals, opponentStats, opponentStatus, descriptor.enemyModifiers);
         VesselEncounter.SetOpponents(playerEncounter, opponentEncounter);
+
+        opponentAiBehaviour = Instantiate(descriptor.enemyAiBehaviour);
 
         // start
         BeginPlayerTurn();
@@ -114,8 +117,12 @@ public class Encounter : MonoBehaviour
     {
         BeginTurn(opponentEncounter);
 
-        if (!opponentEncounter.AbilityShields.TryTrigger())
-            opponentEncounter.AbilityLaser.TryTrigger();
+        opponentAiBehaviour.Act(opponentEncounter);
+
+        // Assert the turn is advancing for the AI
+        Debug.Assert(
+            turn == Turn.Player ||
+            (turnState != TurnState.Deciding && turnState != TurnState.NotStarted));
     }
 
     private void EndTurn()

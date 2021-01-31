@@ -14,10 +14,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   category: 0
   visuals: {fileID: 6932504878172931965, guid: 1f68875e306872744befc02cbc75300c, type: 3}
-  statsBase: 00000000000000000000000000000000
+  baseStats:
+    Durability: 0
+    Attack: 0
+    Defense: 0
+    Luck: 0
   statsScalingWeight:
-  - 1
-  - 1
-  - 1
-  - 1
+    Durability: 1
+    Attack: 1
+    Defense: 1
+    Luck: 1
   statsScaling: 1
+  playerModifiers:
+    HasShields: 1
+    HasEngines: 1
+    HasWeapons: 1
+    CanMissle: 1
+    CanBoard: 1
+    CanRepel: 1
+    CanRepair: 1
+    CanScan: 1
+  enemyModifiers:
+    HasShields: 1
+    HasEngines: 1
+    HasWeapons: 1
+    CanMissle: 1
+    CanBoard: 1
+    CanRepel: 1
+    CanRepair: 1
+    CanScan: 1
+  enemyAiBehaviour: {fileID: 410550126043583932, guid: f0f925e9c402de5b18c88fe5f5ce1128,
+    type: 3}
