@@ -24,12 +24,12 @@ public class PageInitialStats : PageAutoNavigation
 		{
 			if (GetRemaining() > 0)
 			{
-				Debug.LogWarning("todo: failure sound");
-				return;
+                Game.Instance.audioManager.Play("failure");
+                return;
 			}
 			else
 			{
-				Debug.LogWarning("todo: success sound");
+                Game.Instance.audioManager.Play("success");
 				Game.Instance.campaign.OnInitialStatsComplete();
 				return;
 			}
@@ -61,32 +61,32 @@ public class PageInitialStats : PageAutoNavigation
 		VesselStats stats = campaign.playerStats;
 
 		if (GetRemaining() <= 0 || stats.GetRaw(stat) >= VesselStats.MaxStatValue)
-		{
-			Debug.LogWarning("todo: failure sound");
-			return;
+        {
+            Game.Instance.audioManager.Play("failure");
+            return;
 		}
 
 		stats.SetRaw(stat, stats.GetRaw(stat) + 1);
 		UpdateDisplay();
-		Debug.LogWarning("todo: success sound");
-	}
-	public void TryDec(VesselStats.Type stat)
+        Game.Instance.audioManager.Play("success");
+    }
+    public void TryDec(VesselStats.Type stat)
 	{
 		Campaign campaign = Game.Instance.campaign;
 		VesselStats stats = campaign.playerStats;
 
 		if (stats.GetRaw(stat) <= 0)
 		{
-			Debug.LogWarning("todo: failure sound");
-			return;
+            Game.Instance.audioManager.Play("failure");
+            return;
 		}
 
 		stats.SetRaw(stat, stats.GetRaw(stat) - 1);
 		UpdateDisplay();
-		Debug.LogWarning("todo: success sound");
-	}
+        Game.Instance.audioManager.Play("success");
+    }
 
-	public void TryIncDurability() => TryInc(VesselStats.Type.Durability);
+    public void TryIncDurability() => TryInc(VesselStats.Type.Durability);
 	public void TryDecDurability() => TryDec(VesselStats.Type.Durability);
 	public void TryIncAttack() => TryInc(VesselStats.Type.Attack);
 	public void TryDecAttack() => TryDec(VesselStats.Type.Attack);

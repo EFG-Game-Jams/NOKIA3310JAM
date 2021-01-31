@@ -6,11 +6,13 @@ public class PageMainMenu : PageAutoNavigation
 {
 	public void OnNewGame()
 	{
-		Game.Instance.StartCampaign();
+        Game.Instance.audioManager.Play("success");
+        Game.Instance.StartCampaign();
 	}
 	public void OnCredits()
 	{
-		Debug.Log("Credits");
+        Game.Instance.audioManager.Play("success");
+        Debug.Log("Credits");
 	}
 	public void OnQuit()
 	{
