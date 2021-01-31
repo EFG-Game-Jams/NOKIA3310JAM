@@ -89,7 +89,7 @@ public class VesselEncounter
 		// attack
 		AbilityLaser = new VesselAbilityDelegated(
 			0, 0,
-			() => (Status.weapons > 0 && modifiers.HasLasers),
+			() => (Status.weapons > 0 && modifiers.HasWeapons),
 			OnActivateLaser,
 			null,
 			null

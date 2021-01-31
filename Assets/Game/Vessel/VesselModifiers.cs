@@ -3,23 +3,30 @@ using UnityEngine;
 [System.Serializable]
 public class VesselModifiers
 {
-	[Header("Subsystems")]
+    [Header("Subsystems")]
     [SerializeField]
     public bool HasShields = true;
-
-    [SerializeField]
-    public bool HasWeapons = true;
 
     [SerializeField]
     public bool HasEngines = true;
 
     [SerializeField]
-    public bool HasLasers = true;
+    public bool HasWeapons = true;
 
-	[Header("Abilities")]
+    [Header("Abilities")]
     [SerializeField]
-    public bool HasMissles = true;
+    public bool CanMissle = true;
 
     [SerializeField]
-    public bool HasScan = true;
+    public bool CanBoard = true;
+
+    [SerializeField]
+    public bool CanRepel = true;
+
+    [SerializeField]
+    public bool CanScan = true;
+
+    [Header("Constraints")]
+    [SerializeField]
+    public bool Boardable = true;
 }
