@@ -5,184 +5,180 @@ using UnityEngine;
 
 public class Encounter : MonoBehaviour
 {
-	private enum Turn
-	{
-		Player,
-		Opponent,
-	}
-	private enum TurnState
-	{
-		NotStarted,
-		Deciding,
-		Animating,
-		Ending,
-	}
+    private enum Turn
+    {
+        Player,
+        Opponent,
+    }
+    private enum TurnState
+    {
+        NotStarted,
+        Deciding,
+        Animating,
+        Ending,
+    }
 
-	public Campaign owner;
-	public EncounterDescriptor descriptor;
+    public Campaign owner;
+    public EncounterDescriptor descriptor;
 
-	private VesselStats opponentStats;
-	private VesselStatus opponentStatus;
+    private VesselStats opponentStats;
+    private VesselStatus opponentStatus;
 
-	[NonSerialized] public VesselEncounter playerEncounter; // public for UI
-	private VesselEncounter opponentEncounter;
+    [NonSerialized] public VesselEncounter playerEncounter; // public for UI
+    private VesselEncounter opponentEncounter;
 
-	private PageEncounter pageEncounter;
+    private PageEncounter pageEncounter;
 
-	private Turn turn;
-	private TurnState turnState;
-	private List<IEnumerator> pendingCoroutines = new List<IEnumerator>();
+    private Turn turn;
+    private TurnState turnState;
+    private List<IEnumerator> pendingCoroutines = new List<IEnumerator>();
 
-	public void BeginEncounter(Campaign owner, EncounterDescriptor descriptor)
-	{
-		this.owner = owner;
-		this.descriptor = descriptor;
+    public void BeginEncounter(Campaign owner, EncounterDescriptor descriptor)
+    {
+        this.owner = owner;
+        this.descriptor = descriptor;
 
-		// setup opponent
-		opponentStats = gameObject.AddComponent<VesselStats>();
-		InitialiseOpponentStats();
-		opponentStatus = gameObject.AddComponent<VesselStatus>();
-		InitialiseOpponentStatus();
+        // setup opponent
+        opponentStats = gameObject.AddComponent<VesselStats>();
+        InitialiseOpponentStats();
+        opponentStatus = gameObject.AddComponent<VesselStatus>();
+        InitialiseOpponentStatus();
 
-		// activate page
-		pageEncounter = (PageEncounter)Game.Instance.pageManager.PushPage("Encounter");
-		// disable input
-		pageEncounter.IsInputEnabled = false;
+        // activate page
+        pageEncounter = (PageEncounter)Game.Instance.pageManager.PushPage("Encounter");
+        // disable input
+        pageEncounter.IsInputEnabled = false;
 
-		// initialise health bars
-		pageEncounter.healthBarPlayer.SetFill(owner.playerStatus.GetHealthPercentage());
-		pageEncounter.healthBarOpponent.SetFill(opponentStatus.GetHealthPercentage());
+        // initialise health bars
+        pageEncounter.healthBarPlayer.SetFill(owner.playerStatus.GetHealthPercentage());
+        pageEncounter.healthBarOpponent.SetFill(opponentStatus.GetHealthPercentage());
 
-		// setup vessel encounters
-		playerEncounter = new VesselEncounter("player", this, owner.gameBalance, pageEncounter.playerVisuals, owner.playerStats, owner.playerStatus);
-		opponentEncounter = new VesselEncounter("opponent", this, owner.gameBalance, pageEncounter.opponentVisuals, opponentStats, opponentStatus);
-		VesselEncounter.SetOpponents(playerEncounter, opponentEncounter);
+        // setup vessel encounters
+        playerEncounter = new VesselEncounter("player", this, owner.gameBalance, pageEncounter.playerVisuals, owner.playerStats, owner.playerStatus);
+        opponentEncounter = new VesselEncounter("opponent", this, owner.gameBalance, pageEncounter.opponentVisuals, opponentStats, opponentStatus);
+        VesselEncounter.SetOpponents(playerEncounter, opponentEncounter);
 
-		// start
-		BeginPlayerTurn();
-	}
+        // start
+        BeginPlayerTurn();
+    }
 
-	public void EnqueueAnimation(IEnumerator animation)
-	{
-		pendingCoroutines.Add(animation);
-	}
-	public void OnVesselEndTurn(VesselEncounter vessel)
-	{
-		Debug.Assert(turnState == TurnState.Deciding);
-		
-		// disable input
-		pageEncounter.IsInputEnabled = false;
+    public void EnqueueAnimation(IEnumerator animation)
+    {
+        pendingCoroutines.Add(animation);
+    }
+    public void OnVesselEndTurn(VesselEncounter vessel)
+    {
+        Debug.Assert(turnState == TurnState.Deciding);
 
-		// enqueue health bar animations
-		EnqueueAnimation(CoroutineComposer.MakeParallel(
-			this,
-			pageEncounter.healthBarPlayer.AnimateFill(owner.playerStatus.GetHealthPercentage(), 1),
-			pageEncounter.healthBarOpponent.AnimateFill(opponentStatus.GetHealthPercentage(), 1)
-		));
+        // disable input
+        pageEncounter.IsInputEnabled = false;
 
-		// enqueue end of turn
-		pendingCoroutines.Add(CoroutineComposer.MakeAction(OnFinishAnimating));
+        // enqueue health bar animations
+        EnqueueAnimation(CoroutineComposer.MakeParallel(
+            this,
+            pageEncounter.healthBarPlayer.AnimateFill(owner.playerStatus.GetHealthPercentage(), 1),
+            pageEncounter.healthBarOpponent.AnimateFill(opponentStatus.GetHealthPercentage(), 1)
+        ));
 
-		// run coroutines
-		turnState = TurnState.Animating;
-		StartCoroutine(CoroutineComposer.MakeSequence(pendingCoroutines.ToArray()));
-	}
+        // enqueue end of turn
+        pendingCoroutines.Add(CoroutineComposer.MakeAction(OnFinishAnimating));
 
-	private void OnFinishAnimating()
-	{
-		Debug.Log("Encounter.OnFinishAnimating");
-		Debug.Assert(turnState == TurnState.Animating);
+        // run coroutines
+        turnState = TurnState.Animating;
+        StartCoroutine(CoroutineComposer.MakeSequence(pendingCoroutines.ToArray()));
+    }
 
-		turnState = TurnState.Ending;
-		EndTurn();
-	}
+    private void OnFinishAnimating()
+    {
+        Debug.Log("Encounter.OnFinishAnimating");
+        Debug.Assert(turnState == TurnState.Animating);
 
-	private void BeginTurn(VesselEncounter vessel)
-	{
-		Debug.Assert(turnState == TurnState.NotStarted);
-		vessel.BeginTurn();
-		turnState = TurnState.Deciding;
-	}
-	private void BeginPlayerTurn()
-	{
-		BeginTurn(playerEncounter);
+        turnState = TurnState.Ending;
+        EndTurn();
+    }
 
-		// enable input
-		pageEncounter.IsInputEnabled = true;
-	}
-	private void BeginOpponentTurn()
-	{
-		BeginTurn(opponentEncounter);
-		
-		if (!opponentEncounter.AbilityShields.TryTrigger())
-			opponentEncounter.AbilityLaser.TryTrigger();
-	}
+    private void BeginTurn(VesselEncounter vessel)
+    {
+        Debug.Assert(turnState == TurnState.NotStarted);
+        vessel.BeginTurn();
+        turnState = TurnState.Deciding;
+    }
+    private void BeginPlayerTurn()
+    {
+        BeginTurn(playerEncounter);
 
-	private void EndTurn()
-	{
-		Debug.Assert(turnState == TurnState.Ending);
-		
-		// todo: end conditions
-		if (playerEncounter.Status.health <= 0)
-			throw new NotImplementedException("Player death");
-		else if (opponentEncounter.Status.health <= 0)
-			throw new NotImplementedException("Opponent death");
+        // enable input
+        pageEncounter.IsInputEnabled = true;
+    }
+    private void BeginOpponentTurn()
+    {
+        BeginTurn(opponentEncounter);
 
-		// begin next turn
-		turnState = TurnState.NotStarted;
-		if (turn == Turn.Player)
-		{
-			turn = Turn.Opponent;
-			BeginOpponentTurn();
-		}
-		else if (turn == Turn.Opponent)
-		{
-			turn = Turn.Player;
-			BeginPlayerTurn();
-		}
-		else
-		{
-			throw new NotImplementedException();
-		}
-	}
-	
-	private void OnDestroy()
-	{
-		Destroy(opponentStats);
-		Destroy(opponentStatus);
+        if (!opponentEncounter.AbilityShields.TryTrigger())
+            opponentEncounter.AbilityLaser.TryTrigger();
+    }
 
-		playerEncounter = null;
-		opponentEncounter = null;
-	}
-	
-	private void InitialiseOpponentStats()
-	{
-		// don't modify asset's stats array
-		int[] stats = (int[])descriptor.statsBase.Clone();
-		Debug.Assert(stats.Length == 4);
+    private void EndTurn()
+    {
+        Debug.Assert(turnState == TurnState.Ending);
 
-		// we won't be changing the weights though
-		float[] weights = descriptor.statsScalingWeight;
-		Debug.Assert(stats.Length == 4);
-		float totalWeight = 0;
-		foreach (var weight in weights)
-			totalWeight += weight;
+        // todo: end conditions
+        if (playerEncounter.Status.health <= 0)
+            throw new NotImplementedException("Player death");
+        else if (opponentEncounter.Status.health <= 0)
+            throw new NotImplementedException("Opponent death");
 
-		// distribute scaling points
-		float weightToPoints = owner.playerStats.GetRawTotal() * descriptor.statsScaling / totalWeight;
-		for (int i = 0; i < stats.Length; ++i)
-			stats[i] += Mathf.FloorToInt(weights[i] * weightToPoints);
+        // begin next turn
+        turnState = TurnState.NotStarted;
+        if (turn == Turn.Player)
+        {
+            turn = Turn.Opponent;
+            BeginOpponentTurn();
+        }
+        else if (turn == Turn.Opponent)
+        {
+            turn = Turn.Player;
+            BeginPlayerTurn();
+        }
+        else
+        {
+            throw new NotImplementedException();
+        }
+    }
 
-		// apply
-		opponentStats.SetStats(stats);
-	}
+    private void OnDestroy()
+    {
+        Destroy(opponentStats);
+        Destroy(opponentStatus);
 
-	private void InitialiseOpponentStatus()
-	{
-		// initialise full first
-		opponentStatus.InitialiseFull(owner.gameBalance, opponentStats);
+        playerEncounter = null;
+        opponentEncounter = null;
+    }
 
-		// then apply modifiers
-		// todo: encounter modifiers
-	}
+    private void InitialiseOpponentStats()
+    {
+        // don't modify asset's stats array
+        var stats = descriptor.baseStats.Clone();
+
+        // we won't be changing the weights though
+        var weights = descriptor.statsScalingWeight.Clone();
+        float totalWeight = weights.GetSumOfWeights();
+
+        // distribute scaling points
+        float weightToPoints = owner.playerStats.GetRawTotal() * descriptor.statsScaling / totalWeight;
+        weights.MultiplyBy(weightToPoints);
+        stats.AddWeights(weights);
+
+        // apply
+        opponentStats.SetStats(stats);
+    }
+
+    private void InitialiseOpponentStatus()
+    {
+        // initialise full first
+        opponentStatus.InitialiseFull(owner.gameBalance, opponentStats);
+
+        // then apply modifiers
+        // todo: encounter modifiers
+    }
 }

@@ -1,77 +1,74 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Campaign : MonoBehaviour
 {
-	public enum State
-	{
-		None,
-		Introduction,
-		InitialStats,
-		PreEncounter,
-		Encounter,
-		PostEncounter,
-	}
+    public enum State
+    {
+        None,
+        Introduction,
+        InitialStats,
+        PreEncounter,
+        Encounter,
+        PostEncounter,
+    }
 
-	[System.NonSerialized] public GameBalance gameBalance;
-	[System.NonSerialized] public VesselStats playerStats;
-	[System.NonSerialized] public VesselStatus playerStatus;
-	[System.NonSerialized] public Encounter encounter;
+    [System.NonSerialized] public GameBalance gameBalance;
+    [System.NonSerialized] public VesselStats playerStats;
+    [System.NonSerialized] public VesselStatus playerStatus;
+    [System.NonSerialized] public Encounter encounter;
 
-	private State state;
-	private int nextEncounter;
-	private int encounterCount;
+    private State state;
+    private int nextEncounter;
+    private int encounterCount;
 
-	public void BeginCampaign(string balanceName)
-	{
-		gameBalance = Resources.Load<GameBalance>(balanceName);
-		Debug.Assert(gameBalance != null);
+    public void BeginCampaign(string balanceName)
+    {
+        gameBalance = Resources.Load<GameBalance>(balanceName);
+        Debug.Assert(gameBalance != null);
 
-		playerStats = gameObject.AddComponent<VesselStats>();
-		playerStats.SetStats(new int[4]);
+        playerStats = gameObject.AddComponent<VesselStats>();
+        playerStats.SetStats(new VesselStatValues());
 
-		playerStatus = gameObject.AddComponent<VesselStatus>();
-		//playerStatus.InitialiseFull(gameBalance, playerStats);
+        playerStatus = gameObject.AddComponent<VesselStatus>();
+        //playerStatus.InitialiseFull(gameBalance, playerStats);
 
-		encounter = null;
+        encounter = null;
 
-		state = State.None;
-		nextEncounter = 0;
-		encounterCount = gameBalance.encounterCount;
+        state = State.None;
+        nextEncounter = 0;
+        encounterCount = gameBalance.encounterCount;
 
-		//*
-		state = State.InitialStats;
-		int remainingPoints = gameBalance.initialStatPoints;
-		while (remainingPoints > 0)
-		{
-			for (int i = 0; remainingPoints > 0 && i < 4; ++i)
-			{
-				playerStats.SetRaw((VesselStats.Type)i, playerStats.GetRaw((VesselStats.Type)i) + 1);
-				--remainingPoints;
-			}
-		}
-		Game.Instance.pageManager.SetPage("InitialStats");
-		/*/
-		MakeTestEncounter();
-		//*/
-	}
+        //*
+        state = State.InitialStats;
+        int remainingPoints = gameBalance.initialStatPoints;
+        while (remainingPoints > 0)
+        {
+            for (int i = 0; remainingPoints > 0 && i < 4; ++i)
+            {
+                playerStats.SetRaw((VesselStats.Type)i, playerStats.GetRaw((VesselStats.Type)i) + 1);
+                --remainingPoints;
+            }
+        }
+        Game.Instance.pageManager.SetPage("InitialStats");
+        /*/
+        MakeTestEncounter();
+        //*/
+    }
 
-	public void OnInitialStatsComplete()
-	{
-		Debug.Assert(state == State.InitialStats);
+    public void OnInitialStatsComplete()
+    {
+        Debug.Assert(state == State.InitialStats);
 
-		playerStatus.InitialiseFull(gameBalance, playerStats);
+        playerStatus.InitialiseFull(gameBalance, playerStats);
 
-		MakeTestEncounter();
-	}
+        MakeTestEncounter();
+    }
 
-	private void MakeTestEncounter()
-	{
-		state = State.Encounter;
-		var encounterObject = new GameObject("Encounter");
-		encounter = encounterObject.AddComponent<Encounter>();
-		encounter.BeginEncounter(this, Resources.Load<EncounterDescriptor>("Encounters/TestHostile"));
-	}
+    private void MakeTestEncounter()
+    {
+        state = State.Encounter;
+        var encounterObject = new GameObject("Encounter");
+        encounter = encounterObject.AddComponent<Encounter>();
+        encounter.BeginEncounter(this, Resources.Load<EncounterDescriptor>("Encounters/TestHostile"));
+    }
 }
