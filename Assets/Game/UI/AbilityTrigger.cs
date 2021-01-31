@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class AbilityTrigger : NavigatableItemAuto
 {
@@ -18,6 +16,7 @@ public class AbilityTrigger : NavigatableItemAuto
     private void OnConfirm()
     {
         var encounter = Game.Instance.campaign.encounter.playerEncounter;
+        // TODO Use enum instead of string here
         VesselAbility ability = encounter.GetAbility(abilityName);
 
         if (ability.TryTrigger())
