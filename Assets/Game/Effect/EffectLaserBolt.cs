@@ -27,6 +27,7 @@ public class EffectLaserBolt : Effect
         sparksOrigin = target;
 
         bolt = Instantiate(boltSprite, transform);
+        Game.Instance.audioManager.Play("laser");
         return this;
     }
 

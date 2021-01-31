@@ -16,7 +16,8 @@ public class Game : MonoBehaviour
 	}
 
 	public PageManager pageManager;
-	[System.NonSerialized] public Campaign campaign;
+	public AudioManager audioManager;
+    [System.NonSerialized] public Campaign campaign;
 	[System.NonSerialized] public EffectCache effects;
 	
 	public void StartCampaign()
