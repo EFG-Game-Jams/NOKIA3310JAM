@@ -16,7 +16,7 @@ public class HealthBar : MonoBehaviour
 	public void SetFill(float fill)
 	{
 		this.fill = fill;
-		int width = Mathf.RoundToInt((barEnd - barStart) * fill);
+		int width = Mathf.CeilToInt((barEnd - barStart) * fill);
 
 		bar.transform.localScale = new Vector3(width, 1, 1);
 		Vector3 pos = bar.transform.localPosition;
