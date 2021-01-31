@@ -117,7 +117,11 @@ public class VesselEncounter
 	// ability callbacks
 	private void OnActivateLaser()
 	{
-		int damage = GetSystemDependentRollEffect(Stats.RollAttack(), Status.weapons, balance.laserDamageMin, balance.laserDamageMax);
+        Vector3 laserEmit = visuals.laserEmit.position;
+        Vector3 laserReceive = (opponent.AbilityShields.IsActive ? opponent.visuals.laserReceiveShield : opponent.visuals.laserReceiveHull).position;
+        owner.EnqueueAnimation(Game.Instance.effects.Create<EffectLaser>("Laser").Setup(laserEmit, laserReceive).Run());
+
+        int damage = GetSystemDependentRollEffect(Stats.RollAttack(), Status.weapons, balance.laserDamageMin, balance.laserDamageMax);
 		Debug.LogFormat("{0} firing laser with {1} damage", name, damage);
 
 		if (opponent.AbilityShields.IsActive)

@@ -9,7 +9,8 @@ public class VesselVisuals : MonoBehaviour
 	public SpriteRenderer engineTrail;
 
 	public Transform laserEmit;
-	public Transform laserReceive;
+	public Transform laserReceiveHull;
+	public Transform laserReceiveShield;
 
 	public bool HullVisible { get => hull.enabled; set => hull.enabled = value; }
 	public bool ShieldVisible { get => shield.enabled; set => shield.enabled = value; }

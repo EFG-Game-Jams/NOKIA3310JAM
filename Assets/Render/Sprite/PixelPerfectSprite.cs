@@ -8,14 +8,19 @@ public class PixelPerfectSprite : MonoBehaviour
 {
 	private SpriteRenderer spriteRenderer;
 
-	private void Awake()
+	public int Width => Mathf.RoundToInt(GetRenderer().sprite.rect.width);
+	public int Height => Mathf.RoundToInt(GetRenderer().sprite.rect.height);
+
+	private SpriteRenderer GetRenderer()
 	{
-		spriteRenderer = GetComponent<SpriteRenderer>();
+		if (spriteRenderer == null)
+			spriteRenderer = GetComponent<SpriteRenderer>();
+		return spriteRenderer;
 	}
 
 	public Vector2 SnapPosition()
 	{
-		Vector3 halfSize = spriteRenderer.bounds.size * .5f;
+		Vector3 halfSize = GetRenderer().bounds.size * .5f;
 		Vector3 origin = transform.localPosition - halfSize;
 		origin.x = Mathf.Round(origin.x);
 		origin.y = Mathf.Round(origin.y);
@@ -25,7 +30,7 @@ public class PixelPerfectSprite : MonoBehaviour
 
 	public void SnapSize()
 	{
-		if (spriteRenderer.drawMode == SpriteDrawMode.Sliced)
+		if (GetRenderer().drawMode == SpriteDrawMode.Sliced)
 		{
 			Vector2 size = spriteRenderer.size;
 			size.x = Mathf.Round(size.x);

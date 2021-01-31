@@ -279,7 +279,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pageManager: {fileID: 1466054314}
-  campaign: {fileID: 0}
 --- !u!4 &1981032175
 Transform:
   m_ObjectHideFlags: 0

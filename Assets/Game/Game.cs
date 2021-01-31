@@ -16,8 +16,9 @@ public class Game : MonoBehaviour
 	}
 
 	public PageManager pageManager;
-	public Campaign campaign;
-
+	[System.NonSerialized] public Campaign campaign;
+	[System.NonSerialized] public EffectCache effects;
+	
 	public void StartCampaign()
 	{
 		if (campaign != null)
@@ -27,5 +28,11 @@ public class Game : MonoBehaviour
 		campaign = Instantiate(campaignPrefab);
 		campaign.name = "Campaign";
 		campaign.BeginCampaign("BalanceDefault");
+	}
+
+	private void Awake()
+	{
+		var effectsObj = new GameObject("Effects");
+		effects = effectsObj.AddComponent<EffectCache>();
 	}
 }
