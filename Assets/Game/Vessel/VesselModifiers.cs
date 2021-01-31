@@ -24,5 +24,8 @@ public class VesselModifiers
     public bool CanRepel = true;
 
     [SerializeField]
+    public bool CanRepair = true;
+
+    [SerializeField]
     public bool CanScan = true;
 }
