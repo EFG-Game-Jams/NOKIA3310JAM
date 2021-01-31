@@ -25,8 +25,4 @@ public class VesselModifiers
 
     [SerializeField]
     public bool CanScan = true;
-
-    [Header("Constraints")]
-    [SerializeField]
-    public bool Boardable = true;
 }
