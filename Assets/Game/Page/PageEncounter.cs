@@ -12,24 +12,17 @@ public class PageEncounter : PageAutoNavigation
 	[System.NonSerialized] public VesselVisuals opponentVisuals;
 	private Encounter encounter;
 
-	private NavigatableItem disabledNavItem;
 	public bool IsInputEnabled
 	{
-		get => (disabledNavItem == null);
+		get => (currentNavItem != null);
 		set
 		{
 			if (value == IsInputEnabled)
 				return;
 			if (value)
-			{
-				SetNavItem(disabledNavItem);
-				disabledNavItem = null;
-			}
+				SetNavItem(defaultNavItem);
 			else
-			{
-				disabledNavItem = currentNavItem;
 				SetNavItem(null);
-			}
 		}
 	}
 

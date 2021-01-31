@@ -16,6 +16,7 @@ public class Campaign : MonoBehaviour
     [System.NonSerialized] public VesselStats playerStats;
     [System.NonSerialized] public VesselStatus playerStatus;
     [System.NonSerialized] public Encounter encounter;
+    private EncounterDescriptor nextEncounterDescriptor;
 
     private State state;
     private int nextEncounter;
@@ -38,7 +39,6 @@ public class Campaign : MonoBehaviour
         nextEncounter = 0;
         encounterCount = gameBalance.encounterCount;
 
-        //*
         state = State.InitialStats;
         int remainingPoints = gameBalance.initialStatPoints;
         while (remainingPoints > 0)
@@ -50,9 +50,6 @@ public class Campaign : MonoBehaviour
             }
         }
         Game.Instance.pageManager.SetPage("InitialStats");
-        /*/
-        MakeTestEncounter();
-        //*/
     }
 
     public void OnInitialStatsComplete()
@@ -61,7 +58,60 @@ public class Campaign : MonoBehaviour
 
         playerStatus.InitialiseFull(gameBalance, playerStats);
 
-        MakeTestEncounter();
+        NextEncounter();
+    }
+
+    private void NextEncounter()
+    {
+        if (nextEncounter < encounterCount)
+        {
+            state = State.PreEncounter;
+            SelectNextEncounterDescriptor();
+            ++nextEncounter;
+
+            Game.Instance.pageManager.PushPage("PreEncounter");
+        }
+        else
+        {
+            throw new System.Exception("You win, but that's not implemented!");
+        }
+    }
+    private void SelectNextEncounterDescriptor()
+    {
+        nextEncounterDescriptor = Resources.Load<EncounterDescriptor>("Encounters/TestHostile");
+    }
+
+    private void BeginEncounter()
+    {
+        Debug.Assert(state == State.PreEncounter);
+        state = State.Encounter;
+
+        var encounterObject = new GameObject("Encounter");
+        encounter = encounterObject.AddComponent<Encounter>();
+        encounter.BeginEncounter(this, nextEncounterDescriptor);
+    }
+
+    public void OnPreEncounterComplete()
+    {
+        Debug.Assert(state == State.PreEncounter);
+        BeginEncounter();
+    }
+    public void OnEncounterComplete()
+    {
+        if (encounter != null)
+            Destroy(encounter.gameObject);
+
+        if (playerStatus.health <= 0)
+            throw new System.Exception("You lost, but that isn't implemented");
+
+        Debug.Assert(state == State.Encounter);
+        state = State.PostEncounter;
+        Game.Instance.pageManager.PushPage("PostEncounter");
+    }
+    public void OnPostEncounterComplete()
+    {
+        Debug.Assert(state == State.PostEncounter);
+        NextEncounter();
     }
 
     private void MakeTestEncounter()

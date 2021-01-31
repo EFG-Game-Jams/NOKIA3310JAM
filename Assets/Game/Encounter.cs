@@ -131,9 +131,9 @@ public class Encounter : MonoBehaviour
 
         // todo: end conditions
         if (playerEncounter.Status.health <= 0)
-            throw new NotImplementedException("Player death");
+            owner.OnEncounterComplete();// throw new NotImplementedException("Player death");
         else if (opponentEncounter.Status.health <= 0)
-            throw new NotImplementedException("Opponent death");
+            owner.OnEncounterComplete();// throw new NotImplementedException("Opponent death");
 
         // begin next turn
         turnState = TurnState.NotStarted;
