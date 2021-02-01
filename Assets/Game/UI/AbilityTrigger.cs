@@ -26,7 +26,7 @@ public class AbilityTrigger : NavigatableItemAuto
 
     protected override void ConfigureNavigation(List<Navigation> navigation)
     {
-        base.ConfigureNavigation(navigation);        
+        base.ConfigureNavigation(navigation);
         navigation.Add(new Navigation { trigger = GameInput.Action.Left, navAction = MakeEvent(OnCancel) });
         navigation.Add(new Navigation { trigger = GameInput.Action.Right, navAction = MakeEvent(OnShowDescription) });
     }

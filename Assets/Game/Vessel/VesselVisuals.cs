@@ -12,6 +12,9 @@ public class VesselVisuals : MonoBehaviour
 
     public Transform torpedoEmit;
 
+	public Transform boardingEmit;
+	public Transform boardingReceive;
+
     public bool HullVisible { get => hull.enabled; set => hull.enabled = value; }
     public bool ShieldVisible { get => shield.enabled; set => shield.enabled = value; }
     public bool TrailVisible { get => engineTrail.enabled; set => engineTrail.enabled = value; }
