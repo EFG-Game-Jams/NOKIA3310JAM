@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Events;
 
 public class AbilityTrigger : NavigatableItemAuto
 {
@@ -9,8 +11,34 @@ public class AbilityTrigger : NavigatableItemAuto
 
     private void Awake()
     {
+        triggerPrevious = GameInput.Action.Up;
+        triggerNext = GameInput.Action.Down;
         onConfirm.AddListener(OnConfirm);
         onCancel.AddListener(OnCancel);
+    }
+
+    private UnityEvent MakeEvent(UnityAction target)
+    {
+        UnityEvent e = new UnityEvent();
+        e.AddListener(target);
+        return e;
+    }
+
+    protected override void ConfigureNavigation(List<Navigation> navigation)
+    {
+        base.ConfigureNavigation(navigation);        
+        navigation.Add(new Navigation { trigger = GameInput.Action.Left, navAction = MakeEvent(OnCancel) });
+        navigation.Add(new Navigation { trigger = GameInput.Action.Right, navAction = MakeEvent(OnShowDescription) });
+    }
+
+    private void OnShowDescription()
+    {
+        var encounter = Game.Instance.campaign.encounter.playerEncounter;
+        // TODO Use enum instead of string here
+        VesselAbility ability = encounter.GetAbility(abilityName);
+
+        PageAbilityDescription page = Game.Instance.pageManager.GetPage<PageAbilityDescription>();
+        page.Display(ability);
     }
 
     private void OnConfirm()

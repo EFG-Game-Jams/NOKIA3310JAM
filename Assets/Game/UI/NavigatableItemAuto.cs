@@ -11,15 +11,20 @@ public class NavigatableItemAuto : NavigatableItem
 	public UnityEvent onConfirm;
 	public UnityEvent onCancel;
 
-	private void Start()
+    private void Start()
 	{
-		navigation = new Navigation[4];
-
-		navigation[0] = new Navigation { trigger = triggerPrevious, navTarget = FindPrevious() };
-		navigation[1] = new Navigation { trigger = triggerNext, navTarget = FindNext() };
-		navigation[2] = new Navigation { trigger = GameInput.Action.Confirm, navAction = onConfirm };
-		navigation[3] = new Navigation { trigger = GameInput.Action.Cancel, navAction = onCancel };
+        List<Navigation> nav = new List<Navigation>();
+        ConfigureNavigation(nav);
+		navigation = nav.ToArray();		
 	}
+    
+    protected virtual void ConfigureNavigation(List<Navigation> navigation)
+    {
+        navigation.Add(new Navigation { trigger = triggerPrevious, navTarget = FindPrevious() });
+        navigation.Add(new Navigation { trigger = triggerNext, navTarget = FindNext() });
+        navigation.Add(new Navigation { trigger = GameInput.Action.Confirm, navAction = onConfirm });
+        navigation.Add(new Navigation { trigger = GameInput.Action.Cancel, navAction = onCancel });
+    }
 
 	private NavigatableItem FindPrevious()
 	{

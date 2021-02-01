@@ -16,8 +16,8 @@ public class VesselAbilityDelegated : VesselAbility
 	protected override void OnDeactivate() => onDeactivate?.Invoke();
 	protected override void OnTick() => onTick?.Invoke();
 
-	public VesselAbilityDelegated(int duration, int cooldown, Func<bool> onCanTrigger, Action onActivate, Action onDeactivate, Action onTick)
-		: base(duration, cooldown)
+	public VesselAbilityDelegated(int duration, int cooldown, string description, Func<bool> onCanTrigger, Action onActivate, Action onDeactivate, Action onTick)
+		: base(duration, cooldown, description)
 	{
 		this.onCanTrigger = onCanTrigger;
 		this.onActivate = onActivate;

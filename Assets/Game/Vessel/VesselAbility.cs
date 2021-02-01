@@ -7,8 +7,9 @@ public abstract class VesselAbility
 {
 	public int Duration { get; protected set; }
 	public int Cooldown { get; protected set; }
+	public string Description { get; protected set; }
 
-	public int ActiveTurnsRemaining { get; protected set; }
+    public int ActiveTurnsRemaining { get; protected set; }
 	public int CooldownTurnsRemaining { get; protected set; }
 
 	public bool IsActive => (ActiveTurnsRemaining > 0);
@@ -18,10 +19,11 @@ public abstract class VesselAbility
 	protected abstract void OnTick();
 	protected abstract void OnDeactivate();
 
-	protected VesselAbility(int duration, int cooldown)
+	protected VesselAbility(int duration, int cooldown, string description)
 	{
 		Duration = duration;
 		Cooldown = cooldown;
+        Description = description;
 
 		ActiveTurnsRemaining = 0;
 		CooldownTurnsRemaining = 0;
