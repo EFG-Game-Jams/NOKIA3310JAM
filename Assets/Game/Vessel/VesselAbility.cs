@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,7 +8,9 @@ public abstract class VesselAbility
 {
 	public int Duration { get; protected set; }
 	public int Cooldown { get; protected set; }
-	public string Description { get; protected set; }
+
+	public Func<string> DescriptionFunc { get; protected set; }
+    public string Description => DescriptionFunc();
 
     public int ActiveTurnsRemaining { get; protected set; }
 	public int CooldownTurnsRemaining { get; protected set; }
@@ -19,11 +22,11 @@ public abstract class VesselAbility
 	protected abstract void OnTick();
 	protected abstract void OnDeactivate();
 
-	protected VesselAbility(int duration, int cooldown, string description)
+	protected VesselAbility(int duration, int cooldown, Func<string> description)
 	{
 		Duration = duration;
 		Cooldown = cooldown;
-        Description = description;
+        DescriptionFunc = description;
 
 		ActiveTurnsRemaining = 0;
 		CooldownTurnsRemaining = 0;

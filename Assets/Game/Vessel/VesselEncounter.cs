@@ -91,7 +91,8 @@ public class VesselEncounter
     {
         // attack
         AbilityLaser = new VesselAbilityDelegated(
-            0, 0, "Fire lasers\nHits shields\nCannot evade",
+            0, 0,
+            () => "Fire lasers\nHits shields\nCannot evade\nSystem: " + Status.weapons + "%",
             () => (Status.weapons > 0 && modifiers.HasWeapons),
             OnActivateLaser,
             null,
@@ -101,7 +102,8 @@ public class VesselEncounter
 
         // defense
         AbilityShields = new VesselAbilityDelegated(
-            2, 1, "Raise shields\nActive 2 turns\nAbsorbs 1 hit",
+            2, 1,
+            () => "Raise shields\nActive " + AbilityShields.Duration + " turns\nAbsorbs 1 hit\nSystem: " + Status.shields + "%",
             () => (Status.shields > 0 && modifiers.HasShields),
             OnActivateShields,
             () => owner.EnqueueAnimation(AnimateShield(this, false)),
@@ -111,7 +113,8 @@ public class VesselEncounter
 
         // skip turn, should only be used by the AI!
         AbilitySkipTurn = new VesselAbilityDelegated(
-            0, 0, "Skip turn\nAI only!",
+            0, 0,
+            () => "Skip turn\nAI only!",
             () => true,
             OnSkipTurn,
             null,
