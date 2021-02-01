@@ -11,7 +11,7 @@ public class PixelPerfectSprite : MonoBehaviour
 	public int Width => Mathf.RoundToInt(GetRenderer().sprite.rect.width);
 	public int Height => Mathf.RoundToInt(GetRenderer().sprite.rect.height);
 
-	private SpriteRenderer GetRenderer()
+	public SpriteRenderer GetRenderer()
 	{
 		if (spriteRenderer == null)
 			spriteRenderer = GetComponent<SpriteRenderer>();

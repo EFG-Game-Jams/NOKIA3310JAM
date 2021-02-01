@@ -67,6 +67,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3557089069476855635, guid: 908571e57b198584da5b03f5ebc768e2,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5355217091163380351, guid: 908571e57b198584da5b03f5ebc768e2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -119,6 +124,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerShip Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 8558314119951171308, guid: 908571e57b198584da5b03f5ebc768e2,
+        type: 3}
+      propertyPath: torpedoEmit
+      value: 
+      objectReference: {fileID: 1462879821789990085}
     - target: {fileID: 8649989453554723122, guid: 908571e57b198584da5b03f5ebc768e2,
         type: 3}
       propertyPath: m_Sprite
@@ -142,3 +152,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 908571e57b198584da5b03f5ebc768e2, type: 3}
+--- !u!4 &1462879821789990085 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3557089069476855635, guid: 908571e57b198584da5b03f5ebc768e2,
+    type: 3}
+  m_PrefabInstance: {fileID: 2670741076678456214}
+  m_PrefabAsset: {fileID: 0}

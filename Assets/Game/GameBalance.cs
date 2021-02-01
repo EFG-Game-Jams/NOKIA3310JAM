@@ -15,6 +15,9 @@ public class GameBalance : ScriptableObject
 	public int laserDamageMin = 5;
 	public int laserDamageMax = 50;
 
+	public int torpedoDamageMin = 25;
+	public int torpedoDamageMax = 100;
+
 	[Header("Stat rolls")]
 	public StatRoll statRollAttack;
 	public StatRoll statRollDefense;

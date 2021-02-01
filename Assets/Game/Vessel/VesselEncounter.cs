@@ -89,7 +89,6 @@ public class VesselEncounter
     // ability setup
     private void InitialiseAbilities()
     {
-        // attack
         AbilityLaser = new VesselAbilityDelegated(
             0, 0,
             () => "Fire lasers\nHits shields\nCannot evade\nSystem: " + Status.weapons + "%",
@@ -100,7 +99,16 @@ public class VesselEncounter
         );
         abilities["laser"] = AbilityLaser;
 
-        // defense
+        AbilityTorpedo = new VesselAbilityDelegated(
+            0, 0,
+            () => "Fire missle\nBypass shields\nSystem: " + Status.weapons + "%",
+            () => (modifiers.CanMissle),
+            OnActivateTorpedo,
+            null,
+            null
+        );
+        abilities["torpedo"] = AbilityTorpedo;
+
         AbilityShields = new VesselAbilityDelegated(
             2, 1,
             () => "Raise shields\nActive " + AbilityShields.Duration + " turns\nAbsorbs 1 hit\nSystem: " + Status.shields + "%",
@@ -111,7 +119,6 @@ public class VesselEncounter
         );
         abilities["shields"] = AbilityShields;
 
-        // skip turn, should only be used by the AI!
         AbilitySkipTurn = new VesselAbilityDelegated(
             0, 0,
             () => "Skip turn\nAI only!",
@@ -168,6 +175,23 @@ public class VesselEncounter
 
         FinishTurn();
     }
+
+    private void OnActivateTorpedo()
+    {
+        Vector3 torpedoEmit = visuals.torpedoEmit.position;
+        Vector3 torpedoReceive = opponent.visuals.laserReceiveHull.position;
+        owner.EnqueueAnimation(Game.Instance.effects.Create<EffectTorpedo>("Torpedo").Setup(torpedoEmit, torpedoReceive).Run());
+
+        int damage = GetSystemDependentRollEffect(Stats.RollAttack(), Status.weapons, balance.torpedoDamageMin, balance.torpedoDamageMax);
+        Debug.LogFormat("{0} firing torpedo with {1} damage", name, damage);
+
+        // damage applied to health
+        opponent.Status.health -= Mathf.Min(opponent.Status.health, damage);
+        Debug.LogFormat("> hull took {0}", damage);
+
+        FinishTurn();
+    }
+
     private void OnActivateShields()
     {
         owner.EnqueueAnimation(AnimateShield(this, true));
