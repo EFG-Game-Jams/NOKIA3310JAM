@@ -59,7 +59,7 @@ public class Encounter : MonoBehaviour
         opponentEncounter = new VesselEncounter("opponent", this, owner.gameBalance, pageEncounter.opponentVisuals, opponentStats, opponentStatus, descriptor.enemyModifiers);
         VesselEncounter.SetOpponents(playerEncounter, opponentEncounter);
 
-        opponentAiBehaviour = Instantiate(descriptor.enemyAiBehaviour);
+        opponentAiBehaviour = Instantiate(descriptor.enemyAiBehaviour, transform);
 
         // start
         BeginPlayerTurn();
@@ -130,10 +130,11 @@ public class Encounter : MonoBehaviour
         Debug.Assert(turnState == TurnState.Ending);
 
         // todo: end conditions
-        if (playerEncounter.Status.health <= 0)
-            owner.OnEncounterComplete();// throw new NotImplementedException("Player death");
-        else if (opponentEncounter.Status.health <= 0)
-            owner.OnEncounterComplete();// throw new NotImplementedException("Opponent death");
+        if (playerEncounter.Status.health <= 0 || opponentEncounter.Status.health <= 0)
+        {
+            EndEncounter();
+            return;
+        }
 
         // begin next turn
         turnState = TurnState.NotStarted;
@@ -151,6 +152,11 @@ public class Encounter : MonoBehaviour
         {
             throw new NotImplementedException();
         }
+    }
+    private void EndEncounter()
+    {        
+        pageEncounter.pageManager.PopPage();
+        owner.OnEncounterComplete();
     }
 
     private void OnDestroy()
