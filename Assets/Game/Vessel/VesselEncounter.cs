@@ -114,8 +114,8 @@ public class VesselEncounter
             () => "Board enemy\nBypass shields\nDamage enemy\nover time",
             () => modifiers.CanBoard,
             OnActivateBoarding,
-            OnBoardingStop,
-            OnBoardingTick
+            OnDeactivateBoarding,
+            OnTickBoarding
         );
         abilities["board"] = AbilityBoard;
 
@@ -169,7 +169,7 @@ public class VesselEncounter
     private void OnActivateLaser()
     {
         Vector3 laserEmit = visuals.laserEmit.position;
-        Vector3 laserReceive = (opponent.AbilityShields.IsActive ? opponent.visuals.laserReceiveShield : opponent.visuals.laserReceiveHull).position;
+        Vector3 laserReceive = (opponent.AbilityShields.IsActive ? opponent.visuals.weaponReceiveShield : opponent.visuals.weaponReceiveHull).position;
         owner.EnqueueAnimation(Game.Instance.effects.Create<EffectLaser>("Laser").Setup(laserEmit, laserReceive).Run());
 
         int damage = GetSystemDependentRollEffect(Stats.RollAttack(), Status.weapons, balance.laserDamageMin, balance.laserDamageMax);
@@ -199,7 +199,7 @@ public class VesselEncounter
     private void OnActivateTorpedo()
     {
         Vector3 torpedoEmit = visuals.torpedoEmit.position;
-        Vector3 torpedoReceive = opponent.visuals.laserReceiveHull.position;
+        Vector3 torpedoReceive = opponent.visuals.weaponReceiveHull.position;
         owner.EnqueueAnimation(Game.Instance.effects.Create<EffectTorpedo>("Torpedo").Setup(torpedoEmit, torpedoReceive).Run());
 
         int damage = GetSystemDependentRollEffect(Stats.RollAttack(), Status.weapons, balance.torpedoDamageMin, balance.torpedoDamageMax);
@@ -214,21 +214,11 @@ public class VesselEncounter
 
     private void OnActivateBoarding()
     {
-        Vector3 boardEmit = visuals.boardingEmit.position;
-        Vector3 boardReceive = opponent.visuals.boardingReceive.position;
-        owner.EnqueueAnimation(Game.Instance.effects.Create<EffectBoardingStart>("BoardingStart").Setup(boardEmit, boardReceive).Run());
+        owner.EnqueueAnimation(Game.Instance.effects.Create<EffectBoardingStart>("BoardingStart").Setup(visuals, opponent.visuals).Run());
 
         FinishTurn();
     }
-
-    private void OnBoardingStop()
-    {
-        Vector3 boardEmit = opponent.visuals.boardingReceive.position;
-        Vector3 boardReceive = visuals.boardingEmit.position;
-        owner.EnqueueAnimation(Game.Instance.effects.Create<EffectBoardingStart>("BoardingStart").Setup(boardEmit, boardReceive).Run());
-    }
-
-    private void OnBoardingTick()
+    private void OnTickBoarding()
     {
         int damage = GetSystemDependentRollEffect(Stats.RollAttack(), Status.weapons, balance.boardingDamageMin, balance.boardingDamageMax);
         Debug.LogFormat("{0} boarding party did {1} damage", name, damage);
@@ -236,6 +226,10 @@ public class VesselEncounter
         // damage applied to health
         opponent.Status.health -= Mathf.Min(opponent.Status.health, damage);
         Debug.LogFormat("> hull took {0}", damage);
+    }
+    private void OnDeactivateBoarding()
+    {
+        owner.EnqueueAnimation(Game.Instance.effects.Create<EffectBoardingEnd>("BoardingEnd").Setup(visuals, opponent.visuals).Run());
     }
 
     private void OnActivateShields()

@@ -10,6 +10,12 @@ public static class CoroutineComposer
 		yield break;
 	}
 
+    public static IEnumerator MakeDelayed(float delay, IEnumerator coroutine)
+    {
+        yield return new WaitForSeconds(delay);
+        yield return coroutine;
+    }
+
 	public static IEnumerator MakeSequence(params IEnumerator[] coroutines)
 	{
 		for (int i = 0; i < coroutines.Length; ++i)

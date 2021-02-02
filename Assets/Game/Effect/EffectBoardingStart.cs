@@ -1,28 +1,35 @@
 using System.Collections;
 using UnityEngine;
 
-public class EffectBoardingStart : Effect
-{
-    private Vector3 origin;
-    private Vector3 target;
+public class EffectBoardingStart : EffectBoarding
+{    
+    private VesselVisuals origin;
+    private VesselVisuals target;
 
-    public EffectBoardingStart Setup(Vector3 origin, Vector3 target)
+    public EffectBoardingStart Setup(VesselVisuals origin, VesselVisuals target)
     {
         this.origin = origin;
         this.target = target;
         return this;
     }
 
-    private IEnumerator DelayedLaunch(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        yield return Game.Instance.effects.Create<EffectBoardingTravel>("BoardingTravel")
-            .Setup(origin, target)
-            .Run();
-    }
-
     protected override IEnumerator TickUntilDone()
     {
-        yield return DelayedLaunch(0.2f);
+        // show shuttle
+        origin.ShuttleVisible = true;
+        origin.shuttle.transform.position = origin.boardingEmit.position;
+
+        // crew to shuttle
+        yield return MoveCrew(origin.transform.position, origin.boardingEmit.position);
+
+        // shuttle to destination
+        yield return new WaitForSeconds(.25f);
+        yield return Game.Instance.effects.Create<EffectTranslate>("Translate")
+            .Setup(origin.shuttle.transform, origin.boardingEmit.position, target.boardingReceive.position, 1)
+            .Run();
+
+        // crew to destination
+        yield return new WaitForSeconds(.25f);
+        yield return MoveCrew(target.boardingReceive.position, target.transform.position);
     }
 }
