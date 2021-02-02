@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EffectSpark : EffectTranslate
 {
-    new public float duration;
+    public float duration;
     public PixelPerfectSprite sparkSprite;
 
     private PixelPerfectSprite spark;
