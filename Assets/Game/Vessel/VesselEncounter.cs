@@ -137,7 +137,7 @@ public class VesselEncounter
             null,
             null
         );
-        abilities["shields"] = AbilityShields;
+        abilities["repel"] = AbilityRepel;
 
         AbilitySkipTurn = new VesselAbilityDelegated(
             0, 0,
