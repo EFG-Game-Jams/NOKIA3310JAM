@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3991215324691653483}
   m_Layer: 0
-  m_Name: Renderer
+  m_Name: SceneRenderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34,20 +34,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3991215325083606105
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6123284601668257205}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eae6b96a01defb540b42952b181fb2bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  blackResult: {r: 0.2627451, g: 0.32156864, b: 0.2392157, a: 1}
-  whiteResult: {r: 0.78039217, g: 0.9411765, b: 0.84705883, a: 1}
 --- !u!1 &3991215325173009872
 GameObject:
   m_ObjectHideFlags: 0
@@ -114,6 +100,20 @@ MonoBehaviour:
   m_InputActionsPerSecond: 10
   m_RepeatDelay: 0.5
   m_ForceModuleActive: 0
+--- !u!114 &3991215325083606105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6123284601668257205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eae6b96a01defb540b42952b181fb2bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blackResult: {r: 0.2627451, g: 0.32156864, b: 0.2392157, a: 1}
+  whiteResult: {r: 0.78039217, g: 0.9411765, b: 0.84705883, a: 1}
 --- !u!1001 &3991215324896281840
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -435,6 +435,26 @@ PrefabInstance:
     - target: {fileID: 5200647423373561814, guid: 3b08430a4a1270b48aaa1a2502a50ead,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200647423373561815, guid: 3b08430a4a1270b48aaa1a2502a50ead,
+        type: 3}
+      propertyPath: m_BackGroundColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200647423373561815, guid: 3b08430a4a1270b48aaa1a2502a50ead,
+        type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200647423373561815, guid: 3b08430a4a1270b48aaa1a2502a50ead,
+        type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200647423373561815, guid: 3b08430a4a1270b48aaa1a2502a50ead,
+        type: 3}
+      propertyPath: m_BackGroundColor.r
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
