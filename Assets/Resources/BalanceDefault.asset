@@ -18,10 +18,10 @@ MonoBehaviour:
   initialAmmo: 3
   healthMin: 100
   healthMax: 600
-  laserDamageMin: 5
-  laserDamageMax: 250
+  laserDamageMin: 10
+  laserDamageMax: 100
   torpedoDamageMin: 25
-  torpedoDamageMax: 500
+  torpedoDamageMax: 350
   boardingDamageMin: 0
   boardingDamageMax: 5
   statRollAttack: {fileID: 11400000, guid: a7bc7611d565ad14d84446fa6ea3e258, type: 2}
