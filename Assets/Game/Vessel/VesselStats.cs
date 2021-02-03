@@ -27,8 +27,8 @@ public class VesselStats : MonoBehaviour
         statRolls = new StatRoll[4];
         statRolls[0] = null;
         statRolls[1] = balance.statRollAttack;
-        statRolls[1] = balance.statRollDefense;
-        statRolls[1] = balance.statRollLuck;
+        statRolls[2] = balance.statRollDefense;
+        statRolls[3] = balance.statRollLuck;
     }
 
     public int GetRawTotal()

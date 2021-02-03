@@ -101,8 +101,8 @@ public class VesselEncounter
 
         AbilityTorpedo = new VesselAbilityDelegated(
             0, 0,
-            () => "Fire missle\nBypass shields\nSystem: " + Status.weapons + "%",
-            () => modifiers.CanMissle,
+            () => "Fire torpedo\nBypass shields\nSystem: " + Status.weapons + "%\nAmmo: " + Status.ammo,
+            () => (Status.weapons > 0 && modifiers.HasWeapons && modifiers.CanMissle && Status.ammo > 0),
             OnActivateTorpedo,
             null,
             null
@@ -208,6 +208,9 @@ public class VesselEncounter
         // damage applied to health
         opponent.Status.health -= Mathf.Min(opponent.Status.health, damage);
         Debug.LogFormat("> hull took {0}", damage);
+
+        // consume ammo
+        --Status.ammo;
 
         FinishTurn();
     }

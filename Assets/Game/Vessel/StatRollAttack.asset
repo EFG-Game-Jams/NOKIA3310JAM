@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f14cc700d8f81664b9048a25103a1f0b, type: 3}
   m_Name: StatRollAttack
   m_EditorClassIdentifier: 
-  offset: 0
+  offset: 0.75
+  constrain: 0.5
   biasStrength: 1
-  biasShape: 0.5
+  biasShape: 0.75

@@ -8,8 +8,12 @@ public class StatRoll : ScriptableObject
 	[Range(0, 1)]
 	[Tooltip("Where the distribution starts relative to the stat's value")]
 	public float offset = 0f;
+    
+    [Range(0, 1)]
+    [Tooltip("The distribution end relative to the stat's value")]
+    public float constrain = 0f;
 
-	[Range(0, 1)]
+    [Range(0, 1)]
 	[Tooltip("How much the stat's value affects the distribution")]
 	public float biasStrength = 1f;
 
@@ -21,7 +25,9 @@ public class StatRoll : ScriptableObject
 	{
 		float stat = statValue / (float)statMax;
 		float scaledOffset = stat * offset;
-		float roll = scaledOffset + Distribution.CurvedBias(1f - biasShape, stat * biasStrength) * (1f - scaledOffset);
+        float scaledConstrain = (1f - stat) * constrain;
+
+		float roll = scaledOffset + Distribution.CurvedBias(1f - biasShape, stat * biasStrength) * (1f - (scaledOffset + scaledConstrain));
 		roll = Mathf.Clamp(roll, 0f, 1f);
 		return roll * scale;
 	}

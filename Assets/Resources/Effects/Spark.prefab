@@ -43,6 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9781d5c0526cdba4f84c3cc791d25930, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 0.25
+  sparkDuration: 0.2
   sparkSprite: {fileID: 8627958775889230336, guid: 93e9996c3fc1f414293f76f798bfd348,
     type: 3}
