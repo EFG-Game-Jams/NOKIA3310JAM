@@ -43,7 +43,7 @@ public class NavigatableItemAuto : NavigatableItem
 		{
 			int siblingIndex = (i * direction + rank + siblingCount) % siblingCount;
 			NavigatableItem target = parent.GetChild(siblingIndex).GetComponent<NavigatableItem>();
-			if (target != null)
+			if (target != null && target.gameObject.activeSelf)
 				return target;
 		}
 		return null;
