@@ -49,7 +49,7 @@ public class AbilityTrigger : NavigatableItemAuto
 
         if (ability.TryTrigger())
         {
-            Debug.Log("todo: success sound");
+            Game.Instance.audioManager.Play("success");
 
             var pm = Game.Instance.pageManager;
             //while (!(pm.GetActivePage() is PageEncounter))
@@ -57,7 +57,7 @@ public class AbilityTrigger : NavigatableItemAuto
         }
         else
         {
-            Debug.Log("todo: failure sound");
+            Game.Instance.audioManager.Play("failure");
         }
     }
     private void OnCancel()
