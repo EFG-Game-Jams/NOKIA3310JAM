@@ -117,7 +117,7 @@ public class Campaign : MonoBehaviour
 
         NextEncounter();
     }
-    public void OnEncounterComplete()
+    public void OnEncounterComplete(bool playerFled = false, bool opponentFled = false)
     {
         if (encounter != null)
             Destroy(encounter.gameObject);
@@ -127,7 +127,16 @@ public class Campaign : MonoBehaviour
 
         Debug.Assert(state == State.Encounter);
         state = State.PostEncounter;
-        Game.Instance.pageManager.PushPage("PostEncounter");
+
+        bool wasHostile = (nextEncounterDescriptor.category == EncounterDescriptor.Category.Hostile);
+        bool canSpentStatPoint = wasHostile && !playerFled;
+        bool canSalvage = wasHostile && !playerFled && !opponentFled;
+        bool canRepair = canSalvage && playerStatus.CanRepair;
+        string postEncounterTitle = (playerFled ? "You escaped" : (opponentFled ? "Enemy escaped" : "Enemy defeated"));
+
+        PagePostEncounter page = Game.Instance.pageManager.GetPage<PagePostEncounter>();
+        page.Configure(postEncounterTitle, canSpentStatPoint ? 1 : 0, canSalvage ? 2 : 0, canSalvage ? 1 : 0, canRepair);
+        Game.Instance.pageManager.PushPage(page);
     }
     public void OnPostEncounterComplete()
     {

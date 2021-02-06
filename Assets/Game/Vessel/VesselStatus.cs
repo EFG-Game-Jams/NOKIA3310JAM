@@ -13,6 +13,8 @@ public class VesselStatus : MonoBehaviour
 	public int weapons;
 	public int shields;
 
+    public bool CanRepair => (health < GetMaxHealth() || (engines + weapons + shields) < 3 * MaxSystemStatus);
+
     public int fuel;
     public int ammo;
 
@@ -24,10 +26,7 @@ public class VesselStatus : MonoBehaviour
 		this.balance = balance;
 		this.stats = stats;
 
-		health = GetMaxHealth();
-		engines = MaxSystemStatus;
-		weapons = MaxSystemStatus;
-		shields = MaxSystemStatus;
+        RepairFull();
 
         fuel = balance.initialFuel;
         ammo = balance.initialAmmo;
@@ -41,4 +40,12 @@ public class VesselStatus : MonoBehaviour
 	{
 		return Mathf.RoundToInt(Mathf.Lerp(balance.healthMin, balance.healthMax, stats.GetDurability()));
 	}
+
+    public void RepairFull()
+    {
+        health = GetMaxHealth();
+        engines = MaxSystemStatus;
+        weapons = MaxSystemStatus;
+        shields = MaxSystemStatus;
+    }
 }
