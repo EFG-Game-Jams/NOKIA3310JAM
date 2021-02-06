@@ -9,7 +9,7 @@ public class PageGameOver : PageAutoNavigation
     {
         if (action == GameInput.Action.Confirm)
         {
-            Game.Instance.pageManager.PushPage("MainMenu");
+            Game.Instance.pageManager.SetPage("MainMenu");
         }
     }
 

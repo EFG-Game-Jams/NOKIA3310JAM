@@ -124,7 +124,7 @@ public class Campaign : MonoBehaviour
 
         if (playerStatus.health <= 0)
         {
-            Game.Instance.pageManager.PushPage("GameOver");
+            Game.Instance.pageManager.SetPage("GameOver");
             return;
         }
 
