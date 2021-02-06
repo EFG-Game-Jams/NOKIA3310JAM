@@ -80,6 +80,8 @@ public class AbilityTrigger : NavigatableItemAuto
             display.Text = (flashState ? "[cooldown-" + ability.CooldownTurnsRemaining + "]" : displayName);
         else if (!ability.CanTrigger)
             display.Text = (flashState ? "[disabled]" : displayName);
+        else
+            display.Text = displayName;
     }
 
 #if UNITY_EDITOR
