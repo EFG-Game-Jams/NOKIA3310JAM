@@ -150,11 +150,17 @@ public class VesselEncounter
     }
 
     // helpers
-    private int GetSystemDependentRollEffect(float roll, int systemStatus, int effectMin, int effectMax)
+    private int GetSystemDependentRollEffect(float roll, int systemStatus, int effectMin, int effectMax, bool amplifiedByLuck)
     {
         // roll [0, 1] clamped to system status [0, 1] transposed to range [min, max]
         float rawEffect = Mathf.Min(roll, systemStatus / (float)VesselStatus.MaxSystemStatus);
         float scaledEffect = Mathf.Lerp(effectMin, effectMax, rawEffect);
+
+        if (amplifiedByLuck)
+        {
+            scaledEffect *= 1f + Stats.RollLuck();
+        }
+
         return Mathf.RoundToInt(scaledEffect);
     }
     private void FinishTurn()
@@ -184,27 +190,23 @@ public class VesselEncounter
         Vector3 laserReceive = (opponent.AbilityShields.IsActive ? opponent.visuals.weaponReceiveShield : opponent.visuals.weaponReceiveHull).position;
         owner.EnqueueAnimation(Game.Instance.effects.Create<EffectLaser>("Laser").Setup(laserEmit, laserReceive).Run());
 
-        int damage = GetSystemDependentRollEffect(Stats.RollAttack(), Status.weapons, balance.laserDamageMin, balance.laserDamageMax);
+        int damage = GetSystemDependentRollEffect(
+            Stats.RollAttack(),
+            Status.weapons,
+            balance.laserDamageMin,
+            balance.laserDamageMax,
+            true);
         Debug.LogFormat("{0} firing laser with {1} damage", name, damage);
 
         if (opponent.AbilityShields.IsActive)
         {
-            // shields absorb everything they can, any leftover is applied to health
-            int absorbed = Mathf.Min(damage, opponent.Status.shields);
-            opponent.Status.ApplyShieldDamage(absorbed);
-            opponent.Status.ApplyHullDamage(damage - absorbed);
-
+            opponent.Status.ApplyShieldDamage(damage, true, true);
             if (opponent.Stats.RollDefense() < balance.shieldsStayActiveOnDamageRoll)
                 opponent.AbilityShields.Deactivate();
-
-            Debug.LogFormat("> shields absorbed {0}", absorbed);
-            Debug.LogFormat("> hull took {0}", damage - absorbed);
         }
         else
         {
-            // damage applied to health
-            opponent.Status.ApplyHullDamage(damage);
-            Debug.LogFormat("> hull took {0}", damage);
+            opponent.Status.ApplyHullDamage(damage, true);
         }
 
         FinishTurn();
@@ -216,12 +218,17 @@ public class VesselEncounter
         Vector3 torpedoReceive = opponent.visuals.weaponReceiveHull.position;
         owner.EnqueueAnimation(Game.Instance.effects.Create<EffectTorpedo>("Torpedo").Setup(torpedoEmit, torpedoReceive).Run());
 
-        int damage = GetSystemDependentRollEffect(Stats.RollAttack(), Status.weapons, balance.torpedoDamageMin, balance.torpedoDamageMax);
+        int damage = GetSystemDependentRollEffect(
+            Stats.RollAttack(),
+            Status.weapons,
+            balance.torpedoDamageMin,
+            balance.torpedoDamageMax,
+            true);
+
         Debug.LogFormat("{0} firing torpedo with {1} damage", name, damage);
 
         // damage applied to health
-        opponent.Status.ApplyHullDamage(damage);
-        Debug.LogFormat("> hull took {0}", damage);
+        opponent.Status.ApplyHullDamage(damage, true);
 
         // consume ammo
         --Status.ammo;
@@ -231,17 +238,23 @@ public class VesselEncounter
 
     private void OnActivateBoarding()
     {
+        Debug.LogFormat("Sending boarding party");
         owner.EnqueueAnimation(Game.Instance.effects.Create<EffectBoardingStart>("BoardingStart").Setup(visuals, opponent.visuals).Run());
 
         FinishTurn();
     }
     private void OnTickBoarding()
     {
-        int damage = GetSystemDependentRollEffect(Stats.RollAttack(), Status.weapons, balance.boardingDamageMin, balance.boardingDamageMax);
-        Debug.LogFormat("{0} boarding party did {1} damage", name, damage);
+        Debug.LogFormat("Executing boarding party tick");
+        int damage = GetSystemDependentRollEffect(
+            Stats.RollAttack(),
+            Status.weapons,
+            balance.boardingDamageMin,
+            balance.boardingDamageMax,
+            true);
 
         // damage applied to health
-        opponent.Status.ApplyHullDamage(damage);
+        opponent.Status.ApplySystemsDamage(damage);
         Debug.LogFormat("> hull took {0}", damage);
     }
     private void OnDeactivateBoarding()
@@ -251,6 +264,7 @@ public class VesselEncounter
 
     private void OnActivateShields()
     {
+        Debug.LogFormat("Raising shields");
         owner.EnqueueAnimation(AnimateShield(this, true));
         FinishTurn();
     }
@@ -274,6 +288,7 @@ public class VesselEncounter
 
     private void OnActivateRepel()
     {
+        Debug.LogFormat("Repelling boarders");
         Debug.Assert(opponent.AbilityBoard.IsActive);
         opponent.AbilityBoard.Deactivate();
 
@@ -282,6 +297,7 @@ public class VesselEncounter
 
     private void OnSkipTurn()
     {
+        Debug.LogFormat("Skipping turn");
         FinishTurn();
     }
 }
