@@ -75,7 +75,7 @@ public class Campaign : MonoBehaviour
         }
         else
         {
-            throw new System.Exception("You win, but that's not implemented!");
+            Game.Instance.pageManager.SetPage("Win");
         }
     }
     private void SelectNextEncounterDescriptor()
