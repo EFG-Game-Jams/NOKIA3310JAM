@@ -120,7 +120,7 @@ public class VesselEncounter
         abilities["board"] = AbilityBoard;
 
         AbilityShields = new VesselAbilityDelegated(
-            2, 1,
+            int.MaxValue, 1,
             () => "Raise shields\nActive " + AbilityShields.Duration + " turns\nAbsorbs 1 hit\nSystem: " + Status.shields + "%",
             () => (Status.shields > 0 && modifiers.HasShields),
             OnActivateShields,
@@ -162,6 +162,18 @@ public class VesselEncounter
         if (abilityUsedThisTurn)
             throw new System.Exception("Multiple abilities used in a single turn");
         abilityUsedThisTurn = true;
+
+        if (AbilityShields.IsActive && Status.shields <= 0)
+            AbilityShields.Deactivate();
+        if (opponent.AbilityShields.IsActive && opponent.Status.shields <= 0)
+            opponent.AbilityShields.Deactivate();
+
+        Debug.Assert(AbilityEvade == null, "Deactivate evasion when engines are dead");
+        /*if (AbilityEvade.IsActive && Status.engines <= 0)
+            AbilityEvade.Deactivate();
+        if (opponent.AbilityEvade.IsActive && opponent.Status.engines <= 0)
+            opponent.AbilityEvade.Deactivate();*/
+
         owner.OnVesselEndTurn(this);
     }
 
@@ -181,7 +193,9 @@ public class VesselEncounter
             int absorbed = Mathf.Min(damage, opponent.Status.shields);
             opponent.Status.ApplyShieldDamage(absorbed);
             opponent.Status.ApplyHullDamage(damage - absorbed);
-            opponent.AbilityShields.Deactivate();
+
+            if (opponent.Stats.RollDefense() < balance.shieldsStayActiveOnDamageRoll)
+                opponent.AbilityShields.Deactivate();
 
             Debug.LogFormat("> shields absorbed {0}", absorbed);
             Debug.LogFormat("> hull took {0}", damage - absorbed);

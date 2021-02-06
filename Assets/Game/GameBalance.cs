@@ -14,12 +14,11 @@ public class GameBalance : ScriptableObject
     public int healthMax = 400;
     public int laserDamageMin = 5;
     public int laserDamageMax = 50;
-
     public int torpedoDamageMin = 25;
     public int torpedoDamageMax = 100;
-
     public int boardingDamageMin = 0;
     public int boardingDamageMax = 5;
+    public float shieldsStayActiveOnDamageRoll = .75f;
 
     [Header("Stat rolls")]
     public StatRoll statRollAttack;
