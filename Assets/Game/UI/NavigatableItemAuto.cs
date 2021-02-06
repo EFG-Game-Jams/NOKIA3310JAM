@@ -11,11 +11,16 @@ public class NavigatableItemAuto : NavigatableItem
 	public UnityEvent onConfirm;
 	public UnityEvent onCancel;
 
-    private void Start()
-	{
+    public void RebuildNavigation()
+    {
         List<Navigation> nav = new List<Navigation>();
         ConfigureNavigation(nav);
-		navigation = nav.ToArray();		
+        navigation = nav.ToArray();
+    }
+
+    private void Start()
+	{
+        RebuildNavigation();
 	}
     
     protected virtual void ConfigureNavigation(List<Navigation> navigation)

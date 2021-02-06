@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b9cf443bbedf5840953f7ab684e68f6, type: 3}
   m_Name: BalanceDefault
   m_EditorClassIdentifier: 
-  encounterCount: 20
+  encounterCount: 10
   initialStatPoints: 6
   initialFuel: 2
   initialAmmo: 1
