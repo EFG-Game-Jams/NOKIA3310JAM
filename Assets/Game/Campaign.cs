@@ -91,10 +91,29 @@ public class Campaign : MonoBehaviour
         encounter.BeginEncounter(this, nextEncounterDescriptor);
     }
 
-    public void OnPreEncounterComplete()
+    public void OnPreEncounterCompleteIvestigate()
     {
         Debug.Assert(state == State.PreEncounter);
+
         BeginEncounter();
+    }
+    public void OnPreEncounterCompleteIgnore()
+    {
+        Debug.Assert(state == State.PreEncounter);
+
+        if (playerStats.RollLuck() >= gameBalance.encounterIgnoreThreshold)
+            NextEncounter();
+        else
+            BeginEncounter();
+    }
+    public void OnPreEncounterCompleteAvoid()
+    {
+        Debug.Assert(state == State.PreEncounter);
+
+        Debug.Assert(playerStatus.fuel > 0);
+        --playerStatus.fuel;
+
+        NextEncounter();
     }
     public void OnEncounterComplete()
     {
