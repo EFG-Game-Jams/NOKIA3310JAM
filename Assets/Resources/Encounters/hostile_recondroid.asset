@@ -44,4 +44,5 @@ MonoBehaviour:
     CanRepair: 0
     CanScan: 1
   initialAmmo: 1
-  enemyAiBehaviour: {fileID: 0}
+  enemyAiBehaviour: {fileID: 410550126043583932, guid: f0f925e9c402de5b18c88fe5f5ce1128,
+    type: 3}
