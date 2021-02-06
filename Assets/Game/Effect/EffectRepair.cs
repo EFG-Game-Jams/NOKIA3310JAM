@@ -28,6 +28,9 @@ public class EffectRepair : EffectTranslate
             sparks.Add(DelayedSpark(Random.value));
         }
 
+        sparks.Add(CoroutineComposer.MakeDelayed(.2f, CoroutineComposer.MakeAction(() => Game.Instance.audioManager.Play("repair"))));
+        sparks.Add(CoroutineComposer.MakeDelayed(.6f, CoroutineComposer.MakeAction(() => Game.Instance.audioManager.Play("repair"))));
+
         yield return CoroutineComposer.MakeParallel(this, sparks.ToArray());
     }
 
