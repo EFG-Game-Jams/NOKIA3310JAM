@@ -19,8 +19,8 @@ public class EncounterDescriptor : ScriptableObject
     [Tooltip("Total scaling stat points are distributed according to these weights")]
     public VesselStatWeights statsScalingWeight;
 
-    [Tooltip("Total scaling stat points = statsScaling * totalPlayerStatPoints")]
-    public float statsScaling = 1f;
+    [Tooltip("Total scaling stat points = statsScaling * encounterNumber")]
+    public float statsScaling = .75f;
 
 	public VesselModifiers playerModifiers;
 	public VesselModifiers enemyModifiers;

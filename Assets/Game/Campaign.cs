@@ -22,6 +22,8 @@ public class Campaign : MonoBehaviour
     private int nextEncounter;
     private int encounterCount;
 
+    public int EncounterIndex => nextEncounter - 1;
+
     public void BeginCampaign(string balanceName)
     {
         gameBalance = Resources.Load<GameBalance>(balanceName);

@@ -178,7 +178,7 @@ public class Encounter : MonoBehaviour
         float totalWeight = weights.GetSumOfWeights();
 
         // distribute scaling points
-        float weightToPoints = owner.playerStats.GetRawTotal() * descriptor.statsScaling / totalWeight;
+        float weightToPoints = owner.EncounterIndex * descriptor.statsScaling / totalWeight;
         weights.MultiplyBy(weightToPoints);
         stats.AddWeights(weights);
 
