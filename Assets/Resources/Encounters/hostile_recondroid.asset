@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ef235113050eff348bb44e5219eb5245, type: 3}
-  m_Name: TestHostile
+  m_Name: hostile_recondroid
   m_EditorClassIdentifier: 
   category: 0
-  visuals: {fileID: 6932504878172931965, guid: 1f68875e306872744befc02cbc75300c, type: 3}
+  visuals: {fileID: 1709205815834830266, guid: 3e65e8ab47819e05c9ec8c081d0c82ed, type: 3}
   baseStats:
     Durability: 0
     Attack: 0
@@ -30,19 +30,18 @@ MonoBehaviour:
     HasEngines: 1
     HasWeapons: 1
     CanMissle: 1
-    CanBoard: 1
+    CanBoard: 0
     CanRepel: 1
     CanRepair: 1
     CanScan: 1
   enemyModifiers:
-    HasShields: 1
-    HasEngines: 1
-    HasWeapons: 1
-    CanMissle: 1
-    CanBoard: 1
-    CanRepel: 1
-    CanRepair: 1
+    HasShields: 0
+    HasEngines: 0
+    HasWeapons: 0
+    CanMissle: 0
+    CanBoard: 0
+    CanRepel: 0
+    CanRepair: 0
     CanScan: 1
   initialAmmo: 1
-  enemyAiBehaviour: {fileID: 410550126043583932, guid: f0f925e9c402de5b18c88fe5f5ce1128,
-    type: 3}
+  enemyAiBehaviour: {fileID: 0}
