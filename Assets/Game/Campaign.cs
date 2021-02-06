@@ -123,7 +123,10 @@ public class Campaign : MonoBehaviour
             Destroy(encounter.gameObject);
 
         if (playerStatus.health <= 0)
-            throw new System.Exception("You lost, but that isn't implemented");
+        {
+            Game.Instance.pageManager.PushPage("GameOver");
+            return;
+        }
 
         Debug.Assert(state == State.Encounter);
         state = State.PostEncounter;
