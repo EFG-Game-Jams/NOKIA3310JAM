@@ -45,7 +45,7 @@ public class Campaign : MonoBehaviour
         int remainingPoints = gameBalance.initialStatPoints;
         while (remainingPoints > 0)
         {
-            for (int i = 0; remainingPoints > 0 && i < 4; ++i)
+            for (int i = 1; remainingPoints > 0 && i < 4; ++i)
             {
                 playerStats.SetRaw((VesselStats.Type)i, playerStats.GetRaw((VesselStats.Type)i) + 1);
                 --remainingPoints;

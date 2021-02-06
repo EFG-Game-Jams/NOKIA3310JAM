@@ -36,7 +36,8 @@ public class VesselStatus : MonoBehaviour
     }
     public int GetMaxHealth()
     {
-        return Mathf.RoundToInt(Mathf.Lerp(balance.healthMin, balance.healthMax, stats.GetDurability()));
+        return 100;
+        //return Mathf.RoundToInt(Mathf.Lerp(balance.healthMin, balance.healthMax, stats.GetDurability()));
     }
 
     public void RepairFull()
