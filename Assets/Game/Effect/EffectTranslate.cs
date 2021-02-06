@@ -15,6 +15,7 @@ public class EffectTranslate : Effect
         this.from = from;
         this.to = to;
         this.duration = duration;
+        UpdateTransform(0);
         return this;
     }
 
