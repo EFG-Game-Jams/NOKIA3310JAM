@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef235113050eff348bb44e5219eb5245, type: 3}
+  m_Name: hostile_ship1
+  m_EditorClassIdentifier: 
+  category: 0
+  visuals: {fileID: 5653097345169337377, guid: 85d39e280b83a45869ca69b6f2e2c9f6, type: 3}
+  baseStats:
+    Durability: 0
+    Attack: 0
+    Defense: 0
+    Luck: 0
+  statsScalingWeight:
+    Durability: 1
+    Attack: 1
+    Defense: 1
+    Luck: 1
+  statsScaling: 0.75
+  playerModifiers:
+    HasShields: 1
+    HasEngines: 1
+    HasWeapons: 1
+    CanMissle: 1
+    CanBoard: 1
+    CanRepel: 1
+    CanRepair: 1
+    CanScan: 1
+  enemyModifiers:
+    HasShields: 1
+    HasEngines: 1
+    HasWeapons: 1
+    CanMissle: 1
+    CanBoard: 1
+    CanRepel: 1
+    CanRepair: 1
+    CanScan: 1
+  initialAmmo: 1
+  enemyAiBehaviour: {fileID: 410550126043583932, guid: f0f925e9c402de5b18c88fe5f5ce1128,
+    type: 3}
