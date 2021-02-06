@@ -72,6 +72,7 @@ public class Campaign : MonoBehaviour
             ++nextEncounter;
 
             Game.Instance.pageManager.PushPage("PreEncounter");
+            Game.Instance.pageManager.PushPage("Warp");
         }
         else
         {
