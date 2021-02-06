@@ -192,6 +192,7 @@ public class Encounter : MonoBehaviour
         opponentStatus.InitialiseFull(owner.gameBalance, opponentStats);
 
         // then apply modifiers
-        // todo: encounter modifiers
+        opponentStatus.ammo = descriptor.initialAmmo;
+        // todo: other encounter modifiers
     }
 }

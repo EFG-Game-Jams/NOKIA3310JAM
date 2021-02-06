@@ -25,5 +25,7 @@ public class EncounterDescriptor : ScriptableObject
 	public VesselModifiers playerModifiers;
 	public VesselModifiers enemyModifiers;
 
+    public int initialAmmo = 1;
+
 	public AiBehaviour enemyAiBehaviour;
 }
