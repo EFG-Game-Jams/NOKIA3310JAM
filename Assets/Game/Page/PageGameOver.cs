@@ -15,7 +15,6 @@ public class PageGameOver : PageAutoNavigation
 
     public void Skip()
     {
-        StopAllCoroutines();
         pageManager.SetPage("MainMenu");
     }
 }
