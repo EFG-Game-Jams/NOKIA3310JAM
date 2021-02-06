@@ -1104,6 +1104,36 @@ PrefabInstance:
       propertyPath: triggerPrevious
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1131210078972007333, guid: 51d6ec77d461d2f49b1069ac8999702d,
+        type: 3}
+      propertyPath: onConfirm.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1131210078972007333, guid: 51d6ec77d461d2f49b1069ac8999702d,
+        type: 3}
+      propertyPath: onConfirm.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1131210078972007333, guid: 51d6ec77d461d2f49b1069ac8999702d,
+        type: 3}
+      propertyPath: onConfirm.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 3579594593860968675}
+    - target: {fileID: 1131210078972007333, guid: 51d6ec77d461d2f49b1069ac8999702d,
+        type: 3}
+      propertyPath: onConfirm.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1131210078972007333, guid: 51d6ec77d461d2f49b1069ac8999702d,
+        type: 3}
+      propertyPath: onConfirm.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PushPageInfo
+      objectReference: {fileID: 0}
+    - target: {fileID: 1131210078972007333, guid: 51d6ec77d461d2f49b1069ac8999702d,
+        type: 3}
+      propertyPath: onConfirm.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 5725394797454087049, guid: 51d6ec77d461d2f49b1069ac8999702d,
         type: 3}
       propertyPath: m_LocalScale.y

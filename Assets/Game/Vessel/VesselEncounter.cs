@@ -121,7 +121,7 @@ public class VesselEncounter
 
         AbilityShields = new VesselAbilityDelegated(
             int.MaxValue, 1,
-            () => "Raise shields\nActive " + AbilityShields.Duration + " turns\nAbsorbs 1 hit\nSystem: " + Status.shields + "%",
+            () => "Raise shields\nAbsorbs lasers\nSystem: " + Status.shields + "%",
             () => (Status.shields > 0 && modifiers.HasShields),
             OnActivateShields,
             () => owner.EnqueueAnimation(AnimateShield(this, false)),

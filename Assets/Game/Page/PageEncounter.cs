@@ -41,4 +41,5 @@ public class PageEncounter : PageAutoNavigation
 	public void PushPageAttack() => Game.Instance.pageManager.PushPage("AbilitiesAttack");
 	public void PushPageDefend() => Game.Instance.pageManager.PushPage("AbilitiesDefend");
 	public void PushPageUtility() => Game.Instance.pageManager.PushPage("AbilitiesUtility");
+	public void PushPageInfo() => Game.Instance.pageManager.PushPage("EncounterInfo");
 }

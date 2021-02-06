@@ -5,7 +5,12 @@ public class Page : MonoBehaviour
 	[System.NonSerialized] public PageManager pageManager; // owned by page manager
 	[System.NonSerialized] public bool isActive; // owned by page manager
 
-	public virtual void OnPush() { }
+    // useful for button actions
+    public void TriggerPushPage(string page) => pageManager.PushPage(page);
+    public void TriggerPopPage() => pageManager.PopPage();
+
+    // page manager callbacks
+    public virtual void OnPush() { }
 	public virtual void OnPop() { }
 	public virtual void OnActivate() { }
 	public virtual void OnDeactivate() { }

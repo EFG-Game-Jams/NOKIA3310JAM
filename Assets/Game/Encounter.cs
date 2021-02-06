@@ -26,7 +26,7 @@ public class Encounter : MonoBehaviour
     private AiBehaviour opponentAiBehaviour;
 
     [NonSerialized] public VesselEncounter playerEncounter; // public for UI
-    private VesselEncounter opponentEncounter;
+    [NonSerialized] public VesselEncounter opponentEncounter; // public for UI
 
     private PageEncounter pageEncounter;
 
@@ -194,7 +194,9 @@ public class Encounter : MonoBehaviour
         opponentStatus.InitialiseFull(owner.gameBalance, opponentStats);
 
         // then apply modifiers
-        opponentStatus.ammo = descriptor.initialAmmo;
+        if (!descriptor.enemyModifiers.HasEngines)
+            opponentStatus.fuel = 0;
+        opponentStatus.ammo = (descriptor.enemyModifiers.HasWeapons && descriptor.enemyModifiers.CanMissle ? descriptor.initialAmmo : 0);        
         // todo: other encounter modifiers
     }
 }
