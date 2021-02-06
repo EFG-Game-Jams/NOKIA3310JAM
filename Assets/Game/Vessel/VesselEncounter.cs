@@ -139,6 +139,15 @@ public class VesselEncounter
         );
         abilities["repel"] = AbilityRepel;
 
+        AbilityScan = new VesselAbilityDelegated(
+            int.MaxValue, 0,
+            () => "Scan enemy",
+            () => modifiers.CanScan,
+            OnActivateScan,
+            null,
+            null);
+        abilities["scan"] = AbilityScan;
+
         AbilitySkipTurn = new VesselAbilityDelegated(
             0, 0,
             () => "Skip turn\nAI only!",
@@ -211,7 +220,6 @@ public class VesselEncounter
 
         FinishTurn();
     }
-
     private void OnActivateTorpedo()
     {
         Vector3 torpedoEmit = visuals.torpedoEmit.position;
@@ -235,7 +243,6 @@ public class VesselEncounter
 
         FinishTurn();
     }
-
     private void OnActivateBoarding()
     {
         Debug.LogFormat("Sending boarding party");
@@ -261,11 +268,16 @@ public class VesselEncounter
     {
         owner.EnqueueAnimation(Game.Instance.effects.Create<EffectBoardingEnd>("BoardingEnd").Setup(visuals, opponent.visuals).Run());
     }
-
     private void OnActivateShields()
     {
         Debug.LogFormat("Raising shields");
         owner.EnqueueAnimation(AnimateShield(this, true));
+        FinishTurn();
+    }
+    private void OnActivateScan()
+    {
+        Debug.LogFormat("Scanning");
+        owner.EnqueueAnimation(Game.Instance.effects.Create<EffectScan>("Scan").Setup(visuals.transform.position, opponent.visuals.transform.position).Run());
         FinishTurn();
     }
 
