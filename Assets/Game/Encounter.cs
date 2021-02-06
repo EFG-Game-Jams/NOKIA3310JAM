@@ -108,6 +108,7 @@ public class Encounter : MonoBehaviour
     }
     private void BeginPlayerTurn()
     {
+        Debug.Log("Starting Player turn");
         BeginTurn(playerEncounter);
 
         // enable input
@@ -115,6 +116,7 @@ public class Encounter : MonoBehaviour
     }
     private void BeginOpponentTurn()
     {
+        Debug.Log("Starting AI turn");
         BeginTurn(opponentEncounter);
 
         opponentAiBehaviour.Act(opponentEncounter);
@@ -154,7 +156,7 @@ public class Encounter : MonoBehaviour
         }
     }
     private void EndEncounter()
-    {        
+    {
         pageEncounter.pageManager.PopPage();
         owner.OnEncounterComplete();
     }
