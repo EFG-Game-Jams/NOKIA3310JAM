@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   encounterCount: 20
   initialStatPoints: 6
-  initialFuel: 3
-  initialAmmo: 3
+  initialFuel: 2
+  initialAmmo: 1
+  encounterIgnoreThreshold: 0.5
   healthMin: 100
   healthMax: 600
   laserDamageMin: 10

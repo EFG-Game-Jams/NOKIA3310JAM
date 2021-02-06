@@ -6,8 +6,9 @@ public class GameBalance : ScriptableObject
     [Header("Campaign")]
     public int encounterCount = 20;
     public int initialStatPoints = 5;
-    public int initialFuel = 3;
-    public int initialAmmo = 3;
+    public int initialFuel = 2;
+    public int initialAmmo = 1;
+    public float encounterIgnoreThreshold = .5f;
 
     [Header("Systems")]
     public int healthMin = 100;
