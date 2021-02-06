@@ -5,13 +5,18 @@ public class VesselStatus : MonoBehaviour
     public const int MaxSystemStatus = 100;
     public const int MaxFuel = 5;
     public const int MaxAmmo = 10;
+    public const int CriticalRepairRestoresTo = 50;
 
     public int health { get; private set; }
     public int engines { get; private set; }
     public int weapons { get; private set; }
     public int shields { get; private set; }
 
-    public bool CanRepair => (health < GetMaxHealth() || (engines + weapons + shields) < 3 * MaxSystemStatus);
+    public bool CanRepair =>
+        health < GetMaxHealth() ||
+        engines < MaxSystemStatus ||
+        weapons < MaxSystemStatus ||
+        shields < MaxSystemStatus;
 
     public int fuel;
     public int ammo;
@@ -38,6 +43,36 @@ public class VesselStatus : MonoBehaviour
     {
         return 100;
         //return Mathf.RoundToInt(Mathf.Lerp(balance.healthMin, balance.healthMax, stats.GetDurability()));
+    }
+
+    public void Repair()
+    {
+        if (engines <= 0)
+        {
+            engines = CriticalRepairRestoresTo;
+            return;
+        }
+        else if (weapons <= 0)
+        {
+            weapons = CriticalRepairRestoresTo;
+            return;
+        }
+        else if (shields <= 0)
+        {
+            shields = CriticalRepairRestoresTo;
+            return;
+        }
+        else
+        {
+            var roll = stats.RollDefense();
+            var maxHealth = GetMaxHealth();
+            health = Mathf.Min(maxHealth, health + Mathf.RoundToInt(roll * maxHealth));
+
+            var subsystemBoost = Mathf.RoundToInt(roll * MaxSystemStatus);
+            engines = Mathf.Min(MaxSystemStatus, engines + subsystemBoost);
+            weapons = Mathf.Min(MaxSystemStatus, weapons + subsystemBoost);
+            shields = Mathf.Min(MaxSystemStatus, shields + subsystemBoost);
+        }
     }
 
     public void RepairFull()

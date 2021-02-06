@@ -31,6 +31,9 @@ public class HostileAiBehaviour : AiBehaviour
         if (self.AbilityTorpedo?.CanTrigger == true) {
             list.Add((self.AbilityTorpedo, GetTorpedoScore()));
         }
+        if (self.AbilityRepair?.CanTrigger == true) {
+            list.Add((self.AbilityRepair, GetRepairScore()));
+        }
 
         VesselAbility chosenAction = null;
         bool pickAction = Random.value < 0.95f;
@@ -63,4 +66,5 @@ public class HostileAiBehaviour : AiBehaviour
     private int GetRepelScore() => 30;
     private int GetBoardScore() => 20;
     private int GetTorpedoScore() => 50;
+    private int GetRepairScore() => 70;
 }

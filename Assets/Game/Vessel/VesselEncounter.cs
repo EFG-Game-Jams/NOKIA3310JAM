@@ -156,6 +156,15 @@ public class VesselEncounter
             null,
             null);
         abilities["skipturn"] = AbilitySkipTurn;
+
+        AbilityRepair = new VesselAbilityDelegated(
+            0, 0,
+            () => "Repair hull\nand systems",
+            () => Status.CanRepair,
+            OnRepair,
+            null,
+            null);
+        abilities["repair"] = AbilityRepair;
     }
 
     // helpers
@@ -278,6 +287,13 @@ public class VesselEncounter
     {
         Debug.LogFormat("Scanning");
         owner.EnqueueAnimation(Game.Instance.effects.Create<EffectScan>("Scan").Setup(visuals.transform.position, opponent.visuals.transform.position).Run());
+        FinishTurn();
+    }
+
+    private void OnRepair()
+    {
+        owner.EnqueueAnimation(Game.Instance.effects.Create<EffectRepair>("Repair").Setup(visuals.transform.position, visuals.hull.sprite.rect).Run());
+        Status.Repair();
         FinishTurn();
     }
 
