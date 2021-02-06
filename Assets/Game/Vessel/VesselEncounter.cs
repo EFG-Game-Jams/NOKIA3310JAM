@@ -179,8 +179,8 @@ public class VesselEncounter
         {
             // shields absorb everything they can, any leftover is applied to health
             int absorbed = Mathf.Min(damage, opponent.Status.shields);
-            opponent.Status.shields -= absorbed;
-            opponent.Status.health -= Mathf.Min(opponent.Status.health, damage - absorbed);
+            opponent.Status.ApplyShieldDamage(absorbed);
+            opponent.Status.ApplyHullDamage(damage - absorbed);
             opponent.AbilityShields.Deactivate();
 
             Debug.LogFormat("> shields absorbed {0}", absorbed);
@@ -189,7 +189,7 @@ public class VesselEncounter
         else
         {
             // damage applied to health
-            opponent.Status.health -= Mathf.Min(opponent.Status.health, damage);
+            opponent.Status.ApplyHullDamage(damage);
             Debug.LogFormat("> hull took {0}", damage);
         }
 
@@ -206,7 +206,7 @@ public class VesselEncounter
         Debug.LogFormat("{0} firing torpedo with {1} damage", name, damage);
 
         // damage applied to health
-        opponent.Status.health -= Mathf.Min(opponent.Status.health, damage);
+        opponent.Status.ApplyHullDamage(damage);
         Debug.LogFormat("> hull took {0}", damage);
 
         // consume ammo
@@ -227,7 +227,7 @@ public class VesselEncounter
         Debug.LogFormat("{0} boarding party did {1} damage", name, damage);
 
         // damage applied to health
-        opponent.Status.health -= Mathf.Min(opponent.Status.health, damage);
+        opponent.Status.ApplyHullDamage(damage);
         Debug.LogFormat("> hull took {0}", damage);
     }
     private void OnDeactivateBoarding()
