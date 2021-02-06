@@ -43,3 +43,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dcb0464684d2a54f8ed8e63a4443b53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  encounterSequence:
+  - {fileID: 11400000, guid: 30a28a886040104fca758cc04084c945, type: 2}
+  - {fileID: 11400000, guid: bb23e0d160fffa8fea5b00879c5d7c17, type: 2}
+  - {fileID: 11400000, guid: 6dce67ab211ae7b9bbb73f16f36a6afa, type: 2}
+  - {fileID: 11400000, guid: faa7e2c9987ccad0bb2eaeb57e3356fd, type: 2}
+  - {fileID: 11400000, guid: f8d59e780f87a9a14bef914b53569ff9, type: 2}
+  - {fileID: 11400000, guid: 9a67d083b26018342a32e3551f1dbf1a, type: 2}
+  - {fileID: 11400000, guid: ffcdbef8dbb318ea7848f23e7382ad17, type: 2}
+  - {fileID: 11400000, guid: 20a1d213aa53e2647b2116996464c104, type: 2}
+  - {fileID: 11400000, guid: 0a54acc22baa94e6ca7bcf2383e49c82, type: 2}
+  - {fileID: 11400000, guid: 5a94884a0d4bd13c9aa4bfccfebea880, type: 2}

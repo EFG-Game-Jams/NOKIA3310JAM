@@ -19,8 +19,9 @@ public class Campaign : MonoBehaviour
     private EncounterDescriptor nextEncounterDescriptor;
 
     private State state;
+    public EncounterDescriptor[] encounterSequence;
     private int nextEncounter;
-    private int encounterCount;
+    private int EncounterCount => encounterSequence.Length;
 
     public int EncounterIndex => nextEncounter - 1;
 
@@ -39,7 +40,6 @@ public class Campaign : MonoBehaviour
 
         state = State.None;
         nextEncounter = 0;
-        encounterCount = gameBalance.encounterCount;
 
         state = State.InitialStats;
         int remainingPoints = gameBalance.initialStatPoints;
@@ -65,7 +65,7 @@ public class Campaign : MonoBehaviour
 
     private void NextEncounter()
     {
-        if (nextEncounter < encounterCount)
+        if (nextEncounter < EncounterCount)
         {
             state = State.PreEncounter;
             SelectNextEncounterDescriptor();
@@ -80,7 +80,7 @@ public class Campaign : MonoBehaviour
     }
     private void SelectNextEncounterDescriptor()
     {
-        nextEncounterDescriptor = Resources.Load<EncounterDescriptor>("Encounters/TestHostile");
+        nextEncounterDescriptor = encounterSequence[nextEncounter];// Resources.Load<EncounterDescriptor>("Encounters/TestHostile");
     }
 
     private void BeginEncounter()
