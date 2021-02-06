@@ -5,7 +5,7 @@ using UnityEngine;
 public class VesselStatus : MonoBehaviour
 {
 	public const int MaxSystemStatus = 100;
-    public const int MaxFuel = 10;
+    public const int MaxFuel = 5;
     public const int MaxAmmo = 10;
 
 	public int health;
