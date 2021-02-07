@@ -6,10 +6,10 @@ public class PageInitialStats : PageAutoNavigation
 {
 	public NokiaTextRenderer textRemaining;
 	public NokiaTextRenderer textDurability;
-	public NokiaTextRenderer textAttack; 
-	public NokiaTextRenderer textDefense; 
+	public NokiaTextRenderer textAttack;
+	public NokiaTextRenderer textDefense;
 	public NokiaTextRenderer textLuck;
-	
+
 	public override void OnActivate()
 	{
 		base.OnActivate();
@@ -40,7 +40,7 @@ public class PageInitialStats : PageAutoNavigation
 	{
 		Campaign campaign = Game.Instance.campaign;
 		VesselStats stats = campaign.playerStats;
-		return campaign.gameBalance.initialStatPoints - stats.GetRawTotal();		
+		return campaign.gameBalance.initialStatPoints - stats.GetRawTotal();
 	}
 
 	private void UpdateDisplay()
@@ -49,7 +49,6 @@ public class PageInitialStats : PageAutoNavigation
 
 		Campaign campaign = Game.Instance.campaign;
 		VesselStats stats = campaign.playerStats;
-		textDurability.Text = stats.GetRaw(VesselStats.Type.Durability).ToString();
 		textAttack.Text = stats.GetRaw(VesselStats.Type.Attack).ToString();
 		textDefense.Text = stats.GetRaw(VesselStats.Type.Defense).ToString();
 		textLuck.Text = stats.GetRaw(VesselStats.Type.Luck).ToString();
@@ -86,8 +85,6 @@ public class PageInitialStats : PageAutoNavigation
         Game.Instance.audioManager.Play("success");
     }
 
-    public void TryIncDurability() => TryInc(VesselStats.Type.Durability);
-	public void TryDecDurability() => TryDec(VesselStats.Type.Durability);
 	public void TryIncAttack() => TryInc(VesselStats.Type.Attack);
 	public void TryDecAttack() => TryDec(VesselStats.Type.Attack);
 	public void TryIncDefense() => TryInc(VesselStats.Type.Defense);

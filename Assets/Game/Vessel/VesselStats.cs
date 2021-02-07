@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class VesselStats : MonoBehaviour
 {
@@ -8,10 +6,9 @@ public class VesselStats : MonoBehaviour
 
     public enum Type
     {
-        Durability,
-        Attack,
-        Defense,
-        Luck
+        Attack = 0,
+        Defense = 1,
+        Luck = 2
     }
 
     [SerializeField] private VesselStatValues statValues;
@@ -24,11 +21,10 @@ public class VesselStats : MonoBehaviour
 
         // fetch rolls from game balance
         GameBalance balance = Game.Instance.campaign.gameBalance;
-        statRolls = new StatRoll[4];
-        statRolls[0] = null;
-        statRolls[1] = balance.statRollAttack;
-        statRolls[2] = balance.statRollDefense;
-        statRolls[3] = balance.statRollLuck;
+        statRolls = new StatRoll[3];
+        statRolls[0] = balance.statRollAttack;
+        statRolls[1] = balance.statRollDefense;
+        statRolls[2] = balance.statRollLuck;
     }
 
     public int GetRawTotal()
@@ -59,7 +55,6 @@ public class VesselStats : MonoBehaviour
         return roller.Roll(GetRaw(type), MaxStatValue, scale);
     }
 
-    public float GetDurability() => GetRaw(Type.Durability) / (float)MaxStatValue;
     public float RollAttack(float scale = 1f) => Roll(Type.Attack, scale);
     public float RollDefense(float scale = 1f) => Roll(Type.Defense, scale);
     public float RollLuck(float scale = 1f) => Roll(Type.Luck, scale);

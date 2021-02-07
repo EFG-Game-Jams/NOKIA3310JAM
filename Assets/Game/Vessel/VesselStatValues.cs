@@ -4,9 +4,6 @@ using UnityEngine;
 public class VesselStatValues
 {
     [SerializeField]
-    public int Durability;
-
-    [SerializeField]
     public int Attack;
 
     [SerializeField]
@@ -19,7 +16,6 @@ public class VesselStatValues
     {
         return new VesselStatValues
         {
-            Durability = Durability,
             Attack = Attack,
             Defense = Defense,
             Luck = Luck
@@ -28,7 +24,6 @@ public class VesselStatValues
 
     public void Clamp(int min, int max)
     {
-        Durability = Mathf.Clamp(Durability, min, max);
         Attack = Mathf.Clamp(Attack, min, max);
         Defense = Mathf.Clamp(Defense, min, max);
         Luck = Mathf.Clamp(Luck, min, max);
@@ -36,7 +31,7 @@ public class VesselStatValues
 
     public int GetSumOfValues()
     {
-        return Durability + Attack + Defense + Luck;
+        return Attack + Defense + Luck;
     }
 
     public int GetByType(VesselStats.Type type)
@@ -47,8 +42,6 @@ public class VesselStatValues
                 return Attack;
             case VesselStats.Type.Defense:
                 return Defense;
-            case VesselStats.Type.Durability:
-                return Durability;
             case VesselStats.Type.Luck:
                 return Luck;
 
@@ -66,9 +59,6 @@ public class VesselStatValues
                 break;
             case VesselStats.Type.Defense:
                 Defense = value;
-                break;
-            case VesselStats.Type.Durability:
-                Durability = value;
                 break;
             case VesselStats.Type.Luck:
                 Luck = value;
