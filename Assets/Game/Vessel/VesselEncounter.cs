@@ -168,7 +168,7 @@ public class VesselEncounter
         abilities["skipturn"] = AbilitySkipTurn;
 
         AbilityRepair = new VesselAbilityDelegated(
-            0, 1,
+            1, 1,
             () => "Repair hull\nand systems",
             () => Status.CanRepair && modifiers.CanRepair,
             OnActivateRepair,

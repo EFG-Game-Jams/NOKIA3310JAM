@@ -4,13 +4,15 @@ using System.Linq;
 
 public class HostileAiBehaviour : AiBehaviour
 {
-    private OpponentVesselInformation context;
+    private OpponentVesselInformation enemy;
+    private VesselEncounter self;
 
     public float aggressiveness = 1f;
 
     public override void Act(VesselEncounter self)
     {
-        var context = self.GetOpponentInformation();
+        enemy = self.GetOpponentInformation();
+        this.self = self;
 
         var list = new List<(VesselAbility ability, int score)>();
         if (self.AbilityShields?.CanTrigger == true) {
@@ -37,9 +39,12 @@ public class HostileAiBehaviour : AiBehaviour
         if (self.AbilityFlee?.CanTrigger == true) {
             list.Add((self.AbilityFlee, GetFleeScore()));
         }
+        if (self.AbilityEvade?.CanTrigger == true) {
+            list.Add((self.AbilityEvade, GetEvadeScore()));
+        }
 
         VesselAbility chosenAction = null;
-        bool pickAction = Random.value < 0.95f;
+        bool pickAction = Random.value < 0.98f;
         if (pickAction && list.Count > 0)
         {
             list = list.OrderBy(e => e.score).ToList();
@@ -63,12 +68,13 @@ public class HostileAiBehaviour : AiBehaviour
         }
     }
 
-    private int GetRaiseShieldScore() => 40;
-    private int GetScanScore() => 40;
-    private int GetFireLaserScore() => 80;
-    private int GetRepelScore() => 30;
-    private int GetBoardScore() => 20;
-    private int GetTorpedoScore() => 50;
-    private int GetRepairScore() => 70;
-    private int GetFleeScore() => 0;
+    private int GetRaiseShieldScore() => (self.Status.healthPercentage < 1f && self.Status.shieldsPercentage > 0f) ? 80 : 20;
+    private int GetScanScore() => Mathf.RoundToInt(40 * (1f - aggressiveness));
+    private int GetFireLaserScore() => Mathf.RoundToInt(80 * (1f - aggressiveness));
+    private int GetRepelScore() => Mathf.RoundToInt(40 * (1f - self.Status.healthPercentage));
+    private int GetBoardScore() => Mathf.RoundToInt(70 * (1f - aggressiveness));
+    private int GetTorpedoScore() => Mathf.RoundToInt(70 * (1f - aggressiveness)) + (self.Status.healthPercentage < 0.2f ? 100 : 0);
+    private int GetRepairScore() => Mathf.RoundToInt(70 * Mathf.Max(self.Status.healthPercentage, self.Status.HasCriticalSystems ? 1f : 0f));
+    private int GetFleeScore() => Mathf.RoundToInt(self.Status.healthPercentage < 0.2f ? 10 * (1f - aggressiveness) : 0);
+    private int GetEvadeScore() => enemy.ScanInformation?.Status.ammo > 0 ? 60 : 0;
 }
