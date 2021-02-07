@@ -55,8 +55,8 @@ public class Encounter : MonoBehaviour
         pageEncounter.healthBarOpponent.SetFill(opponentStatus.GetHealthPercentage());
 
         // setup vessel encounters
-        playerEncounter = new VesselEncounter("player", this, owner.gameBalance, pageEncounter.playerVisuals, owner.playerStats, owner.playerStatus, descriptor.playerModifiers);
-        opponentEncounter = new VesselEncounter("opponent", this, owner.gameBalance, pageEncounter.opponentVisuals, opponentStats, opponentStatus, descriptor.enemyModifiers);
+        playerEncounter = new VesselEncounter(true, "player", this, owner.gameBalance, pageEncounter.playerVisuals, owner.playerStats, owner.playerStatus, descriptor.playerModifiers);
+        opponentEncounter = new VesselEncounter(false, "opponent", this, owner.gameBalance, pageEncounter.opponentVisuals, opponentStats, opponentStatus, descriptor.enemyModifiers);
         VesselEncounter.SetOpponents(playerEncounter, opponentEncounter);
 
         opponentAiBehaviour = Instantiate(descriptor.enemyAiBehaviour, transform);
@@ -130,6 +130,12 @@ public class Encounter : MonoBehaviour
     private void EndTurn()
     {
         Debug.Assert(turnState == TurnState.Ending);
+
+        if (playerEncounter.Status.health <= 0)
+        {
+            if (playerEncounter.Stats.RollLuck() < 0.1f)
+                playerEncounter.Status.Repair(true);
+        }
 
         // todo: end conditions
         if (playerEncounter.Status.health <= 0 ||

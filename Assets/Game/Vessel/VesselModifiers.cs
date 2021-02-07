@@ -23,6 +23,9 @@ public class VesselModifiers
     public bool CanRepair = true;
 
     [SerializeField]
+    public bool CanRepairHull = true;
+
+    [SerializeField]
     public bool CanScan = true;
 
     [SerializeField]

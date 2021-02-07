@@ -16,9 +16,8 @@ MonoBehaviour:
   enemyVisual: {fileID: 8586902341710231480, guid: 815ea239755dbb4a69544e0b02e3217e,
     type: 3}
   enemyStats:
-    Durability: 0
     Attack: 0
-    Defense: 0
+    Defense: 4
     Luck: 0
   enemyModifiers:
     CanRaiseShields: 1
@@ -27,6 +26,7 @@ MonoBehaviour:
     CanBoard: 1
     CanRepel: 1
     CanRepair: 1
+    CanRepairHull: 1
     CanScan: 1
     CanFlee: 0
     CanEvade: 1
@@ -41,6 +41,7 @@ MonoBehaviour:
     CanBoard: 1
     CanRepel: 1
     CanRepair: 1
+    CanRepairHull: 1
     CanScan: 1
     CanFlee: 1
     CanEvade: 1

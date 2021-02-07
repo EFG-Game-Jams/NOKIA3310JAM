@@ -7,7 +7,6 @@ public class VesselStatus : MonoBehaviour
     public const int MaxSystemStatus = 100;
     public const int MaxFuel = 5;
     public const int MaxAmmo = 10;
-    public const int CriticalRepairRestoresTo = 50;
 
     public int health { get; private set; }
     public int engines { get; private set; }
@@ -59,33 +58,18 @@ public class VesselStatus : MonoBehaviour
         return maximumHealth;
     }
 
-    public void Repair()
+    public void Repair(bool restoreHealth)
     {
-        if (engines <= 0)
-        {
-            engines = CriticalRepairRestoresTo;
-            return;
-        }
-        else if (weapons <= 0)
-        {
-            weapons = CriticalRepairRestoresTo;
-            return;
-        }
-        else if (shields <= 0)
-        {
-            shields = CriticalRepairRestoresTo;
-            return;
-        }
-        else
+        if (restoreHealth)
         {
             var healthBoost = GetMaxHealth() / 4;
             health = Mathf.Min(GetMaxHealth(), health + healthBoost);
-
-            var subsystemBoost = MaxSystemStatus / 4;
-            engines = Mathf.Min(MaxSystemStatus, engines + subsystemBoost);
-            weapons = Mathf.Min(MaxSystemStatus, weapons + subsystemBoost);
-            shields = Mathf.Min(MaxSystemStatus, shields + subsystemBoost);
         }
+
+        var subsystemBoost = MaxSystemStatus / 4;
+        engines = Mathf.Min(MaxSystemStatus, engines + subsystemBoost);
+        weapons = Mathf.Min(MaxSystemStatus, weapons + subsystemBoost);
+        shields = Mathf.Min(MaxSystemStatus, shields + subsystemBoost);
     }
 
     public void RepairFull()

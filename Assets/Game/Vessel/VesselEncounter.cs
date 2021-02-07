@@ -5,6 +5,7 @@ using UnityEngine;
 // represents an encounter from the perspective of one of the participants
 public class VesselEncounter
 {
+    private readonly bool isPlayer;
     // internal
     private string name = "vessel";
     private Encounter owner;
@@ -43,6 +44,7 @@ public class VesselEncounter
 
     // construct and configure
     public VesselEncounter(
+        bool isPlayer,
         string name,
         Encounter owner,
         GameBalance balance,
@@ -51,6 +53,7 @@ public class VesselEncounter
         VesselStatus status,
         VesselModifiers modifiers)
     {
+        this.isPlayer = isPlayer;
         this.name = name;
         this.owner = owner;
         this.balance = balance;
@@ -187,19 +190,15 @@ public class VesselEncounter
     }
 
     // helpers
-    private int GetSystemDependentRollEffect(float roll, int systemStatus, int effectMin, int effectMax, bool amplifiedByLuck)
+    private int GetSystemDependentRollEffect(float roll, int systemStatus, int effectMin, int effectMax)
     {
         // roll [0, 1] clamped to system status [0, 1] transposed to range [min, max]
         float rawEffect = Mathf.Min(roll, systemStatus / (float)VesselStatus.MaxSystemStatus);
         float scaledEffect = Mathf.Lerp(effectMin, effectMax, rawEffect);
 
-        if (amplifiedByLuck)
-        {
-            scaledEffect *= 1f + Stats.RollLuck();
-        }
-
         return Mathf.RoundToInt(scaledEffect);
     }
+
     private void FinishTurn()
     {
         if (abilityUsedThisTurn)
@@ -230,8 +229,7 @@ public class VesselEncounter
             Stats.RollAttack(),
             Status.weapons,
             balance.laserDamageMin,
-            balance.laserDamageMax,
-            true);
+            balance.laserDamageMax);
         Debug.LogFormat("{0} firing laser with {1} damage", name, damage);
 
         if (opponent.AbilityShields.IsActive)
@@ -287,8 +285,7 @@ public class VesselEncounter
                 Stats.RollAttack(),
                 Status.weapons,
                 balance.torpedoDamageMin,
-                balance.torpedoDamageMax,
-                true);
+                balance.torpedoDamageMax);
 
             Debug.LogFormat("{0} firing torpedo with {1} damage", name, damage);
 
@@ -319,8 +316,7 @@ public class VesselEncounter
             Stats.RollAttack(),
             VesselStatus.MaxSystemStatus,
             balance.boardingDamageMin,
-            balance.boardingDamageMax,
-            true);
+            balance.boardingDamageMax);
 
         // damage applied to health
         if (damage > 0)
@@ -363,7 +359,7 @@ public class VesselEncounter
     {
         Debug.LogFormat("Repairing");
         owner.EnqueueAnimation(Game.Instance.effects.Create<EffectRepair>("Repair").Setup(visuals.transform.position, visuals.hull.sprite.rect).Run());
-        Status.Repair();
+        Status.Repair(modifiers.CanRepairHull);
         FinishTurn();
     }
     private void OnActivateEvade()
