@@ -31,6 +31,7 @@ MonoBehaviour:
     CanFlee: 0
     CanEvade: 0
   enemyMissles: 3
+  enemyHealth: 250
   enemyAiBehaviour: {fileID: 410550126043583932, guid: f0f925e9c402de5b18c88fe5f5ce1128,
     type: 3}
   playerModifiers:
