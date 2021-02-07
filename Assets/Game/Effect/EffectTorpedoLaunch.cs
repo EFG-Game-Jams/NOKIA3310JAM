@@ -7,6 +7,9 @@ public class EffectTorpedoLaunch : Effect
     public float travelDuration;
     [SerializeField] private PixelPerfectSprite torpedoSprite;
 
+    public int sparkCount;
+    public float sparkRange;
+
     private Vector3 torpedoOrigin;
     private Vector3 torpedoTarget;
 
@@ -44,5 +47,17 @@ public class EffectTorpedoLaunch : Effect
     {
         yield return base.TickUntilDone();
         Destroy(torpedo.gameObject);
+
+        IEnumerator[] sparks = new IEnumerator[sparkCount];
+        for (int i = 0; i < sparkCount; ++i)
+        {
+            Vector3 movement = (Vector3)Random.insideUnitCircle * sparkRange;
+            Vector3 origin = torpedoTarget;
+            Vector3 target = torpedoTarget + movement;
+            sparks[i] = Game.Instance.effects.Create<EffectSpark>("Spark").Setup(origin, target, .5f).Run();
+        }
+
+        Game.Instance.audioManager.Play("torpedo_impact");
+        yield return CoroutineComposer.MakeParallel(this, sparks);
     }
 }

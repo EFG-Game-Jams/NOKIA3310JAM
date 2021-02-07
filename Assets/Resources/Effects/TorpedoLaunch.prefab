@@ -46,3 +46,5 @@ MonoBehaviour:
   travelDuration: 0.5
   torpedoSprite: {fileID: 8572716296873786485, guid: ccb8b55805645528688d12ba64f30172,
     type: 3}
+  sparkCount: 100
+  sparkRange: 15

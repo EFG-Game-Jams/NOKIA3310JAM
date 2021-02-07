@@ -49,7 +49,7 @@ public class AbilityTrigger : NavigatableItemAuto
 
         if (ability.TryTrigger())
         {
-            Game.Instance.audioManager.Play("success");
+            //Game.Instance.audioManager.Play("success");
 
             var pm = Game.Instance.pageManager;
             //while (!(pm.GetActivePage() is PageEncounter))
