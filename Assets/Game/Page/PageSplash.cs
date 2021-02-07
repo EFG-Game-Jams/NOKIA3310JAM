@@ -4,14 +4,12 @@ using UnityEngine;
 public class PageSplash : PageAutoNavigation
 {
     public NokiaTextRenderer line1;
-    public NokiaTextRenderer line2;
 
     public override void OnActivate()
     {
         base.OnActivate();
 
         line1.gameObject.SetActive(false);
-        line2.gameObject.SetActive(false);
         StartCoroutine(Run());
     }
 
@@ -21,11 +19,7 @@ public class PageSplash : PageAutoNavigation
         line1.gameObject.SetActive(true);
         yield return line1.AnimateInterval(null, .1f);
 
-        yield return new WaitForSeconds(.5f);
-        line2.gameObject.SetActive(true);
-        yield return line2.AnimateInterval(null, .1f);
-
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.1f);
         Skip();
     }
 
