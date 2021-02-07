@@ -30,7 +30,7 @@ public class PageEncounter : PageAutoNavigation
 	{
 		base.OnPush();
 		encounter = Game.Instance.campaign.encounter;
-		opponentVisuals = Instantiate(encounter.descriptor.visuals, opponentVisualsRoot);
+		opponentVisuals = Instantiate(encounter.descriptor.enemyVisual, opponentVisualsRoot);
 	}
 	public override void OnPop()
 	{

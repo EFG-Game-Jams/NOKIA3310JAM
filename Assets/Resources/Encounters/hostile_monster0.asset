@@ -12,28 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef235113050eff348bb44e5219eb5245, type: 3}
   m_Name: hostile_monster0
   m_EditorClassIdentifier: 
-  category: 0
-  visuals: {fileID: 3327368706210084300, guid: 1e2b0fe5e455d7ec3b432466678dcc71, type: 3}
-  baseStats:
+  encounterCategory: 0
+  enemyVisual: {fileID: 3327368706210084300, guid: 1e2b0fe5e455d7ec3b432466678dcc71,
+    type: 3}
+  enemyStats:
     Durability: 0
     Attack: 0
     Defense: 0
     Luck: 0
-  statsScalingWeight:
-    Durability: 1
-    Attack: 1
-    Defense: 1
-    Luck: 1
-  statsScaling: 0.75
-  playerModifiers:
-    HasShields: 1
-    HasEngines: 1
-    HasWeapons: 1
-    CanMissle: 1
-    CanBoard: 0
-    CanRepel: 1
-    CanRepair: 1
-    CanScan: 1
   enemyModifiers:
     HasShields: 1
     HasEngines: 1
@@ -43,6 +29,15 @@ MonoBehaviour:
     CanRepel: 0
     CanRepair: 0
     CanScan: 0
-  initialAmmo: 1
+  enemyMissles: 1
   enemyAiBehaviour: {fileID: 410550126043583932, guid: f0f925e9c402de5b18c88fe5f5ce1128,
     type: 3}
+  playerModifiers:
+    HasShields: 1
+    HasEngines: 1
+    HasWeapons: 1
+    CanMissle: 1
+    CanBoard: 0
+    CanRepel: 1
+    CanRepair: 1
+    CanScan: 1

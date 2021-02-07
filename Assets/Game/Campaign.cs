@@ -132,7 +132,7 @@ public class Campaign : MonoBehaviour
         Debug.Assert(state == State.Encounter);
         state = State.PostEncounter;
 
-        bool wasHostile = (nextEncounterDescriptor.category == EncounterDescriptor.Category.Hostile);
+        bool wasHostile = (nextEncounterDescriptor.encounterCategory == EncounterDescriptor.Category.Hostile);
         bool canSpentStatPoint = wasHostile && !playerFled;
         bool canSalvage = wasHostile && !playerFled && !opponentFled;
         bool canRepair = canSalvage && playerStatus.CanRepair;

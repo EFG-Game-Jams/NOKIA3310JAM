@@ -26,14 +26,6 @@ public class VesselStatValues
         };
     }
 
-    public void AddWeights(VesselStatWeights weights)
-    {
-        Durability += Mathf.FloorToInt(weights.Durability);
-        Attack += Mathf.FloorToInt(weights.Attack);
-        Defense += Mathf.FloorToInt(weights.Defense);
-        Luck += Mathf.FloorToInt(weights.Luck);
-    }
-
     public void Clamp(int min, int max)
     {
         Durability = Mathf.Clamp(Durability, min, max);

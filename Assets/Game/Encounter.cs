@@ -176,16 +176,7 @@ public class Encounter : MonoBehaviour
     private void InitialiseOpponentStats()
     {
         // don't modify asset's stats array
-        var stats = descriptor.baseStats.Clone();
-
-        // we won't be changing the weights though
-        var weights = descriptor.statsScalingWeight.Clone();
-        float totalWeight = weights.GetSumOfWeights();
-
-        // distribute scaling points
-        float weightToPoints = owner.EncounterIndex * descriptor.statsScaling / totalWeight;
-        weights.MultiplyBy(weightToPoints);
-        stats.AddWeights(weights);
+        var stats = descriptor.enemyStats.Clone();
 
         // apply
         opponentStats.SetStats(stats);
@@ -199,7 +190,7 @@ public class Encounter : MonoBehaviour
         // then apply modifiers
         if (!descriptor.enemyModifiers.HasEngines)
             opponentStatus.fuel = 0;
-        opponentStatus.ammo = (descriptor.enemyModifiers.HasWeapons && descriptor.enemyModifiers.CanMissle ? descriptor.initialAmmo : 0);
+        opponentStatus.ammo = (descriptor.enemyModifiers.HasWeapons && descriptor.enemyModifiers.CanMissle ? descriptor.enemyMissles : 0);
         // todo: other encounter modifiers
     }
 }

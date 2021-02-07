@@ -12,19 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef235113050eff348bb44e5219eb5245, type: 3}
   m_Name: hostile_submarine
   m_EditorClassIdentifier: 
-  category: 0
-  visuals: {fileID: 3763359374898483546, guid: 326bd3cc13672ca86a7e78069138144f, type: 3}
-  baseStats:
+  encounterCategory: 0
+  enemyVisual: {fileID: 3763359374898483546, guid: 326bd3cc13672ca86a7e78069138144f,
+    type: 3}
+  enemyStats:
     Durability: 0
     Attack: 0
     Defense: 0
     Luck: 0
-  statsScalingWeight:
-    Durability: 1
-    Attack: 1
-    Defense: 1
-    Luck: 1
-  statsScaling: 0.75
+  enemyModifiers:
+    HasShields: 1
+    HasEngines: 1
+    HasWeapons: 1
+    CanMissle: 1
+    CanBoard: 0
+    CanRepel: 1
+    CanRepair: 1
+    CanScan: 1
+  enemyMissles: 1
+  enemyAiBehaviour: {fileID: 410550126043583932, guid: f0f925e9c402de5b18c88fe5f5ce1128,
+    type: 3}
   playerModifiers:
     HasShields: 1
     HasEngines: 1
@@ -34,15 +41,3 @@ MonoBehaviour:
     CanRepel: 1
     CanRepair: 1
     CanScan: 1
-  enemyModifiers:
-    HasShields: 1
-    HasEngines: 1
-    HasWeapons: 1
-    CanMissle: 1
-    CanBoard: 1
-    CanRepel: 1
-    CanRepair: 1
-    CanScan: 1
-  initialAmmo: 1
-  enemyAiBehaviour: {fileID: 410550126043583932, guid: f0f925e9c402de5b18c88fe5f5ce1128,
-    type: 3}

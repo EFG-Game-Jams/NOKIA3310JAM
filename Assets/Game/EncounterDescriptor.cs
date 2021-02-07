@@ -10,22 +10,16 @@ public class EncounterDescriptor : ScriptableObject
         Special,
     }
 
-    public Category category;
-    public VesselVisuals visuals;
+    public Category encounterCategory;
+    public VesselVisuals enemyVisual;
 
-    [Tooltip("Base stats of the opponent, scaling is added onto this")]
-    public VesselStatValues baseStats;
+    public VesselStatValues enemyStats;
 
-    [Tooltip("Total scaling stat points are distributed according to these weights")]
-    public VesselStatWeights statsScalingWeight;
-
-    [Tooltip("Total scaling stat points = statsScaling * encounterNumber")]
-    public float statsScaling = .75f;
-
-	public VesselModifiers playerModifiers;
 	public VesselModifiers enemyModifiers;
 
-    public int initialAmmo = 1;
+    public int enemyMissles = 1;
 
 	public AiBehaviour enemyAiBehaviour;
+
+	public VesselModifiers playerModifiers;
 }
