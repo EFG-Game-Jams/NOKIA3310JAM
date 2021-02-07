@@ -318,7 +318,7 @@ PrefabInstance:
     - target: {fileID: 4597309361363698975, guid: 2bb973271c367b5469f9d8a6a63271e1,
         type: 3}
       propertyPath: initialText
-      value: Ammo
+      value: Torpedo
       objectReference: {fileID: 0}
     - target: {fileID: 7644579609319256690, guid: 2bb973271c367b5469f9d8a6a63271e1,
         type: 3}
