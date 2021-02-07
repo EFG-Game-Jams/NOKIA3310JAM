@@ -279,9 +279,26 @@ public class VesselEncounter
             true);
 
         // damage applied to health
-        opponent.Status.ApplySystemsDamage(damage);
-        Debug.LogFormat("> hull took {0}", damage);
+        if (damage > 0)
+        {
+            opponent.Status.ApplySystemsDamage(damage);
+            owner.EnqueueAnimation(AnimateBoardingTick());
+        }
     }
+
+    private IEnumerator AnimateBoardingTick()
+    {
+        visuals.ShuttleVisible = false;
+        yield return new WaitForSeconds(.3f);
+        Game.Instance.audioManager.Play("boardinghit");
+        visuals.ShuttleVisible = true;
+        yield return new WaitForSeconds(.3f);
+        visuals.ShuttleVisible = false;
+        yield return new WaitForSeconds(.3f);
+        visuals.ShuttleVisible = true;
+        yield return new WaitForSeconds(.5f);
+    }
+
     private void OnDeactivateBoarding()
     {
         owner.EnqueueAnimation(Game.Instance.effects.Create<EffectBoardingEnd>("BoardingEnd").Setup(visuals, opponent.visuals).Run());
