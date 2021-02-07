@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BalanceDefault
   m_EditorClassIdentifier: 
   initialStatPoints: 6
-  initialFuel: 2
+  initialFuel: 1
   initialAmmo: 1
   encounterIgnoreThreshold: 0.5
   healthMin: 100
