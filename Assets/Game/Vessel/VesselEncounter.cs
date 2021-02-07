@@ -310,7 +310,7 @@ public class VesselEncounter
         Debug.LogFormat("Executing boarding party tick");
         int damage = GetSystemDependentRollEffect(
             Stats.RollAttack(),
-            Status.weapons,
+            VesselStatus.MaxSystemStatus,
             balance.boardingDamageMin,
             balance.boardingDamageMax,
             true);

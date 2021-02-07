@@ -76,11 +76,10 @@ public class VesselStatus : MonoBehaviour
         }
         else
         {
-            var roll = stats.RollDefense();
-            var maxHealth = GetMaxHealth();
-            health = Mathf.Min(maxHealth, health + Mathf.RoundToInt(roll * maxHealth));
+            var healthBoost = GetMaxHealth() / 4;
+            health = Mathf.Min(GetMaxHealth(), health + healthBoost);
 
-            var subsystemBoost = Mathf.RoundToInt(roll * MaxSystemStatus);
+            var subsystemBoost = MaxSystemStatus / 4;
             engines = Mathf.Min(MaxSystemStatus, engines + subsystemBoost);
             weapons = Mathf.Min(MaxSystemStatus, weapons + subsystemBoost);
             shields = Mathf.Min(MaxSystemStatus, shields + subsystemBoost);
@@ -135,11 +134,11 @@ public class VesselStatus : MonoBehaviour
         engines = Mathf.Max(engines - damage, 0);
         Debug.LogFormat("> engines took {0} (Pre luck roll damage of {1})", damage, amount);
 
-        damage = damage = ReduceDamageByLuckRoll(amount);
+        damage = ReduceDamageByLuckRoll(amount);
         weapons = Mathf.Max(weapons - damage, 0);
         Debug.LogFormat("> weapons took {0} (Pre luck roll damage of {1})", damage, amount);
 
-        damage = damage = ReduceDamageByLuckRoll(amount);
+        damage = ReduceDamageByLuckRoll(amount);
         shields = Mathf.Max(shields - damage, 0);
         Debug.LogFormat("> shields took {0} (Pre luck roll damage of {1})", damage, amount);
     }
