@@ -48,15 +48,17 @@ public class HostileAiBehaviour : AiBehaviour
         if (pickAction && list.Count > 0)
         {
             var choices = list.Where(e => e.score > 0).OrderBy(e => e.score).ToArray();
-            var index = Mathf.FloorToInt((Mathf.Sqrt(1f - Random.value)) * choices.Length);
-            if (index >= choices.Length)
+            if (choices.Length > 0)
             {
-                index = choices.Length - 1;
-            }
+                var index = Mathf.Min(
+                    Mathf.FloorToInt((Mathf.Sqrt(1f - Random.value)) * choices.Length),
+                    choices.Length - 1);
 
-            chosenAction = choices[index].ability;
+                chosenAction = choices[index].ability;
+            }
         }
-        else
+
+        if (chosenAction == null)
         {
             chosenAction = self.AbilitySkipTurn;
         }
