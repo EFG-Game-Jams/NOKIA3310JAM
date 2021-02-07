@@ -6,7 +6,7 @@ public class VesselVisuals : MonoBehaviour
     public SpriteRenderer shield;
     public SpriteRenderer engineTrail;
     public SpriteRenderer shuttle;
-
+    
     public Transform laserEmit;
     public Transform torpedoEmit;
 
