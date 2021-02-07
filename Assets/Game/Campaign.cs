@@ -139,7 +139,7 @@ public class Campaign : MonoBehaviour
         string postEncounterTitle = (playerFled ? "You escaped" : (opponentFled ? "Enemy escaped" : "Enemy defeated"));
 
         PagePostEncounter page = Game.Instance.pageManager.GetPage<PagePostEncounter>();
-        page.Configure(postEncounterTitle, canSpentStatPoint ? 1 : 0, canSalvage ? 2 : 0, canSalvage ? 1 : 0, canRepair);
+        page.Configure(postEncounterTitle, canSpentStatPoint ? 1 : 0, canSalvage ? 1 : 0, canSalvage ? 1 : 0, canRepair);
         Game.Instance.pageManager.PushPage(page);
     }
     public void OnPostEncounterComplete()
