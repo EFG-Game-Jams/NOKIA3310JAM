@@ -132,7 +132,10 @@ public class Encounter : MonoBehaviour
         Debug.Assert(turnState == TurnState.Ending);
 
         // todo: end conditions
-        if (playerEncounter.Status.health <= 0 || opponentEncounter.Status.health <= 0)
+        if (playerEncounter.Status.health <= 0 ||
+            opponentEncounter.Status.health <= 0 ||
+            playerEncounter.AbilityFlee.IsActive ||
+            opponentEncounter.AbilityFlee.IsActive)
         {
             EndEncounter();
             return;
@@ -158,7 +161,7 @@ public class Encounter : MonoBehaviour
     private void EndEncounter()
     {
         pageEncounter.pageManager.PopPage();
-        owner.OnEncounterComplete();
+        owner.OnEncounterComplete(playerEncounter.AbilityFlee.IsActive, opponentEncounter.AbilityFlee.IsActive);
     }
 
     private void OnDestroy()
@@ -196,7 +199,7 @@ public class Encounter : MonoBehaviour
         // then apply modifiers
         if (!descriptor.enemyModifiers.HasEngines)
             opponentStatus.fuel = 0;
-        opponentStatus.ammo = (descriptor.enemyModifiers.HasWeapons && descriptor.enemyModifiers.CanMissle ? descriptor.initialAmmo : 0);        
+        opponentStatus.ammo = (descriptor.enemyModifiers.HasWeapons && descriptor.enemyModifiers.CanMissle ? descriptor.initialAmmo : 0);
         // todo: other encounter modifiers
     }
 }

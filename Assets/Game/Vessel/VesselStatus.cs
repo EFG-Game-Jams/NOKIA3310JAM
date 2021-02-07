@@ -6,6 +6,7 @@ public class VesselStatus : MonoBehaviour
     public const int MaxFuel = 5;
     public const int MaxAmmo = 10;
     public const int CriticalRepairRestoresTo = 50;
+    public const int FleeFuelCost = 1;
 
     public int health { get; private set; }
     public int engines { get; private set; }
@@ -17,6 +18,13 @@ public class VesselStatus : MonoBehaviour
         engines < MaxSystemStatus ||
         weapons < MaxSystemStatus ||
         shields < MaxSystemStatus;
+
+    public bool CanFlee => engines > 0 && fuel > FleeFuelCost;
+
+    public float healthPercentage => health / MaxSystemStatus;
+    public float enginesPercentage => engines / MaxSystemStatus;
+    public float weaponsPercentage => weapons / MaxSystemStatus;
+    public float shieldsPercentage => shields / MaxSystemStatus;
 
     public int fuel;
     public int ammo;

@@ -160,11 +160,20 @@ public class VesselEncounter
         AbilityRepair = new VesselAbilityDelegated(
             0, 1,
             () => "Repair hull\nand systems",
-            () => Status.CanRepair,
+            () => Status.CanRepair && modifiers.CanRepair,
             OnRepair,
             null,
             null);
         abilities["repair"] = AbilityRepair;
+
+        AbilityFlee = new VesselAbilityDelegated(
+            1, 1,
+            () => "Flee\nEscape the\nencounter",
+            () => Status.CanFlee && modifiers.HasEngines,
+            OnFlee,
+            null,
+            null);
+        abilities["flee"] = AbilityFlee;
     }
 
     // helpers
@@ -327,5 +336,69 @@ public class VesselEncounter
     {
         Debug.LogFormat("Skipping turn");
         FinishTurn();
+    }
+
+    private void OnFlee()
+    {
+        float selfDefenseComponent = Stats.RollDefense();
+        float opponentAttackComponent = opponent.Stats.RollAttack();
+        bool success =
+            !opponent.modifiers.HasEngines ||
+            ((selfDefenseComponent + Status.enginesPercentage) - (opponent.Status.enginesPercentage + opponentAttackComponent)) > 0f;
+        owner.EnqueueAnimation(AnimateFlee(success));
+
+        FinishTurn();
+    }
+
+    private IEnumerator AnimateFlee(bool isSuccessful)
+    {
+        visuals.hull.flipX = !visuals.hull.flipX;
+
+        Vector3 fleeOrigin = visuals.hull.transform.position;
+        if (isSuccessful)
+        {
+            visuals.ShieldVisible = false;
+            Vector3 fleeDestination = new Vector3
+            {
+                x = fleeOrigin.x > 41 ? 83 + visuals.hull.sprite.rect.width : -visuals.hull.sprite.rect.width,
+                y = fleeOrigin.y + 5,
+                z = 0
+            };
+
+            yield return Game.Instance.effects.Create<EffectTranslate>("Translate").Setup(
+                visuals.hull.transform,
+                fleeOrigin,
+                fleeDestination,
+                1.5f).Run();
+
+            visuals.HullVisible = false;
+            visuals.hull.transform.position = fleeOrigin;
+        }
+        else
+        {
+            Vector3 fleeDestination = new Vector3
+            {
+                x = fleeOrigin.x > 41 ? fleeOrigin.x + 5 : fleeOrigin.x - 5,
+                y = fleeOrigin.y + 1,
+                z = 0
+            };
+
+            yield return Game.Instance.effects.Create<EffectTranslate>("Translate").Setup(
+                visuals.hull.transform,
+                fleeOrigin,
+                fleeDestination,
+                .5f).Run();
+            Game.Instance.audioManager.Play("failure");
+            yield return new WaitForSeconds(.3f);
+            yield return Game.Instance.effects.Create<EffectTranslate>("Translate").Setup(
+                visuals.hull.transform,
+                fleeDestination,
+                fleeOrigin,
+                .5f).Run();
+
+            AbilityFlee.Deactivate();
+        }
+
+        visuals.hull.flipX = !visuals.hull.flipX;
     }
 }
