@@ -236,9 +236,16 @@ public class VesselEncounter
 
         if (opponent.AbilityShields.IsActive)
         {
-            opponent.Status.ApplyShieldDamage(damage, true, true);
-            if (opponent.Stats.RollDefense() < balance.shieldsStayActiveOnDamageRoll)
+            opponent.Status.ApplyShieldDamage(damage, false, false);
+
+            float defense = opponent.Stats.GetRaw(VesselStats.Type.Defense) / (float)VesselStats.MaxStatValue;
+            float roll = Distribution.Uniform();
+            float threshold = defense + balance.shieldsStayActiveOnDamageRoll;
+            if (roll > threshold)
+            {
+                Debug.Log($"Shields deactivating {roll} > {defense} + {balance.shieldsStayActiveOnDamageRoll}");
                 opponent.AbilityShields.Deactivate();
+            }
         }
         else
         {
