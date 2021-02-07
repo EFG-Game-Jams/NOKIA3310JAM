@@ -2,6 +2,8 @@
 
 public class Campaign : MonoBehaviour
 {
+    public const int playerHealth = 100;
+
     public enum State
     {
         None,
@@ -58,7 +60,7 @@ public class Campaign : MonoBehaviour
     {
         Debug.Assert(state == State.InitialStats);
 
-        playerStatus.InitialiseFull(gameBalance, playerStats);
+        playerStatus.InitialiseFull(gameBalance, playerStats, playerHealth);
 
         NextEncounter();
     }

@@ -2,6 +2,8 @@
 
 public class VesselStatus : MonoBehaviour
 {
+    private int maximumHealth;
+
     public const int MaxSystemStatus = 100;
     public const int MaxFuel = 5;
     public const int MaxAmmo = 10;
@@ -36,10 +38,11 @@ public class VesselStatus : MonoBehaviour
     private GameBalance balance;
     private VesselStats stats;
 
-    public void InitialiseFull(GameBalance balance, VesselStats stats)
+    public void InitialiseFull(GameBalance balance, VesselStats stats, int health)
     {
         this.balance = balance;
         this.stats = stats;
+        maximumHealth = health;
 
         RepairFull();
 
@@ -53,8 +56,7 @@ public class VesselStatus : MonoBehaviour
     }
     public int GetMaxHealth()
     {
-        return 100;
-        //return Mathf.RoundToInt(Mathf.Lerp(balance.healthMin, balance.healthMax, stats.GetDurability()));
+        return maximumHealth;
     }
 
     public void Repair()

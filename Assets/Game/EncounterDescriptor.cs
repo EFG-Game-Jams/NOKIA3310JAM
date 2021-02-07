@@ -18,6 +18,7 @@ public class EncounterDescriptor : ScriptableObject
 	public VesselModifiers enemyModifiers;
 
     public int enemyMissles = 1;
+    public int enemyHealth = 100;
 
 	public AiBehaviour enemyAiBehaviour;
 

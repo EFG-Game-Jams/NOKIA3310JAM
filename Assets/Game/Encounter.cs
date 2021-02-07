@@ -185,7 +185,7 @@ public class Encounter : MonoBehaviour
     private void InitialiseOpponentStatus()
     {
         // initialise full first
-        opponentStatus.InitialiseFull(owner.gameBalance, opponentStats);
+        opponentStatus.InitialiseFull(owner.gameBalance, opponentStats, descriptor.enemyHealth);
 
         // then apply modifiers
         if (!descriptor.enemyModifiers.CanFlee)
