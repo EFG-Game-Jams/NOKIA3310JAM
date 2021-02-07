@@ -188,9 +188,9 @@ public class Encounter : MonoBehaviour
         opponentStatus.InitialiseFull(owner.gameBalance, opponentStats);
 
         // then apply modifiers
-        if (!descriptor.enemyModifiers.HasEngines)
+        if (!descriptor.enemyModifiers.CanFlee)
             opponentStatus.fuel = 0;
-        opponentStatus.ammo = (descriptor.enemyModifiers.HasWeapons && descriptor.enemyModifiers.CanMissle ? descriptor.enemyMissles : 0);
+        opponentStatus.ammo = (descriptor.enemyModifiers.CanMissle ? descriptor.enemyMissles : 0);
         // todo: other encounter modifiers
     }
 }

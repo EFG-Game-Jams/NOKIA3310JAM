@@ -29,7 +29,8 @@ MonoBehaviour:
     CanRepel: 1
     CanRepair: 1
     CanScan: 1
-  enemyMissles: 1
+    CanFlee: 0
+  enemyMissles: 2
   enemyAiBehaviour: {fileID: 410550126043583932, guid: f0f925e9c402de5b18c88fe5f5ce1128,
     type: 3}
   playerModifiers:
@@ -41,3 +42,4 @@ MonoBehaviour:
     CanRepel: 1
     CanRepair: 1
     CanScan: 1
+    CanFlee: 1

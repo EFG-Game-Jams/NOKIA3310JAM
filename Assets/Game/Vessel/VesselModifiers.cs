@@ -3,17 +3,13 @@ using UnityEngine;
 [System.Serializable]
 public class VesselModifiers
 {
-    [Header("Subsystems")]
-    [SerializeField]
-    public bool HasShields = true;
-
-    [SerializeField]
-    public bool HasEngines = true;
-
-    [SerializeField]
-    public bool HasWeapons = true;
-
     [Header("Abilities")]
+    [SerializeField]
+    public bool CanRaiseShields = true;
+
+    [SerializeField]
+    public bool CanLaser = true;
+
     [SerializeField]
     public bool CanMissle = true;
 
@@ -28,4 +24,10 @@ public class VesselModifiers
 
     [SerializeField]
     public bool CanScan = true;
+
+    [SerializeField]
+    public bool CanFlee = true;
+
+    [SerializeField]
+    public bool CanEvade = true;
 }

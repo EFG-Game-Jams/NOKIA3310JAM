@@ -21,23 +21,25 @@ MonoBehaviour:
     Defense: 0
     Luck: 0
   enemyModifiers:
-    HasShields: 0
-    HasEngines: 0
-    HasWeapons: 0
-    CanMissle: 1
+    CanRaiseShields: 0
+    CanLaser: 0
+    CanMissle: 0
     CanBoard: 1
     CanRepel: 1
     CanRepair: 1
     CanScan: 1
+    CanFlee: 0
+    CanEvade: 0
   enemyMissles: 1
   enemyAiBehaviour: {fileID: 410550126043583932, guid: f0f925e9c402de5b18c88fe5f5ce1128,
     type: 3}
   playerModifiers:
-    HasShields: 1
-    HasEngines: 1
-    HasWeapons: 1
+    CanRaiseShields: 1
+    CanLaser: 1
     CanMissle: 1
     CanBoard: 1
     CanRepel: 1
     CanRepair: 1
     CanScan: 1
+    CanFlee: 1
+    CanEvade: 1

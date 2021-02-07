@@ -92,7 +92,7 @@ public class VesselEncounter
         AbilityLaser = new VesselAbilityDelegated(
             0, 0,
             () => "Fire lasers\nHits shields\nCannot evade\nSystem: " + Status.weapons + "%",
-            () => (Status.weapons > 0 && modifiers.HasWeapons),
+            () => (Status.weapons > 0 && modifiers.CanLaser),
             OnActivateLaser,
             null,
             null
@@ -102,7 +102,7 @@ public class VesselEncounter
         AbilityTorpedo = new VesselAbilityDelegated(
             0, 0,
             () => "Fire torpedo\nBypass shields\nSystem: " + Status.weapons + "%\nAmmo: " + Status.ammo,
-            () => (Status.weapons > 0 && modifiers.HasWeapons && modifiers.CanMissle && Status.ammo > 0),
+            () => (Status.weapons > 0 && modifiers.CanMissle && Status.ammo > 0),
             OnActivateTorpedo,
             null,
             null
@@ -122,7 +122,7 @@ public class VesselEncounter
         AbilityShields = new VesselAbilityDelegated(
             int.MaxValue, 1,
             () => "Raise shields\nAbsorbs lasers\nSystem: " + Status.shields + "%",
-            () => (Status.shields > 0 && modifiers.HasShields),
+            () => (Status.shields > 0 && modifiers.CanRaiseShields),
             OnActivateShields,
             () => owner.EnqueueAnimation(AnimateShield(this, false)),
             null
@@ -132,7 +132,7 @@ public class VesselEncounter
         AbilityEvade = new VesselAbilityDelegated(
             int.MaxValue, 1,
             () => "Evade\nAttempt to\nevade a\ntorpedo\nSystem: " + Status.engines + "%",
-            () => (Status.engines > 0 && modifiers.HasEngines),
+            () => (Status.engines > 0 && modifiers.CanEvade),
             OnActivateEvade,
             OnDeactivateEvade,
             null
@@ -178,8 +178,8 @@ public class VesselEncounter
 
         AbilityFlee = new VesselAbilityDelegated(
             1, 1,
-            () => "Flee\nEscape the\nencounter",
-            () => Status.CanFlee && modifiers.HasEngines,
+            () => $"Flee\nEscape the\nencounter\nSystem: {Status.engines}%",
+            () => Status.CanFlee && modifiers.CanFlee,
             OnFlee,
             null,
             null);
@@ -406,9 +406,7 @@ public class VesselEncounter
     {
         float selfDefenseComponent = Stats.RollDefense();
         float opponentAttackComponent = opponent.Stats.RollAttack();
-        bool success =
-            !opponent.modifiers.HasEngines ||
-            ((selfDefenseComponent + Status.enginesPercentage) - (opponent.Status.enginesPercentage + opponentAttackComponent)) > 0f;
+        bool success = ((selfDefenseComponent + Status.enginesPercentage) - (opponent.Status.enginesPercentage + opponentAttackComponent)) > 0f;
         owner.EnqueueAnimation(AnimateFlee(success));
 
         FinishTurn();
@@ -417,11 +415,15 @@ public class VesselEncounter
     private IEnumerator AnimateFlee(bool isSuccessful)
     {
         visuals.hull.flipX = !visuals.hull.flipX;
+        var wasShieldVisible = visuals.ShieldVisible;
+        var wasEngineTrailVisible = visuals.TrailVisible;
+
+        visuals.ShieldVisible = false;
+        visuals.TrailVisible = false;
 
         Vector3 fleeOrigin = visuals.hull.transform.position;
         if (isSuccessful)
         {
-            visuals.ShieldVisible = false;
             Vector3 fleeDestination = new Vector3
             {
                 x = fleeOrigin.x > 41 ? 83 + visuals.hull.sprite.rect.width : -visuals.hull.sprite.rect.width,
@@ -461,6 +463,9 @@ public class VesselEncounter
                 .5f).Run();
 
             AbilityFlee.Deactivate();
+
+            visuals.ShieldVisible = wasShieldVisible;
+            visuals.TrailVisible = wasEngineTrailVisible;
         }
 
         visuals.hull.flipX = !visuals.hull.flipX;
