@@ -47,12 +47,11 @@ public class HostileAiBehaviour : AiBehaviour
         bool pickAction = Random.value < 0.98f;
         if (pickAction && list.Count > 0)
         {
-            list = list.OrderBy(e => e.score).ToList();
-
-            var index = Mathf.FloorToInt((Mathf.Sqrt(1f - Random.value)) * list.Count);
-            if (index > list.Count)
+            var choices = list.Where(e => e.score > 0).OrderBy(e => e.score).ToArray();
+            var index = Mathf.FloorToInt((Mathf.Sqrt(1f - Random.value)) * choices.Length);
+            if (index > choices.Length)
             {
-                index = list.Count - 1;
+                index = choices.Length - 1;
             }
 
             chosenAction = list[index].ability;
