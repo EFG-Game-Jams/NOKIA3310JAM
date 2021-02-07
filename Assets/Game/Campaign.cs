@@ -22,7 +22,7 @@ public class Campaign : MonoBehaviour
 
     private State state;
     public EncounterDescriptor[] encounterSequence;
-    private int nextEncounter;
+    [SerializeField] private int nextEncounter;
     private int EncounterCount => encounterSequence.Length;
 
     public int EncounterIndex => nextEncounter - 1;
@@ -79,12 +79,18 @@ public class Campaign : MonoBehaviour
         }
         else
         {
-            Game.Instance.pageManager.SetPage("Win");
+            Win();
         }
     }
     private void SelectNextEncounterDescriptor()
     {
         nextEncounterDescriptor = encounterSequence[nextEncounter];// Resources.Load<EncounterDescriptor>("Encounters/TestHostile");
+    }
+
+    private void Win()
+    {
+        Game.Instance.pageManager.SetPage("Win");
+        Destroy(gameObject);
     }
 
     private void BeginEncounter()
@@ -129,6 +135,11 @@ public class Campaign : MonoBehaviour
         if (playerStatus.health <= 0)
         {
             Game.Instance.pageManager.SetPage("GameOver");
+            return;
+        }
+        else if (nextEncounter >= EncounterCount)
+        {
+            Win();
             return;
         }
 
