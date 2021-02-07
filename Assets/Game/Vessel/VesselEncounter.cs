@@ -129,6 +129,16 @@ public class VesselEncounter
         );
         abilities["shields"] = AbilityShields;
 
+        AbilityEvade = new VesselAbilityDelegated(
+            int.MaxValue, 1,
+            () => "Evade\nAttempt to\nevade a\ntorpedo\nSystem: " + Status.engines + "%",
+            () => (Status.engines > 0 && modifiers.HasEngines),
+            OnActivateEvade,
+            OnDeactivateEvade,
+            null
+        );
+        abilities["evade"] = AbilityEvade;
+
         AbilityRepel = new VesselAbilityDelegated(
             0, 0,
             () => "Repel boarders",
@@ -161,7 +171,7 @@ public class VesselEncounter
             0, 1,
             () => "Repair hull\nand systems",
             () => Status.CanRepair && modifiers.CanRepair,
-            OnRepair,
+            OnActivateRepair,
             null,
             null);
         abilities["repair"] = AbilityRepair;
@@ -201,11 +211,10 @@ public class VesselEncounter
         if (opponent.AbilityShields.IsActive && opponent.Status.shields <= 0)
             opponent.AbilityShields.Deactivate();
 
-        Debug.Assert(AbilityEvade == null, "Deactivate evasion when engines are dead");
-        /*if (AbilityEvade.IsActive && Status.engines <= 0)
+        if (AbilityEvade.IsActive && Status.engines <= 0)
             AbilityEvade.Deactivate();
         if (opponent.AbilityEvade.IsActive && opponent.Status.engines <= 0)
-            opponent.AbilityEvade.Deactivate();*/
+            opponent.AbilityEvade.Deactivate();
 
         owner.OnVesselEndTurn(this);
     }
@@ -242,19 +251,47 @@ public class VesselEncounter
     {
         Vector3 torpedoEmit = visuals.torpedoEmit.position;
         Vector3 torpedoReceive = opponent.visuals.weaponReceiveHull.position;
-        owner.EnqueueAnimation(Game.Instance.effects.Create<EffectTorpedo>("Torpedo").Setup(torpedoEmit, torpedoReceive).Run());
+        var torpedoAnimation = Game.Instance.effects.Create<EffectTorpedo>("Torpedo").Setup(torpedoEmit, torpedoReceive).Run();
 
-        int damage = GetSystemDependentRollEffect(
-            Stats.RollAttack(),
-            Status.weapons,
-            balance.torpedoDamageMin,
-            balance.torpedoDamageMax,
-            true);
+        bool evaded = false;
+        if (opponent.AbilityEvade.IsActive)
+        {
+            float attackerRoll = Stats.RollAttack();
+            float defenderRoll = opponent.Stats.RollDefense();
+            float defenderBonus = opponent.Status.engines / (float)VesselStatus.MaxSystemStatus;
+            evaded = (attackerRoll <= (defenderRoll + defenderBonus));
+        }
 
-        Debug.LogFormat("{0} firing torpedo with {1} damage", name, damage);
+        if (evaded)
+        {
+            owner.EnqueueAnimation(CoroutineComposer.MakeParallel(
+                owner,
+                torpedoAnimation,
+                Game.Instance.effects.Create<EffectEvade>("Evade").Setup(opponent.visuals).Run()
+            ));
 
-        // damage applied to health
-        opponent.Status.ApplyHullDamage(damage, true);
+            Debug.LogFormat("{0} firing evaded torpedo", name);
+        }
+        else
+        {
+            owner.EnqueueAnimation(torpedoAnimation);
+
+            int damage = GetSystemDependentRollEffect(
+                Stats.RollAttack(),
+                Status.weapons,
+                balance.torpedoDamageMin,
+                balance.torpedoDamageMax,
+                true);
+
+            Debug.LogFormat("{0} firing torpedo with {1} damage", name, damage);
+
+            // damage applied to health
+            opponent.Status.ApplyHullDamage(damage, true);
+        }
+
+        // whether we evaded or not, evade ability deactivates
+        if (opponent.AbilityEvade.IsActive)
+            opponent.AbilityEvade.Deactivate();
 
         // consume ammo
         --Status.ammo;
@@ -315,12 +352,22 @@ public class VesselEncounter
         owner.EnqueueAnimation(Game.Instance.effects.Create<EffectScan>("Scan").Setup(visuals.transform.position, opponent.visuals.transform.position).Run());
         FinishTurn();
     }
-
-    private void OnRepair()
+    private void OnActivateRepair()
     {
+        Debug.LogFormat("Repairing");
         owner.EnqueueAnimation(Game.Instance.effects.Create<EffectRepair>("Repair").Setup(visuals.transform.position, visuals.hull.sprite.rect).Run());
         Status.Repair();
         FinishTurn();
+    }
+    private void OnActivateEvade()
+    {
+        Debug.LogFormat("Evading");
+        owner.EnqueueAnimation(CoroutineComposer.MakeDelayed(.25f, CoroutineComposer.MakeAction(() => visuals.TrailVisible = true)));
+        FinishTurn();
+    }
+    private void OnDeactivateEvade()
+    {
+        owner.EnqueueAnimation(CoroutineComposer.MakeDelayed(.25f, CoroutineComposer.MakeAction(() => visuals.TrailVisible = false)));
     }
 
     // animations
