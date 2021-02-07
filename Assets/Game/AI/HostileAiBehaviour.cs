@@ -54,7 +54,7 @@ public class HostileAiBehaviour : AiBehaviour
                 index = choices.Length - 1;
             }
 
-            chosenAction = list[index].ability;
+            chosenAction = choices[index].ability;
         }
         else
         {
