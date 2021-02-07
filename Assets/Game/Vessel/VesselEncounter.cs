@@ -91,7 +91,7 @@ public class VesselEncounter
     {
         AbilityLaser = new VesselAbilityDelegated(
             0, 0,
-            () => "Fire lasers\nHits shields\nCannot evade\nSystem: " + Status.weapons + "%",
+            () => "Fire lasers\nHit shields.\nCannot evade.\nSystem: " + Status.weapons + "%",
             () => (Status.weapons > 0 && modifiers.CanLaser),
             OnActivateLaser,
             null,
@@ -101,7 +101,7 @@ public class VesselEncounter
 
         AbilityTorpedo = new VesselAbilityDelegated(
             0, 0,
-            () => "Fire torpedo\nBypass shields\nSystem: " + Status.weapons + "%\nAmmo: " + Status.ammo,
+            () => "Fire torpedo\nBypass shields.\nSystem: " + Status.weapons + "%\nAmmo: " + Status.ammo,
             () => (Status.weapons > 0 && modifiers.CanMissle && Status.ammo > 0),
             OnActivateTorpedo,
             null,
@@ -111,7 +111,7 @@ public class VesselEncounter
 
         AbilityBoard = new VesselAbilityDelegated(
             int.MaxValue, 0,
-            () => "Board enemy\nBypass shields\nDamage enemy\nover time",
+            () => "Board enemy\nBypass shields.\nDamage systems\nover time.",
             () => modifiers.CanBoard,
             OnActivateBoarding,
             OnDeactivateBoarding,
@@ -121,7 +121,7 @@ public class VesselEncounter
 
         AbilityShields = new VesselAbilityDelegated(
             int.MaxValue, 1,
-            () => "Raise shields\nAbsorbs lasers\nSystem: " + Status.shields + "%",
+            () => "Raise shields\nAbsorb lasers.\nSystem: " + Status.shields + "%",
             () => (Status.shields > 0 && modifiers.CanRaiseShields),
             OnActivateShields,
             () => owner.EnqueueAnimation(AnimateShield(this, false)),
@@ -131,7 +131,7 @@ public class VesselEncounter
 
         AbilityEvade = new VesselAbilityDelegated(
             int.MaxValue, 1,
-            () => "Evade\nAttempt to\nevade a\ntorpedo\nSystem: " + Status.engines + "%",
+            () => "Evade\nAttempt to\nevade the next\ntorpedo.\nSystem: " + Status.engines + "%",
             () => (Status.engines > 0 && modifiers.CanEvade),
             OnActivateEvade,
             OnDeactivateEvade,
@@ -141,7 +141,7 @@ public class VesselEncounter
 
         AbilityRepel = new VesselAbilityDelegated(
             0, 0,
-            () => "Repel boarders",
+            () => "Repel\nRepel enemy\nboarders.",
             () => (modifiers.CanRepel && opponent.AbilityBoard.IsActive),
             OnActivateRepel,
             null,
@@ -151,7 +151,7 @@ public class VesselEncounter
 
         AbilityScan = new VesselAbilityDelegated(
             int.MaxValue, 0,
-            () => "Scan enemy",
+            () => "Scan\nMake enemy\ninfo available.",
             () => modifiers.CanScan,
             OnActivateScan,
             null,
@@ -169,7 +169,7 @@ public class VesselEncounter
 
         AbilityRepair = new VesselAbilityDelegated(
             1, 1,
-            () => "Repair hull\nand systems",
+            () => "Repair\nRepair hull\nand systems.",
             () => Status.CanRepair && modifiers.CanRepair,
             OnActivateRepair,
             null,
@@ -178,7 +178,7 @@ public class VesselEncounter
 
         AbilityFlee = new VesselAbilityDelegated(
             1, 1,
-            () => $"Flee\nEscape the\nencounter\nSystem: {Status.engines}%",
+            () => $"Flee\nTry to escape\nthe encounter.\nSystem: {Status.engines}%",
             () => Status.CanFlee && modifiers.CanFlee,
             OnFlee,
             null,
