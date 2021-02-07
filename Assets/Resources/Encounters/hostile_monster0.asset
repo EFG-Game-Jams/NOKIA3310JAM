@@ -43,5 +43,5 @@ MonoBehaviour:
     CanRepair: 1
     CanRepairHull: 1
     CanScan: 1
-    CanFlee: 1
+    CanFlee: 0
     CanEvade: 1
