@@ -120,7 +120,7 @@ public class VesselStatus : MonoBehaviour
             return;
         }
 
-        var damage = Mathf.RoundToInt(amount * (1f - (stats.GetRaw(VesselStats.Type.Defense) / (float)VesselStats.MaxStatValue)));
+        var damage = Mathf.RoundToInt(amount * (1f - (stats.GetRaw(VesselStats.Type.Defense) / (float)VesselStats.MaxStatValue) * 0.5f));
         health = Mathf.Max(health - damage, 0);
 
         Debug.LogFormat("> hull took {0} (Pre defense damage of {1})", damage, amount);
