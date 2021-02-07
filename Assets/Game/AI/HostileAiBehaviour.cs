@@ -49,7 +49,7 @@ public class HostileAiBehaviour : AiBehaviour
         {
             var choices = list.Where(e => e.score > 0).OrderBy(e => e.score).ToArray();
             var index = Mathf.FloorToInt((Mathf.Sqrt(1f - Random.value)) * choices.Length);
-            if (index > choices.Length)
+            if (index >= choices.Length)
             {
                 index = choices.Length - 1;
             }
