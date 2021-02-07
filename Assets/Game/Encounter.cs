@@ -133,7 +133,7 @@ public class Encounter : MonoBehaviour
 
         if (playerEncounter.Status.health <= 0)
         {
-            if (playerEncounter.Stats.RollLuck() < 0.1f)
+            if (playerEncounter.Stats.RollLuck() > 0.9f)
                 playerEncounter.Status.Repair(true);
         }
 
