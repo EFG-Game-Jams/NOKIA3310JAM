@@ -143,7 +143,7 @@ public class VesselEncounter
         abilities["evade"] = AbilityEvade;
 
         AbilityRepel = new VesselAbilityDelegated(
-            0, 0,
+            1, 1,
             () => "Repel\nRepel enemy\nboarders.",
             () => (modifiers.CanRepel && opponent.AbilityBoard.IsActive),
             OnActivateRepel,
@@ -306,7 +306,7 @@ public class VesselEncounter
     {
         Debug.LogFormat("Sending boarding party");
         owner.EnqueueAnimation(Game.Instance.effects.Create<EffectBoardingStart>("BoardingStart").Setup(visuals, opponent.visuals).Run());
-
+        OnTickBoarding();
         FinishTurn();
     }
     private void OnTickBoarding()
