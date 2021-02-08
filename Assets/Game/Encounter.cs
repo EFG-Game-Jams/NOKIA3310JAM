@@ -83,6 +83,22 @@ public class Encounter : MonoBehaviour
             pageEncounter.healthBarOpponent.AnimateFill(opponentStatus.GetHealthPercentage(), 1)
         ));
 
+        // luck roll to prevent player death
+        if (playerEncounter.Status.health <= 0)
+        {
+            if (playerEncounter.Stats.RollLuck() > 0.9f)
+            {
+                // repair
+                playerEncounter.Status.Repair(true);
+
+                // repair and health bar animations
+                EnqueueAnimation(CoroutineComposer.MakeParallel(this,
+                    Game.Instance.effects.Create<EffectRepair>("Repair").Setup(pageEncounter.playerVisuals.transform.position, pageEncounter.playerVisuals.hull.sprite.rect).Run(),
+                    pageEncounter.healthBarPlayer.AnimateFill(owner.playerStatus.GetHealthPercentage(), 1)
+                ));
+            }
+        }
+
         // enqueue end of turn
         pendingCoroutines.Add(CoroutineComposer.MakeAction(OnFinishAnimating));
 
@@ -131,13 +147,6 @@ public class Encounter : MonoBehaviour
     {
         Debug.Assert(turnState == TurnState.Ending);
 
-        if (playerEncounter.Status.health <= 0)
-        {
-            if (playerEncounter.Stats.RollLuck() > 0.9f)
-                playerEncounter.Status.Repair(true);
-        }
-
-        // todo: end conditions
         if (playerEncounter.Status.health <= 0 ||
             opponentEncounter.Status.health <= 0 ||
             playerEncounter.AbilityFlee.IsActive ||

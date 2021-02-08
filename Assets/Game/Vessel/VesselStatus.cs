@@ -135,4 +135,7 @@ public class VesselStatus : MonoBehaviour
         var luckRoll = 1f - stats.RollLuck(); // Maximum of 100% damage reduction
         return Mathf.RoundToInt(amount * luckRoll);
     }
+
+    [ContextMenu("Debug - Zero Health")]
+    private void DebugSetZeroHealth() => health = 0;
 }
