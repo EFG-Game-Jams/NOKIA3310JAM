@@ -13,6 +13,7 @@ public class StatRollEditor : Editor
     bool expanded;
     int previewStatValue;
     int[] buckets = new int[BucketCount];
+    float minValue, maxValue, meanValue;
 
     public override void OnInspectorGUI()
     {
@@ -33,7 +34,7 @@ public class StatRollEditor : Editor
     
     private void DrawPreviewCurve()
     {
-        RefreshBuckets();
+        Refresh();
 
         float maxBucketSamples = 0;
         foreach (var bucket in buckets)
@@ -54,20 +55,33 @@ public class StatRollEditor : Editor
         //Statcurve.AddKey(new Keyframe(1, 0, 0, 0, 0, 0));
 
         EditorGUILayout.CurveField("Distribution", curve, Color.white, Rect.MinMaxRect(0,0,1,1));
+        EditorGUILayout.LabelField("Min", minValue.ToString("F3"));
+        EditorGUILayout.LabelField("Max", maxValue.ToString("F3"));
+        EditorGUILayout.LabelField("Mean", meanValue.ToString("F3"));
     }
 
-    private void RefreshBuckets()
+    private void Refresh()
     {
         var t = (target as StatRoll);
 
         for (int i = 0; i < BucketCount; ++i)
             buckets[i] = 0;
 
+        minValue = float.MaxValue;
+        maxValue = float.MinValue;
+        meanValue = 0;
+
         for (int i = 0; i < SampleCount; ++i)
         {
             float sample = t.Roll(previewStatValue);
+
             int bucket = Mathf.Clamp(Mathf.FloorToInt(sample * BucketCount), 0, BucketCount - 1);
             ++buckets[bucket];
+
+            minValue = Mathf.Min(minValue, sample);
+            maxValue = Mathf.Max(maxValue, sample);
+            meanValue += sample;
         }
+        meanValue /= SampleCount;
     }
 }

@@ -15,4 +15,4 @@ MonoBehaviour:
   offset: 0.75
   constrain: 0
   biasStrength: 1
-  biasShape: 0.75
+  biasShape: 0.95

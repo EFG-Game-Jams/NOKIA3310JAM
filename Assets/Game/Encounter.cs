@@ -86,7 +86,9 @@ public class Encounter : MonoBehaviour
         // luck roll to prevent player death
         if (playerEncounter.Status.health <= 0)
         {
-            if (playerEncounter.Stats.RollLuck() > 0.9f)
+            float luckRoll = playerEncounter.Stats.RollLuck();
+            Debug.Log($"Anti-death luck roll: {luckRoll}");
+            if (luckRoll > 0.9f)
             {
                 // repair
                 playerEncounter.Status.Repair(true);
