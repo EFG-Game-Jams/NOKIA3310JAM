@@ -1,5 +1,9 @@
 # NOKIA3310JAM
 
+## Submission
+
+You can play the final submission at the [jam entry page](https://satriali.itch.io/space-thing)!
+
 ## Project
 
 This repository uses LFS, so make sure that's up and running on your end (if you're using SourceTree it will offer automatic LFS setup).
